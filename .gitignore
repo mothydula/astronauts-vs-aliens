@@ -33,8 +33,6 @@ target/
 
 # eclipse project file
 .settings/
-.classpath
-.project
 /bin/
 
 # NetBeans specific
