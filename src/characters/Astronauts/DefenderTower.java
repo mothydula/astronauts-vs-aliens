@@ -52,7 +52,7 @@ public class DefenderTower extends BoardCharacter{
 	
 	
 	// Constructor
-	public DefenderTower(int health, int attackSpeed, int damage) {
+	protected DefenderTower(int health, int attackSpeed, int damage) {
 		super(health, attackSpeed, damage);
 	}
 	
