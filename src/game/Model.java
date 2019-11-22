@@ -2,6 +2,7 @@ package game;
 
 import java.util.Observable;
 import characters.*;
+import characters.Astronauts.DefenderTower;
 
 public class Model extends Observable {
 	// Class fields

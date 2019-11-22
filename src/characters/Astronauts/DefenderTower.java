@@ -1,4 +1,6 @@
-package characters;
+package characters.Astronauts;
+
+import characters.BoardCharacter;
 
 public class DefenderTower extends BoardCharacter{
 	// Default values for characters

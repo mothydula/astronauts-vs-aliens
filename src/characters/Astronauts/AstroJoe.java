@@ -1,4 +1,4 @@
-package characters;
+package characters.Astronauts;
 
 public class AstroJoe extends DefenderTower{
 	// Class fields

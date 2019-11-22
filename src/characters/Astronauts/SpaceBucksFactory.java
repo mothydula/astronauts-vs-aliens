@@ -1,4 +1,4 @@
-package characters;
+package characters.Astronauts;
 
 public class SpaceBucksFactory extends DefenderTower{
 	
