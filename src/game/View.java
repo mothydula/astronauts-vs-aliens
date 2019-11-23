@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -26,10 +28,11 @@ import javafx.stage.Stage;
 
 public class View extends Application implements Observer{
 	
-	private final int SCENE_WIDTH = 1500;
+	private final int SCENE_WIDTH = 1100;
 	private final int SCENE_HEIGHT = 700;
 	private final int ROWS = 6;
 	private final int COLS = 10;
+	private final int NUM_CHARACTERS = 9;
 	
 	// Class fields
 	private Model model;
@@ -82,7 +85,10 @@ public class View extends Application implements Observer{
 	
 	public void setupGameScene() {
 		gameBorderPane = new BorderPane();
+		gameBorderPane.setPadding(new Insets(10,10,10,10));
+		
 		setupGridPane();
+		setupTopMenuBar();
 		
 		ImageView view = new ImageView();
 		File file = new File("~/Downloads/astr-assets/homebase.png");
@@ -92,7 +98,6 @@ public class View extends Application implements Observer{
 		gameBorderPane.setRight(new Button("right"));
 		gameBorderPane.setLeft(view);
 		gameBorderPane.setCenter(gridPane);
-		gameBorderPane.setTop(new Button("Top"));
 		
 		File file2 = new File("~/Downloads/astr-assets/mars-background.png");
 		Image bgImage = new Image(file2.toURI().toString());
@@ -124,6 +129,25 @@ public class View extends Application implements Observer{
 				gridPane.add(circle, col, row);
 			}
 		}
+	}
+	
+	public void setupTopMenuBar() {
+		HBox hbox = new HBox(10);
+		
+		// Add 6 Buttons as placeholder for tower items
+		for (int i = 0; i < NUM_CHARACTERS; i++) {
+			Button btn = new Button("Temp");
+			btn.setMinHeight(50);
+			btn.setMinWidth(50);
+			hbox.getChildren().add(btn);
+		}
+		
+		// Add button to act as the removal
+		Button removalBtn = new Button("Remove");
+		hbox.getChildren().add(removalBtn);
+		hbox.setAlignment(Pos.CENTER);
+		gameBorderPane.setTop(hbox);
+		
 	}
 	
 	@Override
