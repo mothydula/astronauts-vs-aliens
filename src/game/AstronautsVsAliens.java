@@ -5,8 +5,7 @@ import javafx.application.Application;
 public class AstronautsVsAliens {
 
 	public static void main(String[] args) {
-		Application.launch(GameView.class, args);
-
+		Application.launch(View.class, args);
 	}
 
 }
