@@ -21,6 +21,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -34,6 +35,13 @@ public class View extends Application implements Observer{
 	private final int ROWS = 6;
 	private final int COLS = 12;
 	private final int NUM_CHARACTERS = 9;
+	
+	// View-specific constants
+	private final int TOP_MARGIN = 75;
+	private final int ASTRO_WIDTH = 300; // Start menu sprite
+	private final int ASTRO_HEIGHT = 300; // Start menu sprite
+	private final int ALIEN_WIDTH = 350; // Start menu sprite
+	private final int ALIEN_HEIGHT = 300; // Start menu sprite
 	
 	// Class fields
 	private Model model;
@@ -62,35 +70,75 @@ public class View extends Application implements Observer{
 	public void setupStartMenu() {
 		startBorderPane = new BorderPane();
 		
-		// Create Title
-		Text title = new Text("Astronauts vs. Aliens");
-		title.setFont(new Font("Courier New", 30));
-		title.setFill(Color.RED);
+		// Create Title Banner
+		ImageView titleBanner = new ImageView();
+		titleBanner.setImage(new Image("file:assets/game-title.png"));
 		
-		// Create OK Button
-		Button okBtn = new Button("Start");
-		okBtn.setOnAction( e -> {
+		// Create VBox of Utility Button (Info, ?, Start)
+		VBox buttonBox = new VBox(3);
+		buttonBox.setAlignment(Pos.CENTER);
+		buttonBox.setSpacing(15);
+		
+		Button infoBtn = new Button("Info");
+		infoBtn.setMinHeight(40);
+		infoBtn.setMinWidth(100);
+		infoBtn.setOnAction( e -> {
+			System.out.println("TODO: Insert info functionality");
+		});
+		
+		Button tempBtn = new Button("?");
+		tempBtn.setMinHeight(40);
+		tempBtn.setMinWidth(100);
+		tempBtn.setOnAction( e -> {
+			System.out.println("TODO: Insert temp functionality");
+		});
+		
+		Button startBtn = new Button("Start");
+		startBtn.setMinHeight(60);
+		startBtn.setMinWidth(150);
+		startBtn.setOnAction( e -> {
 			// Switch scene to Game Scene
 			setupGameScene();
 			primaryStage.show();
 		});
 		
-		Image bgImage = new Image("file:assets/space-background.png");
+		buttonBox.getChildren().addAll(infoBtn, tempBtn, startBtn);
+		
+		// Create ImageViews for Astronaut & Alien
+		ImageView astronautImageView = new ImageView();
+		astronautImageView.setImage(new Image("file:assets/astro-sample.png", ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
+		
+		ImageView alienImageView = new ImageView();
+		alienImageView.setImage(new Image("file:assets/alien-sample.png", ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
+		
+		// Create & Set background for the border pane
+		Image bgImage = new Image("file:assets/space-gif.gif", SCENE_WIDTH, SCENE_HEIGHT, false, false);
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
 	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
 	            BackgroundRepeat.NO_REPEAT,
 	            BackgroundRepeat.NO_REPEAT,
 	            BackgroundPosition.CENTER,
 	            bSize));
-	    
 	    startBorderPane.setBackground(borderPaneBackground);
 		
-		startBorderPane.setTop(title);
-		startBorderPane.setCenter(okBtn);
+	    
+	    // Placement and alignments
+	    startBorderPane.setTop(titleBanner);
+	    startBorderPane.setLeft(astronautImageView);
+	    startBorderPane.setRight(alienImageView);
+		startBorderPane.setCenter(buttonBox);
 		
-		BorderPane.setAlignment(title, Pos.CENTER);
-		BorderPane.setAlignment(okBtn, Pos.CENTER);
+		BorderPane.setAlignment(titleBanner, Pos.CENTER);
+		BorderPane.setMargin(titleBanner, new Insets(TOP_MARGIN, 0, 0, 0));
 		
+		BorderPane.setAlignment(astronautImageView, Pos.CENTER);
+		BorderPane.setMargin(astronautImageView, new Insets(0, 0, 0, 100));
+		BorderPane.setAlignment(alienImageView, Pos.CENTER);
+		BorderPane.setMargin(alienImageView, new Insets(0, 100, 0, 0));
+		
+		BorderPane.setAlignment(buttonBox, Pos.CENTER);
+		
+		// Add border pane to scene and set the stage scene
 		Scene scene = new Scene(startBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
 		primaryStage.setScene(scene);
 	}
