@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class View extends Application implements Observer{
@@ -31,7 +32,7 @@ public class View extends Application implements Observer{
 	private final int SCENE_WIDTH = 1100;
 	private final int SCENE_HEIGHT = 700;
 	private final int ROWS = 6;
-	private final int COLS = 10;
+	private final int COLS = 12;
 	private final int NUM_CHARACTERS = 9;
 	
 	// Class fields
@@ -62,8 +63,9 @@ public class View extends Application implements Observer{
 		startBorderPane = new BorderPane();
 		
 		// Create Title
-		Label title = new Label("Astronauts vs. Aliens");
+		Text title = new Text("Astronauts vs. Aliens");
 		title.setFont(new Font("Courier New", 30));
+		title.setFill(Color.RED);
 		
 		// Create OK Button
 		Button okBtn = new Button("Start");
@@ -72,6 +74,16 @@ public class View extends Application implements Observer{
 			setupGameScene();
 			primaryStage.show();
 		});
+		
+		Image bgImage = new Image("file:assets/space-background.png");
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
+	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundPosition.CENTER,
+	            bSize));
+	    
+	    startBorderPane.setBackground(borderPaneBackground);
 		
 		startBorderPane.setTop(title);
 		startBorderPane.setCenter(okBtn);
@@ -83,25 +95,21 @@ public class View extends Application implements Observer{
 		primaryStage.setScene(scene);
 	}
 	
+	/**
+	 * Sets up the game scene containing the actual game
+	 * assets and functionality
+	 */
 	public void setupGameScene() {
 		gameBorderPane = new BorderPane();
 		gameBorderPane.setPadding(new Insets(10,10,10,10));
 		
 		setupGridPane();
 		setupTopMenuBar();
-		
-		ImageView view = new ImageView();
-		File file = new File("~/Downloads/astr-assets/homebase.png");
-		Image homebase = new Image(file.toURI().toString());
-		view.setImage(homebase);
-		
-		gameBorderPane.setRight(new Button("right"));
-		gameBorderPane.setLeft(view);
+	
 		gameBorderPane.setCenter(gridPane);
 		
-		File file2 = new File("~/Downloads/astr-assets/mars-background.png");
-		Image bgImage = new Image(file2.toURI().toString());
-		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
+		Image bgImage = new Image("file:assets/space-background.png");
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
 	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
 	            BackgroundRepeat.NO_REPEAT,
 	            BackgroundRepeat.NO_REPEAT,
@@ -115,6 +123,10 @@ public class View extends Application implements Observer{
 		primaryStage.setScene(scene);
 	}
 	
+	/**
+	 * Sets up the GridPane containing a grid of open Tile objects
+	 * as well as the extreme homebase/enemy-entry points
+	 */
 	public void setupGridPane() {
 		gridPane = new GridPane();
 		gridPane.setHgap(1);
@@ -124,13 +136,27 @@ public class View extends Application implements Observer{
 		
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
-				Circle circle = new Circle(40);
-				circle.setFill(Color.DARKRED);
-				gridPane.add(circle, col, row);
+				if (col == 0) {
+					Circle circle = new Circle(40);
+					circle.setFill(Color.DARKRED);
+					gridPane.add(circle, col, row);
+				} else if (col == 11){
+					Circle circle = new Circle(40);
+					circle.setFill(Color.DARKBLUE);
+					gridPane.add(circle, col, row);
+				} else {
+					Circle circle = new Circle(40);
+					circle.setFill(Color.DARKGREEN);
+					gridPane.add(circle, col, row);
+				}
 			}
 		}
 	}
 	
+	/**
+	 * Sets up top navigation bar containing the defenders that
+	 * can be placed onto the board.
+	 */
 	public void setupTopMenuBar() {
 		HBox hbox = new HBox(10);
 		
