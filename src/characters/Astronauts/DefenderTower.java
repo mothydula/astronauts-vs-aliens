@@ -5,6 +5,17 @@ import characters.BoardCharacter;
 public class DefenderTower extends BoardCharacter{
 	// Default values for characters
 	
+	// Filepaths for the images of each DefenderTower
+	public static final String ASTRO_JOE_IMAGE 			= "file:assets/astro-joe.png";
+	public static final String LOADED_ASTRO_JOE_IMAGE 	= "file:assets/loaded-astro-joe.png";
+	public static final String STARTRELL_CLUGGINS_IMAGE = "file:assets/startrell-cluggins.png";
+	public static final String TARS_IMAGE 				= "file:assets/tars.png";
+	public static final String MOON_ZEUS_IMAGE 			= "file:assets/moon-zeus.png";
+	public static final String ASTEROID_IMAGE 			= "file:assets/asteroid.png";
+	public static final String MILLENIUM_FALCON 		= "file:assets/millenium-falcon.png";
+	public static final String SPACEBUCKS_PRINTER_IMAGE = "file:assets/spacebucks-printer.png";
+	public static final String SPACEBUCKS_FACTORY_IMAGE = "file:assets/spacebucks-factory.png";
+	
 	// AstroJoe
 	protected static final int HEALTH_ASTROJOE = 100;
 	protected static final int ATTACK_SPEED_ASTROJOE = 100;	
