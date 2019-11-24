@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import characters.BoardCharacter;
 import characters.Astronauts.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -48,8 +47,10 @@ public class View extends Application implements Observer{
 	private final int PROGRESSBAR_TOP_MARGIN = 50;
 	private final int PROGRESSBAR_WIDTH = 500;
 	private final int GRIDPANE_TOP_MARGIN = 25;
-	private final int DEFENDERS_TOP_MARGIN = 50;
-	private final int DEFENDERS_LEFT_MARGIN = 150;
+	private final int DEFENDERS_TOP_PADDING = 10;
+	private final int DEFENDERS_BOTTOM_PADDING = 10;
+	private final int MENUBAR_TOP_PADDING = 20;
+	private final int MENUBAR_LEFT_PADDING = 20;
 	
 	private final int ASTRO_WIDTH = 300; // Start menu sprite
 	private final int ASTRO_HEIGHT = 300; // Start menu sprite
@@ -60,6 +61,7 @@ public class View extends Application implements Observer{
 	
 	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/moon-background.png";
 	private final String TITLE_GRAPHIC 			= "file:assets/game-title.png";
+	private final String SPACEBUCKS_IMAGE	 	= "file:assets/spacebucks-image.png";
 	
 	// Class fields
 	private Model model;
@@ -71,10 +73,11 @@ public class View extends Application implements Observer{
 	private BorderPane startBorderPane;
 	private BorderPane gameBorderPane;
 	
-	// Attributes so that we can update as the game progesses
+	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
 	private ProgressBar progressBar;
 	private Label progressLabel;
+	private Label bankAmount;
 
 	public View() {
 		model = new Model();
@@ -329,9 +332,37 @@ public class View extends Application implements Observer{
 	 * can be placed onto the board.
 	 */
 	public void setupTopMenuBar() {
-		HBox hbox = new HBox(8);
-		hbox.setAlignment(Pos.CENTER_LEFT);
-		hbox.setPadding(new Insets(DEFENDERS_TOP_MARGIN, 0, 0, DEFENDERS_LEFT_MARGIN));
+		HBox menuBar = new HBox(4); // Currency card, selectionBar, & removeBtn
+		menuBar.setAlignment(Pos.CENTER_LEFT);
+		menuBar.setPadding(new Insets(MENUBAR_TOP_PADDING, 0, 0, MENUBAR_LEFT_PADDING));
+		menuBar.setSpacing(15);
+		
+		// First add currency card
+		VBox currencyCard = new VBox(2);
+		currencyCard.setAlignment(Pos.CENTER);
+		currencyCard.setPadding(new Insets(5, 5, 0, 5));
+		currencyCard.setStyle("-fx-background-color: gainsboro;" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 2;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: limegreen;");
+		
+		ImageView imageView = new ImageView();
+		imageView.setImage(new Image(SPACEBUCKS_IMAGE, DefenderTower.SPRITE_WIDTH * 1.5, DefenderTower.SPRITE_HEIGHT * 1.25, false, false));
+		
+		bankAmount = new Label("BANK");
+		bankAmount.setFont(new Font("Courier New", 16));
+		bankAmount.setStyle("-fx-font-weight: bold;");
+		bankAmount.setTextFill(Color.GREEN);
+		bankAmount.setPadding(new Insets(8, 0, 5, 0));
+		
+		currencyCard.getChildren().addAll(imageView, bankAmount);
+		
+		// Now Generate HBox to store the Defender Selections
+		HBox selectionBar = new HBox(7);
+		selectionBar.setAlignment(Pos.CENTER);
+		selectionBar.setPadding(new Insets(DEFENDERS_TOP_PADDING, 0, DEFENDERS_BOTTOM_PADDING, 0));
 		
 		// Add 6 Buttons as placeholder for tower items
 		for (int i = 0; i < 7; i++) {
@@ -341,7 +372,7 @@ public class View extends Application implements Observer{
 			VBox vbox = setupDefenderCard(defender);
 			
 			// Add to HBox
-			hbox.getChildren().add(vbox);
+			selectionBar.getChildren().add(vbox);
 		}
 		
 		// Add button to act as the removal
@@ -350,9 +381,23 @@ public class View extends Application implements Observer{
 		removeBtn.setMaxWidth(100);
 		removeBtn.setMinHeight(50);
 		removeBtn.setMaxHeight(50);
-		hbox.getChildren().add(removeBtn);
 		
-		gameBorderPane.setTop(hbox);
+		removeBtn.setOnAction( e -> {
+			// TODO: Implement removal functionality here
+			// controller.removeTower()
+		});
+		
+		
+		// TODO: This may need to be moved elsewhere - currently a stub
+		Button menuBtn = new Button("Menu");
+		menuBtn.setAlignment(Pos.TOP_RIGHT);
+		menuBtn.setOnAction( e -> {
+			// TODO: Implement Menu Modal allow the user to exit the game
+		});
+		
+		menuBar.getChildren().addAll(currencyCard, selectionBar, removeBtn);
+		
+		gameBorderPane.setTop(menuBar);
 	}
 	
 	/**
@@ -372,11 +417,10 @@ public class View extends Application implements Observer{
 				"-fx-border-style: solid inside;" + 
 				"-fx-border-width: 2;" + 
 				"-fx-border-radius: 5;" + 
-				"-fx-border-color: blue;");
+				"-fx-border-color: darkturquoise;");
 		
 		// Extract image to add to ImageView
 		ImageView imageView = new ImageView();
-		
 		imageView.setImage(defender.getImage());
 		
 		// Handler when drag is initially detected
@@ -396,7 +440,7 @@ public class View extends Application implements Observer{
 		Label costLabel = new Label(String.valueOf(defender.getCost()));
 		costLabel.setFont(new Font("Courier New", 16));
 		costLabel.setStyle("-fx-font-weight: bold;");
-		costLabel.setTextFill(Color.GREEN);
+		costLabel.setTextFill(Color.RED);
 		costLabel.setPadding(new Insets(8, 0, 5, 0));
 		
 		// Add to VBox
