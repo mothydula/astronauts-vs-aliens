@@ -49,7 +49,6 @@ public class View extends Application implements Observer{
 	private final int GRIDPANE_TOP_MARGIN = 25;
 	private final int DEFENDERS_TOP_PADDING = 10;
 	private final int DEFENDERS_BOTTOM_PADDING = 10;
-	private final int MENUBAR_TOP_PADDING = 20;
 	private final int MENUBAR_LEFT_PADDING = 20;
 	
 	private final int ASTRO_WIDTH = 300; // Start menu sprite
@@ -208,8 +207,7 @@ public class View extends Application implements Observer{
 		
 		centerBox.getChildren().addAll(progressHBox, gridPane);
 		
-		setupTopMenuBar();
-	
+		gameBorderPane.setTop(setupTopMenuBar());
 		gameBorderPane.setCenter(centerBox);
 		
 		Image bgImage = new Image(GAME_BACKGROUND_IMAGE);
@@ -337,11 +335,70 @@ public class View extends Application implements Observer{
 	 * Sets up top navigation bar containing the defenders that
 	 * can be placed onto the board.
 	 */
-	public void setupTopMenuBar() {
-		HBox menuBar = new HBox(4); // Currency card, selectionBar, & removeBtn
-		menuBar.setAlignment(Pos.CENTER_LEFT);
-		menuBar.setPadding(new Insets(MENUBAR_TOP_PADDING, 0, 0, MENUBAR_LEFT_PADDING));
-		menuBar.setSpacing(15);
+	public VBox setupTopMenuBar() {
+		// Create Menu Bar to hold a Utility Bar & Defender Bar
+		VBox menuBar = new VBox(2);
+		
+		// Utility Bar contains: Fast-Forward & Pause Buttons
+		HBox utilityBar = createUtilityBar();
+		
+		// Defender Bar contains:
+		// Currency Card containing up-to-date bank amount
+		// Defender Cards of placeable sprites
+		// Remove Button to remove a Tower from the field
+		HBox defenderBar = createDefenderBar();
+		
+		menuBar.getChildren().addAll(utilityBar, defenderBar);
+		return menuBar;
+	}
+	
+	/**
+	 * Creates the Utility Bar
+	 * 
+	 * The Utility Bar contains Buttons that are useful to the player
+	 * during gameplay such as fast-forwarding and pausing the game.
+	 * 
+	 * @return Generated HBox Object
+	 */
+	public HBox createUtilityBar() {
+		HBox utilityBar = new HBox(3);
+		utilityBar.setAlignment(Pos.TOP_RIGHT);
+		
+		// Buttons for utiliy bar with generated handlers
+		Button fastForwardBtn = new Button(">>");
+		Button pauseBtn = new Button("Pause");
+		
+		// Handlers
+		fastForwardBtn.setOnAction( e -> {
+			// TODO Implement Fast Forward functionality
+			System.out.println("Fast forward button pressed");
+		});
+		
+		pauseBtn.setOnAction( e -> {
+			// TODO: Implement pause functionality
+			System.out.println("Pause button pressed");
+		});
+		
+		utilityBar.getChildren().addAll(fastForwardBtn, pauseBtn);
+		
+		return utilityBar;
+	}
+	
+	/**
+	 * Creates Defender Bar
+	 * 
+	 * Defender Bar contains the Defender Cards that the player can select
+	 * when dragging and dropping onto the field. Also contains a Currency
+	 * Card updating the user on their current bank amount. Also includes 
+	 * a remove button that allows the player to remove a tower from the field.
+	 * 
+	 * @return Generated HBox Object 
+	 */
+	public HBox createDefenderBar() {
+		HBox defenderBar = new HBox(4);
+		defenderBar.setAlignment(Pos.CENTER_LEFT);
+		defenderBar.setPadding(new Insets(0, 0, 0, MENUBAR_LEFT_PADDING));
+		defenderBar.setSpacing(15);
 		
 		// First add currency card
 		VBox currencyCard = new VBox(2);
@@ -377,7 +434,6 @@ public class View extends Application implements Observer{
 			// Create VBox containing defender image and cost label
 			VBox vbox = setupDefenderCard(defender);
 			
-			// Add to HBox
 			selectionBar.getChildren().add(vbox);
 		}
 		
@@ -391,19 +447,11 @@ public class View extends Application implements Observer{
 		removeBtn.setOnAction( e -> {
 			// TODO: Implement removal functionality here
 			// controller.removeTower()
+			System.out.println("Remove button pressed");
 		});
 		
-		
-		// TODO: This may need to be moved elsewhere - currently a stub
-		Button menuBtn = new Button("Menu");
-		menuBtn.setAlignment(Pos.TOP_RIGHT);
-		menuBtn.setOnAction( e -> {
-			// TODO: Implement Menu Modal allow the user to exit the game
-		});
-		
-		menuBar.getChildren().addAll(currencyCard, selectionBar, removeBtn);
-		
-		gameBorderPane.setTop(menuBar);
+		defenderBar.getChildren().addAll(currencyCard, selectionBar, removeBtn);
+		return defenderBar;
 	}
 	
 	/**
