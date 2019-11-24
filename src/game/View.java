@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -44,7 +45,9 @@ public class View extends Application implements Observer{
 	private final int SCENE_WIDTH = 1300;
 	private final int SCENE_HEIGHT = 800;
 	private final int TITLE_TOP_MARGIN = 75;
-	private final int GRIDPANE_TOP_MARGIN = 80;
+	private final int PROGRESSBAR_TOP_MARGIN = 50;
+	private final int PROGRESSBAR_WIDTH = 500;
+	private final int GRIDPANE_TOP_MARGIN = 25;
 	private final int DEFENDERS_TOP_MARGIN = 50;
 	private final int DEFENDERS_LEFT_MARGIN = 150;
 	
@@ -67,6 +70,7 @@ public class View extends Application implements Observer{
 	private GridPane gridPane;
 	private BorderPane startBorderPane;
 	private BorderPane gameBorderPane;
+	private ProgressBar progressBar;
 
 	public View() {
 		model = new Model();
@@ -184,10 +188,22 @@ public class View extends Application implements Observer{
 		gameBorderPane = new BorderPane();
 		gameBorderPane.setPadding(new Insets(10,10,10,10));
 		
+		// Center Box will contain Progress Bar and GridPane
+		VBox centerBox = new VBox(2);
+		centerBox.setAlignment(Pos.CENTER);
+		
+		progressBar = new ProgressBar();
+		progressBar.setProgress(0.25);
+		progressBar.setPadding(new Insets(PROGRESSBAR_TOP_MARGIN, 0, 0, 0));
+		progressBar.setPrefWidth(PROGRESSBAR_WIDTH);
+		
 		setupGridPane();
+		
+		centerBox.getChildren().addAll(progressBar, gridPane);
+		
 		setupTopMenuBar();
 	
-		gameBorderPane.setCenter(gridPane);
+		gameBorderPane.setCenter(centerBox);
 		
 		Image bgImage = new Image(GAME_BACKGROUND_IMAGE);
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
