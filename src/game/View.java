@@ -279,7 +279,6 @@ public class View extends Application implements Observer{
 				}
 			}
 		}
-		
 		setupGridPaneDragHandlers();
 	}
 	
@@ -319,6 +318,13 @@ public class View extends Application implements Observer{
 					Circle circle = (Circle)target;
 					circle.setFill(Color.ORANGE);
 					System.out.println("Dropping into " + row + "," + col);
+					
+					// TODO: Insert call to controller to place Defender onto board
+					// if (controller.verifyPlacement(defender) == -1) {
+					// 	// controller.updateBoard(erroneous_placement);
+					// } else {
+					// 	// controller.placeDefender(defender); [ensure validation] 
+					// }
 				}
 				e.setDropCompleted(true);
 				System.out.println("Drop complete");
