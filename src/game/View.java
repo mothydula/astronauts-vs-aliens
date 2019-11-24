@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -29,6 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class View extends Application implements Observer{
@@ -281,13 +283,31 @@ public class View extends Application implements Observer{
 		// Add 6 Buttons as placeholder for tower items
 		for (int i = 0; i < 7; i++) {
 			
+			VBox vbox = new VBox(2);
+			vbox.setAlignment(Pos.CENTER);
+			vbox.setPadding(new Insets(5, 5, 0, 5));
+			vbox.setStyle("-fx-background-color: gainsboro;" + 
+					"-fx-background-radius: 6;" + 
+					"-fx-border-style: solid inside;" + 
+					"-fx-border-width: 2;" + 
+					"-fx-border-radius: 5;" + 
+					"-fx-border-color: blue;");
+			
 			// Extract image to add to ImageView
 			ImageView imageView = new ImageView();
 			DefenderTower defender = defenderTowers.get(i);
 			imageView.setImage(defender.getImage());
 			
+			Label costLabel = new Label("<COST>");
+			costLabel.setFont(new Font("Courier New", 16));
+			costLabel.setTextFill(Color.GREEN);
+			costLabel.setPadding(new Insets(8, 0, 5, 0));
+			
+			// Add to VBox
+			vbox.getChildren().addAll(imageView, costLabel);
+			
 			// Add to HBox
-			hbox.getChildren().add(imageView);
+			hbox.getChildren().add(vbox);
 			
 			// Handler when drag is initially detected
 			imageView.setOnDragDetected( e -> {
@@ -309,6 +329,7 @@ public class View extends Application implements Observer{
 		hbox.getChildren().add(removalBtn);
 		hbox.setAlignment(Pos.CENTER_LEFT);
 		hbox.setPadding(new Insets(DEFENDERS_TOP_MARGIN, 0, 0, DEFENDERS_LEFT_MARGIN));
+		
 		gameBorderPane.setTop(hbox);
 	}
 	
