@@ -122,7 +122,7 @@ public class View extends Application implements Observer{
 		
 		// Create ImageViews for Astronaut & Alien
 		ImageView astronautImageView = new ImageView();
-		astronautImageView.setImage(new Image(DefenderTower.ASTRO_JOE_IMAGE, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
+		astronautImageView.setImage(new Image(DefenderTower.ASTRO_JOE_GIF, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
 		
 		ImageView alienImageView = new ImageView();
 		alienImageView.setImage(new Image("file:assets/alien-sample.png", ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
