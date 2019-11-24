@@ -10,4 +10,8 @@ public class AstroJoe extends DefenderTower {
 		super(HEALTH_ASTROJOE, ATTACK_SPEED_ASTROJOE, 
 				DAMAGE_ASTROJOE, new Image(ASTRO_JOE_IMAGE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
+	
+	public int getCost() {
+		return COST_ASTROJOE;
+	}
 }

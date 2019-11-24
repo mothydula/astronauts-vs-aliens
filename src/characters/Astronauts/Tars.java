@@ -8,4 +8,8 @@ public class Tars extends DefenderTower{
 		super(HEALTH_TARS, ATTACK_SPEED_TARS, 
 				DAMAGE_TARS, new Image(TARS_IMAGE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
+	
+	public int getCost() {
+		return COST_TARS;
+	}
 }

@@ -8,4 +8,8 @@ public class Asteroid extends DefenderTower{
 		super(HEALTH_ASTEROID, ATTACK_SPEED_ASTEROID, 
 				DAMAGE_ASTEROID, new Image(ASTEROID_IMAGE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
+	
+	public int getCost() {
+		return COST_ASTEROID;
+	}
 }

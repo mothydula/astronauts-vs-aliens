@@ -9,4 +9,7 @@ public class LoadedAstroJoe extends DefenderTower{
 				DAMAGE_LOADED_ASTROJOE, new Image(LOADED_ASTRO_JOE_IMAGE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
 
+	public int getCost() {
+		return COST_LOADED_ASTROJOE;
+	}
 }
