@@ -86,7 +86,7 @@ public class View extends Application implements Observer{
 		defenderTowers = new ArrayList<DefenderTower>();
 		defenderTowers.add(new AstroJoe());
 		defenderTowers.add(new Asteroid());
-		defenderTowers.add(new LoadedAstroJoe());
+		defenderTowers.add(new ExplosiveAstroJoe());
 		defenderTowers.add(new StartrellCluggins());
 		defenderTowers.add(new Tars());
 		defenderTowers.add(new MoonZeus());

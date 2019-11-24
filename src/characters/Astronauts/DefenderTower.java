@@ -11,8 +11,8 @@ public abstract class DefenderTower extends BoardCharacter{
 	public static final String ASTRO_JOE_GIF			= "file:assets/astro-joe-gif.gif";
 	public static final String ASTRO_JOE_FIRING_GIF 	= "file:assets/astro-joe-firing.gif";
 	
-	public static final String LOADED_ASTRO_JOE_IMAGE 	= "file:assets/loaded-astro-joe.png";
-	public static final String LOADED_ASTRO_JOE_GIF		= "file:assets/loaded-astro-joe.gif";
+	public static final String EXPLOSIVE_ASTRO_JOE_IMAGE 	= "file:assets/explosive-astro-joe.png";
+	public static final String EXPLOSIVE_ASTRO_JOE_GIF		= "file:assets/explosive-astro-joe.gif";
 	
 	public static final String STARTRELL_CLUGGINS_IMAGE = "file:assets/startrell-cluggins.png";
 	
@@ -35,11 +35,11 @@ public abstract class DefenderTower extends BoardCharacter{
 	protected static final int DAMAGE_ASTROJOE = 100;
 	protected static final int COST_ASTROJOE = 15;
 	
-	// LoadedAstroJoe
-	protected static final int HEALTH_LOADED_ASTROJOE = 100;
-	protected static final int ATTACK_SPEED_LOADED_ASTROJOE = 100;
-	protected static final int DAMAGE_LOADED_ASTROJOE = 100;
-	protected static final int COST_LOADED_ASTROJOE = 25;
+	// ExplosiveAstroJoe
+	protected static final int HEALTH_EXPLOSIVE_ASTROJOE = 100;
+	protected static final int ATTACK_SPEED_EXPLOSIVE_ASTROJOE = 100;
+	protected static final int DAMAGE_EXPLOSIVE_ASTROJOE = 100;
+	protected static final int COST_EXPLOSIVE_ASTROJOE = 25;
 	
 	// SpaceBucksPrinter
 	protected static final int HEALTH_SPACEBUCKS_PRINTER = 100;
