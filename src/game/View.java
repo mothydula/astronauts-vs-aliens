@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -43,6 +44,7 @@ public class View extends Application implements Observer{
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
 	private final int SCENE_HEIGHT = 800;
+	private final int CELL_GAP = 5;
 	private final int TITLE_TOP_MARGIN = 75;
 	private final int PROGRESSBAR_TOP_MARGIN = 50;
 	private final int PROGRESSBAR_WIDTH = 500;
@@ -250,30 +252,25 @@ public class View extends Application implements Observer{
 	
 	/**
 	 * Sets up the GridPane containing a grid of open Tile objects
-	 * as well as the extreme homebase/enemy-entry points
+	 * as well as the extreme home-base/enemy-entry points
 	 */
 	public void setupGridPane() {
 		gridPane = new GridPane();
-		gridPane.setHgap(1);
-		gridPane.setVgap(1);
+		gridPane.setHgap(CELL_GAP);
+		gridPane.setVgap(CELL_GAP);
 		gridPane.setGridLinesVisible(true);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
 		
+		// TODO: Modify the base images below to be a neutral image representing open slot
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				if (col == 0) {
-					Circle circle = new Circle(40);
-					circle.setFill(Color.DARKRED);
-					gridPane.add(circle, col, row);
+					gridPane.add(new ImageView(new Image("file:assets/red-circle.jpg", 70, 70, false, false)), col, row);
 				} else if (col == 11){
-					Circle circle = new Circle(40);
-					circle.setFill(Color.DARKBLUE);
-					gridPane.add(circle, col, row);
+					gridPane.add(new ImageView(new Image("file:assets/blue-circle.png", 70, 70, false, false)), col, row);
 				} else {
-					Circle circle = new Circle(40);
-					circle.setFill(Color.DARKGREEN);
-					gridPane.add(circle, col, row);
+					gridPane.add(new ImageView(new Image("file:assets/green-circle.png", 70, 70, false, false)), col, row);
 				}
 			}
 		}
@@ -294,14 +291,18 @@ public class View extends Application implements Observer{
 			Node target = cells.get(i);
 			target.setOnDragOver(e -> {
 				
-				if (e.getDragboard().hasImage()) {
-					e.acceptTransferModes(TransferMode.ANY);
+				try {
+					if (e.getDragboard().hasImage()) {
+						e.acceptTransferModes(TransferMode.ANY);
+					}
+
+					int row = GridPane.getRowIndex(target);
+					int col = GridPane.getColumnIndex(target);
+					System.out.println("Dragging over " + row + "," + col);
+					e.consume();
+				} catch (NullPointerException ex) {
+					// Silences errors when dragging over HGaps & VGaps
 				}
-				
-				int row = GridPane.getRowIndex(target);
-				int col = GridPane.getColumnIndex(target);
-				System.out.println("Dragging over " + row + "," + col);
-				e.consume();
 				
 			});
 			
@@ -313,8 +314,10 @@ public class View extends Application implements Observer{
 					// controller.placeTower() logic
 					int row = GridPane.getRowIndex(target);
 					int col = GridPane.getColumnIndex(target);
-					Circle circle = (Circle)target;
-					circle.setFill(Color.ORANGE);
+					
+					ImageView view = (ImageView)target;
+					view.setImage(db.getImage());
+					
 					System.out.println("Dropping into " + row + "," + col);
 					
 					// TODO: Insert call to controller to place Defender onto board
@@ -404,6 +407,7 @@ public class View extends Application implements Observer{
 		VBox currencyCard = new VBox(2);
 		currencyCard.setAlignment(Pos.CENTER);
 		currencyCard.setPadding(new Insets(5, 5, 0, 5));
+		currencyCard.setEffect(new DropShadow(20, Color.BLACK));
 		currencyCard.setStyle("-fx-background-color: gainsboro;" + 
 				"-fx-background-radius: 6;" + 
 				"-fx-border-style: solid inside;" + 
@@ -466,6 +470,7 @@ public class View extends Application implements Observer{
 		VBox vbox = new VBox(2);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(5, 5, 0, 5));
+		vbox.setEffect(new DropShadow(20, Color.BLACK));
 		vbox.setStyle("-fx-background-color: gainsboro;" + 
 				"-fx-background-radius: 6;" + 
 				"-fx-border-style: solid inside;" + 
