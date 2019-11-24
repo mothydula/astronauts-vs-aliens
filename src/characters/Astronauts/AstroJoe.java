@@ -8,6 +8,6 @@ public class AstroJoe extends DefenderTower {
 	// Constructor
 	public AstroJoe() {
 		super(HEALTH_ASTROJOE, ATTACK_SPEED_ASTROJOE, 
-				DAMAGE_ASTROJOE, new Image(ASTRO_JOE_IMAGE, 50, 50, false, false));
+				DAMAGE_ASTROJOE, new Image(ASTRO_JOE_IMAGE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
 }

@@ -17,6 +17,9 @@ public class DefenderTower extends BoardCharacter{
 	public static final String SPACEBUCKS_PRINTER_IMAGE = "file:assets/spacebucks-printer.png";
 	public static final String SPACEBUCKS_FACTORY_IMAGE = "file:assets/spacebucks-factory.png";
 	
+	public static final int SPRITE_WIDTH = 85;
+	public static final int SPRITE_HEIGHT = 85;
+	
 	// AstroJoe
 	protected static final int HEALTH_ASTROJOE = 100;
 	protected static final int ATTACK_SPEED_ASTROJOE = 100;	
