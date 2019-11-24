@@ -58,8 +58,8 @@ public class View extends Application implements Observer{
 	private final int ALIEN_HEIGHT = 300; // Start menu sprite
 	private final int ALIEN_RIGHT_MARGIN = 100;
 	
-	private final String GAME_BACKGROUND_IMAGE = "file:assets/moon-background.png";
-	private final String TITLE_GRAPHIC = "file:assets/game-title.png";
+	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/moon-background.png";
+	private final String TITLE_GRAPHIC 			= "file:assets/game-title.png";
 	
 	// Class fields
 	private Model model;
@@ -70,7 +70,11 @@ public class View extends Application implements Observer{
 	private GridPane gridPane;
 	private BorderPane startBorderPane;
 	private BorderPane gameBorderPane;
+	
+	// Attributes so that we can update as the game progesses
+	private HBox progressHBox;
 	private ProgressBar progressBar;
+	private Label progressLabel;
 
 	public View() {
 		model = new Model();
@@ -78,12 +82,12 @@ public class View extends Application implements Observer{
 		model.addObserver(this);
 		defenderTowers = new ArrayList<DefenderTower>();
 		defenderTowers.add(new AstroJoe());
+		defenderTowers.add(new Asteroid());
 		defenderTowers.add(new LoadedAstroJoe());
 		defenderTowers.add(new StartrellCluggins());
 		defenderTowers.add(new Tars());
 		defenderTowers.add(new MoonZeus());
 		defenderTowers.add(new MillenniumFalcon());
-		defenderTowers.add(new Asteroid());
 //		defenderTowers.add(new SpacebucksPrinter());
 //		defenderTowers.add(new SpacebucksFactory());
 	}
@@ -92,9 +96,15 @@ public class View extends Application implements Observer{
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		
-		// Setup Start menu
+		// Setup Start menu & show to begin the game
 		setupStartMenu();
 		this.primaryStage.show();
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public void setupStartMenu() {
@@ -138,8 +148,6 @@ public class View extends Application implements Observer{
 		BorderPane.setMargin(titleBanner,        new Insets(TITLE_TOP_MARGIN, 0, 0, 0)); // top right bottom left
 		BorderPane.setMargin(astronautImageView, new Insets(0, 0, 0, ASTRO_LEFT_MARGIN));
 		BorderPane.setMargin(alienImageView,     new Insets(0, ALIEN_RIGHT_MARGIN, 0, 0));
-		
-		
 		
 		// Add border pane to scene and set the stage scene
 		Scene scene = new Scene(startBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
@@ -192,14 +200,10 @@ public class View extends Application implements Observer{
 		VBox centerBox = new VBox(2);
 		centerBox.setAlignment(Pos.CENTER);
 		
-		progressBar = new ProgressBar();
-		progressBar.setProgress(0.25);
-		progressBar.setPadding(new Insets(PROGRESSBAR_TOP_MARGIN, 0, 0, 0));
-		progressBar.setPrefWidth(PROGRESSBAR_WIDTH);
-		
+		setupProgressHBox();
 		setupGridPane();
 		
-		centerBox.getChildren().addAll(progressBar, gridPane);
+		centerBox.getChildren().addAll(progressHBox, gridPane);
 		
 		setupTopMenuBar();
 	
@@ -218,6 +222,29 @@ public class View extends Application implements Observer{
 		Scene scene = new Scene(gameBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
 		primaryStage.setTitle("Aliens vs. Astronauts");
 		primaryStage.setScene(scene);
+	}
+	
+	/**
+	 * Sets up Progress Bar for Game Stage
+	 * 
+	 * This progress bar element will maintain the status of the current
+	 * stages, updating accordingly as the game progresses.
+	 */
+	public void setupProgressHBox() {
+		progressHBox = new HBox(2);
+		progressHBox.setAlignment(Pos.CENTER);
+		
+		progressLabel = new Label("Stage 1");
+		progressLabel.setFont(new Font("Courier New", 20));
+		progressLabel.setStyle("-fx-font-weight: bold;");
+		progressLabel.setPadding(new Insets(PROGRESSBAR_TOP_MARGIN, 25, 0, 0));
+		
+		progressBar = new ProgressBar();
+		progressBar.setProgress(0.25);
+		progressBar.setPadding(new Insets(PROGRESSBAR_TOP_MARGIN, 0, 0, 0));
+		progressBar.setPrefWidth(PROGRESSBAR_WIDTH);
+		
+		progressHBox.getChildren().addAll(progressLabel, progressBar);
 	}
 	
 	/**
@@ -253,6 +280,14 @@ public class View extends Application implements Observer{
 		setupGridPaneDragHandlers();
 	}
 	
+	/**
+	 * Adds DragEvent Handlers for each Node in the GridPane
+	 * 
+	 * To support drag & drop, DragEvent handlers will be added to
+	 * each Node to detect when an Object is being dragged OVER that
+	 * node and when the Object has been DROPPED into that Node.
+	 * Performs the necessary updates to place/reject placement.
+	 */
 	public void setupGridPaneDragHandlers() {
 		List<Node> cells = gridPane.getChildrenUnmodifiable();
 		for (int i = 0; i < ROWS * COLS; i++) {
@@ -295,64 +330,78 @@ public class View extends Application implements Observer{
 	 */
 	public void setupTopMenuBar() {
 		HBox hbox = new HBox(8);
+		hbox.setAlignment(Pos.CENTER_LEFT);
+		hbox.setPadding(new Insets(DEFENDERS_TOP_MARGIN, 0, 0, DEFENDERS_LEFT_MARGIN));
 		
 		// Add 6 Buttons as placeholder for tower items
 		for (int i = 0; i < 7; i++) {
-			
-			VBox vbox = new VBox(2);
-			vbox.setAlignment(Pos.CENTER);
-			vbox.setPadding(new Insets(5, 5, 0, 5));
-			vbox.setStyle("-fx-background-color: gainsboro;" + 
-					"-fx-background-radius: 6;" + 
-					"-fx-border-style: solid inside;" + 
-					"-fx-border-width: 2;" + 
-					"-fx-border-radius: 5;" + 
-					"-fx-border-color: blue;");
-			
-			// Extract image to add to ImageView
-			ImageView imageView = new ImageView();
 			DefenderTower defender = defenderTowers.get(i);
-			imageView.setImage(defender.getImage());
 			
-			Label costLabel = new Label("<COST>");
-			costLabel.setFont(new Font("Courier New", 16));
-			costLabel.setTextFill(Color.GREEN);
-			costLabel.setPadding(new Insets(8, 0, 5, 0));
-			
-			// Add to VBox
-			vbox.getChildren().addAll(imageView, costLabel);
+			// Create VBox containing defender image and cost label
+			VBox vbox = setupDefenderCard(defender);
 			
 			// Add to HBox
 			hbox.getChildren().add(vbox);
-			
-			// Handler when drag is initially detected
-			imageView.setOnDragDetected( e -> {
-				// Allow Transfer Mode when drag initially detected
-				Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-				
-				// Set the avatars image as the draggable item
-				ClipboardContent content = new ClipboardContent();
-				content.putImage(defender.getImage());
-				db.setContent(content);
-				
-				System.out.println("Drag detected");
-				e.consume();
-			});
 		}
 		
 		// Add button to act as the removal
-		Button removalBtn = new Button("Remove");
-		hbox.getChildren().add(removalBtn);
-		hbox.setAlignment(Pos.CENTER_LEFT);
-		hbox.setPadding(new Insets(DEFENDERS_TOP_MARGIN, 0, 0, DEFENDERS_LEFT_MARGIN));
+		Button removeBtn = new Button("Remove");
+		removeBtn.setMinWidth(100);
+		removeBtn.setMaxWidth(100);
+		removeBtn.setMinHeight(50);
+		removeBtn.setMaxHeight(50);
+		hbox.getChildren().add(removeBtn);
 		
 		gameBorderPane.setTop(hbox);
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+	/**
+	 * Method to setup a DefenderTower Card that provides the user with 
+	 * a UI element they can interact with to select and place onto the 
+	 * game board.
+	 * 
+	 * @param defender DefenderTower object needing a generated card
+	 * @return Generated VBox containing defender image and cost label
+	 */
+	public VBox setupDefenderCard(DefenderTower defender) {
+		VBox vbox = new VBox(2);
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPadding(new Insets(5, 5, 0, 5));
+		vbox.setStyle("-fx-background-color: gainsboro;" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 2;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: blue;");
 		
+		// Extract image to add to ImageView
+		ImageView imageView = new ImageView();
+		
+		imageView.setImage(defender.getImage());
+		
+		// Handler when drag is initially detected
+		imageView.setOnDragDetected(e -> {
+			// Allow Transfer Mode when drag initially detected
+			Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+
+			// Set the avatars image as the draggable item
+			ClipboardContent content = new ClipboardContent();
+			content.putImage(defender.getImage());
+			db.setContent(content);
+
+			System.out.println("Drag detected");
+			e.consume();
+		});
+		
+		Label costLabel = new Label(String.valueOf(defender.getCost()));
+		costLabel.setFont(new Font("Courier New", 16));
+		costLabel.setStyle("-fx-font-weight: bold;");
+		costLabel.setTextFill(Color.GREEN);
+		costLabel.setPadding(new Insets(8, 0, 5, 0));
+		
+		// Add to VBox
+		vbox.getChildren().addAll(imageView, costLabel);
+		return vbox;
 	}
 
 }
