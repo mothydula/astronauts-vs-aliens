@@ -10,10 +10,11 @@ public class BoardCharacter {
 	private Image sprite;
 	
 	// Constructor
-	protected BoardCharacter(int health, int attackSpeed, int damage) {
+	protected BoardCharacter(int health, int attackSpeed, int damage, Image sprite) {
 		this.health = health;
 		this.attackSpeed = attackSpeed;
 		this.damage = damage;
+		this.sprite = sprite;
 	}
 	
 	// Methods
