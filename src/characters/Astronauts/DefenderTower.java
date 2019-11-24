@@ -13,7 +13,7 @@ public class DefenderTower extends BoardCharacter{
 	public static final String TARS_IMAGE 				= "file:assets/tars.png";
 	public static final String MOON_ZEUS_IMAGE 			= "file:assets/moon-zeus.png";
 	public static final String ASTEROID_IMAGE 			= "file:assets/asteroid.png";
-	public static final String MILLENNIUM_FALCON_IMAGE	= "file:assets/millenium-falcon.png";
+	public static final String MILLENNIUM_FALCON_IMAGE	= "file:assets/millennium-falcon.png";
 	public static final String SPACEBUCKS_PRINTER_IMAGE = "file:assets/spacebucks-printer.png";
 	public static final String SPACEBUCKS_FACTORY_IMAGE = "file:assets/spacebucks-factory.png";
 	
