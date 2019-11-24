@@ -39,11 +39,12 @@ public class View extends Application implements Observer{
 	private final int NUM_CHARACTERS = 9;
 	
 	// View-specific constants
-	private final int SCENE_WIDTH = 1100;
-	private final int SCENE_HEIGHT = 700;
+	private final int SCENE_WIDTH = 1300;
+	private final int SCENE_HEIGHT = 800;
 	private final int TITLE_TOP_MARGIN = 75;
-	private final int DEFENDERS_TOP_MARGIN = 20;
-	private final int DEFENDERS_LEFT_MARGIN = 50;
+	private final int GRIDPANE_TOP_MARGIN = 80;
+	private final int DEFENDERS_TOP_MARGIN = 50;
+	private final int DEFENDERS_LEFT_MARGIN = 150;
 	
 	private final int ASTRO_WIDTH = 300; // Start menu sprite
 	private final int ASTRO_HEIGHT = 300; // Start menu sprite
@@ -51,6 +52,9 @@ public class View extends Application implements Observer{
 	private final int ALIEN_WIDTH = 350; // Start menu sprite
 	private final int ALIEN_HEIGHT = 300; // Start menu sprite
 	private final int ALIEN_RIGHT_MARGIN = 100;
+	
+	private final String GAME_BACKGROUND_IMAGE = "file:assets/moon-background.png";
+	private final String TITLE_GRAPHIC = "file:assets/game-title.png";
 	
 	// Class fields
 	private Model model;
@@ -92,7 +96,7 @@ public class View extends Application implements Observer{
 		
 		// Create Title Banner
 		ImageView titleBanner = new ImageView();
-		titleBanner.setImage(new Image("file:assets/game-title.png"));
+		titleBanner.setImage(new Image(TITLE_GRAPHIC));
 		
 		// Create VBox of Utility Button (Info, ?, Start)
 		VBox buttonBox = createStartMenuButtonBox();
@@ -183,7 +187,7 @@ public class View extends Application implements Observer{
 	
 		gameBorderPane.setCenter(gridPane);
 		
-		Image bgImage = new Image("file:assets/space-background.png");
+		Image bgImage = new Image(GAME_BACKGROUND_IMAGE);
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
 	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
 	            BackgroundRepeat.NO_REPEAT,
@@ -208,6 +212,7 @@ public class View extends Application implements Observer{
 		gridPane.setVgap(1);
 		gridPane.setGridLinesVisible(true);
 		gridPane.setAlignment(Pos.CENTER);
+		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
 		
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
