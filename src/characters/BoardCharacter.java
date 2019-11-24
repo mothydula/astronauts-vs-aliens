@@ -45,7 +45,7 @@ public class BoardCharacter {
 		this.sprite = sprite;
 	}
 	
-	protected Image getImage() {
+	public Image getImage() {
 		return sprite;
 	}
 
