@@ -1,18 +1,23 @@
 package game;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import characters.BoardCharacter;
+import characters.Astronauts.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -24,28 +29,33 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class View extends Application implements Observer{
 	
-	private final int SCENE_WIDTH = 1100;
-	private final int SCENE_HEIGHT = 700;
+	// General constants
 	private final int ROWS = 6;
 	private final int COLS = 12;
 	private final int NUM_CHARACTERS = 9;
 	
 	// View-specific constants
-	private final int TOP_MARGIN = 75;
+	private final int SCENE_WIDTH = 1100;
+	private final int SCENE_HEIGHT = 700;
+	private final int TITLE_TOP_MARGIN = 75;
+	private final int DEFENDERS_TOP_MARGIN = 20;
+	private final int DEFENDERS_LEFT_MARGIN = 50;
+	
 	private final int ASTRO_WIDTH = 300; // Start menu sprite
 	private final int ASTRO_HEIGHT = 300; // Start menu sprite
+	private final int ASTRO_LEFT_MARGIN = 100;
 	private final int ALIEN_WIDTH = 350; // Start menu sprite
 	private final int ALIEN_HEIGHT = 300; // Start menu sprite
+	private final int ALIEN_RIGHT_MARGIN = 100;
 	
 	// Class fields
 	private Model model;
 	private Controller controller;
+	private List<DefenderTower> defenderTowers;
 	
 	private Stage primaryStage;
 	private GridPane gridPane;
@@ -53,9 +63,19 @@ public class View extends Application implements Observer{
 	private BorderPane gameBorderPane;
 
 	public View() {
-		// this.model
-		// this.controller
-		// this.model.addObservers(this);
+		model = new Model();
+		controller = new Controller();
+		model.addObserver(this);
+		defenderTowers = new ArrayList<DefenderTower>();
+		defenderTowers.add(new AstroJoe());
+		defenderTowers.add(new LoadedAstroJoe());
+		defenderTowers.add(new StartrellCluggins());
+		defenderTowers.add(new Tars());
+		defenderTowers.add(new MoonZeus());
+		defenderTowers.add(new MillenniumFalcon());
+		defenderTowers.add(new Asteroid());
+//		defenderTowers.add(new SpacebucksPrinter());
+//		defenderTowers.add(new SpacebucksFactory());
 	}
 
 	@Override
@@ -75,6 +95,48 @@ public class View extends Application implements Observer{
 		titleBanner.setImage(new Image("file:assets/game-title.png"));
 		
 		// Create VBox of Utility Button (Info, ?, Start)
+		VBox buttonBox = createStartMenuButtonBox();
+		
+		// Create ImageViews for Astronaut & Alien
+		ImageView astronautImageView = new ImageView();
+		astronautImageView.setImage(new Image(DefenderTower.ASTRO_JOE_IMAGE, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
+		
+		ImageView alienImageView = new ImageView();
+		alienImageView.setImage(new Image("file:assets/alien-sample.png", ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
+		
+		// Create & Set background for the border pane
+		Image bgImage = new Image("file:assets/space-gif.gif", SCENE_WIDTH, SCENE_HEIGHT, false, false);
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
+	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundPosition.CENTER,
+	            bSize));
+	    startBorderPane.setBackground(borderPaneBackground);
+	    
+	    // Placement and alignments of UI Components
+	    startBorderPane.setTop(titleBanner);
+	    startBorderPane.setLeft(astronautImageView);
+	    startBorderPane.setRight(alienImageView);
+		startBorderPane.setCenter(buttonBox);
+		
+		BorderPane.setAlignment(titleBanner,        Pos.CENTER);
+		BorderPane.setAlignment(astronautImageView, Pos.CENTER);
+		BorderPane.setAlignment(alienImageView,     Pos.CENTER);
+		BorderPane.setAlignment(buttonBox,          Pos.CENTER);
+		
+		BorderPane.setMargin(titleBanner,        new Insets(TITLE_TOP_MARGIN, 0, 0, 0)); // top right bottom left
+		BorderPane.setMargin(astronautImageView, new Insets(0, 0, 0, ASTRO_LEFT_MARGIN));
+		BorderPane.setMargin(alienImageView,     new Insets(0, ALIEN_RIGHT_MARGIN, 0, 0));
+		
+		
+		
+		// Add border pane to scene and set the stage scene
+		Scene scene = new Scene(startBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
+		primaryStage.setScene(scene);
+	}
+	
+	public VBox createStartMenuButtonBox() {
 		VBox buttonBox = new VBox(3);
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(15);
@@ -104,44 +166,9 @@ public class View extends Application implements Observer{
 		
 		buttonBox.getChildren().addAll(infoBtn, tempBtn, startBtn);
 		
-		// Create ImageViews for Astronaut & Alien
-		ImageView astronautImageView = new ImageView();
-		astronautImageView.setImage(new Image("file:assets/astro-sample.png", ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
-		
-		ImageView alienImageView = new ImageView();
-		alienImageView.setImage(new Image("file:assets/alien-sample.png", ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
-		
-		// Create & Set background for the border pane
-		Image bgImage = new Image("file:assets/space-gif.gif", SCENE_WIDTH, SCENE_HEIGHT, false, false);
-		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
-	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
-	            BackgroundRepeat.NO_REPEAT,
-	            BackgroundRepeat.NO_REPEAT,
-	            BackgroundPosition.CENTER,
-	            bSize));
-	    startBorderPane.setBackground(borderPaneBackground);
-		
-	    
-	    // Placement and alignments
-	    startBorderPane.setTop(titleBanner);
-	    startBorderPane.setLeft(astronautImageView);
-	    startBorderPane.setRight(alienImageView);
-		startBorderPane.setCenter(buttonBox);
-		
-		BorderPane.setAlignment(titleBanner, Pos.CENTER);
-		BorderPane.setMargin(titleBanner, new Insets(TOP_MARGIN, 0, 0, 0));
-		
-		BorderPane.setAlignment(astronautImageView, Pos.CENTER);
-		BorderPane.setMargin(astronautImageView, new Insets(0, 0, 0, 100));
-		BorderPane.setAlignment(alienImageView, Pos.CENTER);
-		BorderPane.setMargin(alienImageView, new Insets(0, 100, 0, 0));
-		
-		BorderPane.setAlignment(buttonBox, Pos.CENTER);
-		
-		// Add border pane to scene and set the stage scene
-		Scene scene = new Scene(startBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
-		primaryStage.setScene(scene);
+		return buttonBox;
 	}
+	
 	
 	/**
 	 * Sets up the game scene containing the actual game
@@ -199,6 +226,44 @@ public class View extends Application implements Observer{
 				}
 			}
 		}
+		
+		setupGridPaneDragHandlers();
+	}
+	
+	public void setupGridPaneDragHandlers() {
+		List<Node> cells = gridPane.getChildrenUnmodifiable();
+		for (int i = 0; i < ROWS * COLS; i++) {
+			Node target = cells.get(i);
+			target.setOnDragOver(e -> {
+				
+				if (e.getDragboard().hasImage()) {
+					e.acceptTransferModes(TransferMode.ANY);
+				}
+				
+				int row = GridPane.getRowIndex(target);
+				int col = GridPane.getColumnIndex(target);
+				System.out.println("Dragging over " + row + "," + col);
+				e.consume();
+				
+			});
+			
+			target.setOnDragDropped( e -> {
+				e.acceptTransferModes(TransferMode.ANY);
+				
+				Dragboard db = e.getDragboard();
+				if (db.hasImage()) {
+					// controller.placeTower() logic
+					int row = GridPane.getRowIndex(target);
+					int col = GridPane.getColumnIndex(target);
+					Circle circle = (Circle)target;
+					circle.setFill(Color.ORANGE);
+					System.out.println("Dropping into " + row + "," + col);
+				}
+				e.setDropCompleted(true);
+				System.out.println("Drop complete");
+				e.consume();			
+			});
+		}
 	}
 	
 	/**
@@ -206,22 +271,40 @@ public class View extends Application implements Observer{
 	 * can be placed onto the board.
 	 */
 	public void setupTopMenuBar() {
-		HBox hbox = new HBox(10);
+		HBox hbox = new HBox(8);
 		
 		// Add 6 Buttons as placeholder for tower items
-		for (int i = 0; i < NUM_CHARACTERS; i++) {
-			Button btn = new Button("Temp");
-			btn.setMinHeight(50);
-			btn.setMinWidth(50);
-			hbox.getChildren().add(btn);
+		for (int i = 0; i < 7; i++) {
+			
+			// Extract image to add to ImageView
+			ImageView imageView = new ImageView();
+			DefenderTower defender = defenderTowers.get(i);
+			imageView.setImage(defender.getImage());
+			
+			// Add to HBox
+			hbox.getChildren().add(imageView);
+			
+			// Handler when drag is initially detected
+			imageView.setOnDragDetected( e -> {
+				// Allow Transfer Mode when drag initially detected
+				Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+				
+				// Set the avatars image as the draggable item
+				ClipboardContent content = new ClipboardContent();
+				content.putImage(defender.getImage());
+				db.setContent(content);
+				
+				System.out.println("Drag detected");
+				e.consume();
+			});
 		}
 		
 		// Add button to act as the removal
 		Button removalBtn = new Button("Remove");
 		hbox.getChildren().add(removalBtn);
-		hbox.setAlignment(Pos.CENTER);
+		hbox.setAlignment(Pos.CENTER_LEFT);
+		hbox.setPadding(new Insets(DEFENDERS_TOP_MARGIN, 0, 0, DEFENDERS_LEFT_MARGIN));
 		gameBorderPane.setTop(hbox);
-		
 	}
 	
 	@Override
