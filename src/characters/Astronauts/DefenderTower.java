@@ -12,8 +12,14 @@ public abstract class DefenderTower extends BoardCharacter{
 	public static final String ASTRO_JOE_FIRING_GIF 	= "file:assets/astro-joe-firing.gif";
 	
 	public static final String LOADED_ASTRO_JOE_IMAGE 	= "file:assets/loaded-astro-joe.png";
+	public static final String LOADED_ASTRO_JOE_GIF		= "file:assets/loaded-astro-joe.gif";
+	
 	public static final String STARTRELL_CLUGGINS_IMAGE = "file:assets/startrell-cluggins.png";
+	
 	public static final String TARS_IMAGE 				= "file:assets/tars.png";
+	public static final String TARS_GIF					= "file:assets/tars.gif";
+	public static final String TARS_FIRING_GIF			= "file:assets/tars-firing.gif";
+	
 	public static final String MOON_ZEUS_IMAGE 			= "file:assets/moon-zeus.png";
 	public static final String ASTEROID_IMAGE 			= "file:assets/asteroid.png";
 	public static final String MILLENNIUM_FALCON_IMAGE	= "file:assets/millennium-falcon.png";
