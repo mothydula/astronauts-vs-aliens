@@ -8,7 +8,7 @@ public abstract class DefenderTower extends BoardCharacter{
 	
 	// File paths for the images of each DefenderTower
 	public static final String ASTRO_JOE_IMAGE 			= "file:assets/astro-joe.png";
-	public static final String ASTRO_JOE_GIF			= "file:assets/astro-joe-gif.gif";
+	public static final String ASTRO_JOE_GIF			= "file:assets/astro-joe.gif";
 	public static final String ASTRO_JOE_FIRING_GIF 	= "file:assets/astro-joe-firing.gif";
 	
 	public static final String EXPLOSIVE_ASTRO_JOE_IMAGE 	= "file:assets/explosive-astro-joe.png";
@@ -21,7 +21,10 @@ public abstract class DefenderTower extends BoardCharacter{
 	public static final String TARS_FIRING_GIF			= "file:assets/tars-firing.gif";
 	
 	public static final String MOON_ZEUS_IMAGE 			= "file:assets/moon-zeus.png";
+	
 	public static final String ASTEROID_IMAGE 			= "file:assets/asteroid.png";
+	public static final String ASTEROID_GIF				= "file:assets/asteroid.gif";
+	
 	public static final String MILLENNIUM_FALCON_IMAGE	= "file:assets/millennium-falcon.png";
 	public static final String SPACEBUCKS_PRINTER_IMAGE = "file:assets/spacebucks-printer.png";
 	public static final String SPACEBUCKS_FACTORY_IMAGE = "file:assets/spacebucks-factory.png";
