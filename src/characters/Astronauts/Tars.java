@@ -12,4 +12,8 @@ public class Tars extends DefenderTower{
 	public int getCost() {
 		return COST_TARS;
 	}
+	
+	public String toString() {
+		return "Tars";
+	}
 }

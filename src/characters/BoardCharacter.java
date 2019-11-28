@@ -8,6 +8,8 @@ public class BoardCharacter {
 	private int attackSpeed;
 	private int damage;
 	private Image sprite;
+	private int row;
+	private int col;
 	
 	// Constructor
 	protected BoardCharacter(int health, int attackSpeed, int damage, Image sprite) {
@@ -15,6 +17,8 @@ public class BoardCharacter {
 		this.attackSpeed = attackSpeed;
 		this.damage = damage;
 		this.sprite = sprite;
+		this.row = -1;
+		this.col = -1;
 	}
 	
 	// Methods
@@ -50,4 +54,20 @@ public class BoardCharacter {
 		return sprite;
 	}
 
+	public int getRow() {
+		return row;
+	}
+	
+	public void setRow(int row) {
+		this.row = row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
+	
+	public void setCol(int col) {
+		this.col = col;
+	}
+	
 }

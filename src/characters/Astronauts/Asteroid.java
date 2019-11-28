@@ -12,4 +12,8 @@ public class Asteroid extends DefenderTower{
 	public int getCost() {
 		return COST_ASTEROID;
 	}
+	
+	public String toString() {
+		return "Asteroid";
+	}
 }

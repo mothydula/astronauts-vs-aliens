@@ -14,4 +14,8 @@ public class AstroJoe extends DefenderTower {
 	public int getCost() {
 		return COST_ASTROJOE;
 	}
+	
+	public String toString() {
+		return "AstroJoe";
+	}
 }

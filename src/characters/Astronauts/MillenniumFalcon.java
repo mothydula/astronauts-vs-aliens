@@ -12,4 +12,8 @@ public class MillenniumFalcon extends DefenderTower{
 	public int getCost() {
 		return COST_MILLENNIUM_FALCON;
 	}
+	
+	public String toString() {
+		return "Millennium Falcon";
+	}
 }

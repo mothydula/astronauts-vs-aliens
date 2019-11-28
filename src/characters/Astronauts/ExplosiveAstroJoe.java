@@ -12,4 +12,8 @@ public class ExplosiveAstroJoe extends DefenderTower{
 	public int getCost() {
 		return COST_EXPLOSIVE_ASTROJOE;
 	}
+	
+	public String toString() {
+		return "ExplosiveAstroJoe";
+	}
 }

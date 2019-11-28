@@ -12,4 +12,8 @@ public class SpaceBucksFactory extends DefenderTower{
 	public int getCost() {
 		return COST_SPACEBUCKS_PRINTER;
 	} 
+	
+	public String toString() {
+		return "SpaceBucksFactory";
+	}
 }

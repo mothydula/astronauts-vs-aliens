@@ -12,4 +12,8 @@ public class StartrellCluggins extends DefenderTower{
 	public int getCost() {
 		return COST_STARTRELL_CLUGGINS;
 	}
+	
+	public String toString() {
+		return "Startrell Cluggins";
+	}
 }

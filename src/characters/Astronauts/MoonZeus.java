@@ -12,4 +12,8 @@ public class MoonZeus extends DefenderTower{
 	public int getCost() {
 		return COST_MOON_ZEUS;
 	}
+	
+	public String toString() {
+		return "Moon Zeus";
+	}
 }

@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import characters.Astronauts.*;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,13 +34,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import map.Tile;
 
 public class View extends Application implements Observer{
 	
 	// General constants
-	private final int ROWS = 6;
-	private final int COLS = 12;
-	private final int NUM_CHARACTERS = 9;
+	private final int NUM_DEFENDERS = 7;
 	
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
@@ -68,7 +68,8 @@ public class View extends Application implements Observer{
 	// Class fields
 	private Model model;
 	private Controller controller;
-	private List<DefenderTower> defenderTowers;
+	private DefenderTower[] defenderTowers;
+	private DefenderTower selectedTower;
 	
 	private Stage primaryStage;
 	private GridPane gridPane;
@@ -83,18 +84,18 @@ public class View extends Application implements Observer{
 
 	public View() {
 		model = new Model();
-		controller = new Controller();
+		controller = new Controller(model);
 		model.addObserver(this);
-		defenderTowers = new ArrayList<DefenderTower>();
-		defenderTowers.add(new AstroJoe());
-		defenderTowers.add(new Asteroid());
-		defenderTowers.add(new ExplosiveAstroJoe());
-		defenderTowers.add(new StartrellCluggins());
-		defenderTowers.add(new Tars());
-		defenderTowers.add(new MoonZeus());
-		defenderTowers.add(new MillenniumFalcon());
-//		defenderTowers.add(new SpacebucksPrinter());
-//		defenderTowers.add(new SpacebucksFactory());
+		defenderTowers = new DefenderTower[]{
+				new AstroJoe(),
+				new Asteroid(),
+				new ExplosiveAstroJoe(),
+				new StartrellCluggins(),
+				new Tars(),
+				new MoonZeus(),
+				new MillenniumFalcon()
+				// TODO: Add SpaceBucks items
+		};
 	}
 
 	@Override
@@ -108,7 +109,22 @@ public class View extends Application implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		
+		if (arg instanceof DefenderTower) {
+			// Place defender tower
+			DefenderTower defender = (DefenderTower)arg;
+			ObservableList<Node> children = gridPane.getChildren();
+			for (Node node: children) {
+				if (GridPane.getRowIndex(node) == defender.getRow() && GridPane.getColumnIndex(node) == defender.getCol()) {
+					// Place
+					ImageView view = (ImageView)node;
+					view.setFitHeight(GP_CELL_SIZE);
+					view.setFitWidth(GP_CELL_SIZE);
+					view.setImage(defender.getImage());
+					System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
+				}
+			}
+		}
 		
 	}
 	
@@ -264,8 +280,8 @@ public class View extends Application implements Observer{
 		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
 		
 		// TODO: Modify the base images below to be a neutral image representing open slot
-		for (int row = 0; row < ROWS; row++) {
-			for (int col = 0; col < COLS; col++) {
+		for (int row = 0; row < Controller.ROWS; row++) {
+			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
 					gridPane.add(new ImageView(new Image("file:assets/red-circle.jpg", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else if (col == 11){
@@ -288,8 +304,10 @@ public class View extends Application implements Observer{
 	 */
 	public void setupGridPaneDragHandlers() {
 		List<Node> cells = gridPane.getChildrenUnmodifiable();
-		for (int i = 0; i < ROWS * COLS; i++) {
+		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
 			Node target = cells.get(i);
+			
+			// TODO: This handler is for debugging purposes only, may remove afterwards
 			target.setOnDragOver(e -> {
 				
 				try {
@@ -299,7 +317,7 @@ public class View extends Application implements Observer{
 
 					int row = GridPane.getRowIndex(target);
 					int col = GridPane.getColumnIndex(target);
-					System.out.println("Dragging over " + row + "," + col);
+					System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
 					e.consume();
 				} catch (NullPointerException ex) {
 					// Silences errors when dragging over HGaps & VGaps
@@ -312,27 +330,10 @@ public class View extends Application implements Observer{
 				
 				Dragboard db = e.getDragboard();
 				if (db.hasImage()) {
-					// controller.placeTower() logic
-					int row = GridPane.getRowIndex(target);
-					int col = GridPane.getColumnIndex(target);
-					
-					ImageView view = (ImageView)target;
-					view.setFitHeight(GP_CELL_SIZE);
-					view.setFitWidth(GP_CELL_SIZE);
-					view.setImage(db.getImage());
-//					view.setImage(new Image(DefenderTower.MOON_ZEUS_FIRING_GIF));
-					
-					System.out.println("Dropping into " + row + "," + col);
-					
-					// TODO: Insert call to controller to place Defender onto board
-					// if (controller.verifyPlacement(defender) == -1) {
-					// 	// controller.updateBoard(erroneous_placement);
-					// } else {
-					// 	// controller.placeDefender(defender); [ensure validation] 
-					// }
+					// Place tower
+					controller.placeTower(selectedTower, GridPane.getRowIndex(target), GridPane.getColumnIndex(target));
 				}
 				e.setDropCompleted(true);
-				System.out.println("Drop complete");
 				e.consume();			
 			});
 		}
@@ -436,8 +437,8 @@ public class View extends Application implements Observer{
 		selectionBar.setPadding(new Insets(DEFENDERS_TOP_PADDING, 0, DEFENDERS_BOTTOM_PADDING, 0));
 		
 		// Add 6 Buttons as placeholder for tower items
-		for (int i = 0; i < 7; i++) {
-			DefenderTower defender = defenderTowers.get(i);
+		for (int i = 0; i < NUM_DEFENDERS; i++) {
+			DefenderTower defender = defenderTowers[i];
 			
 			// Create VBox containing defender image and cost label
 			VBox vbox = setupDefenderCard(defender);
@@ -488,6 +489,8 @@ public class View extends Application implements Observer{
 		
 		// Handler when drag is initially detected
 		imageView.setOnDragDetected(e -> {
+			selectedTower = defender;
+			
 			// Allow Transfer Mode when drag initially detected
 			Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
 
@@ -496,7 +499,7 @@ public class View extends Application implements Observer{
 			content.putImage(defender.getImage());
 			db.setContent(content);
 
-			System.out.println("Drag detected");
+			System.out.println("Drag detected for " + defender.toString());
 			e.consume();
 		});
 		
