@@ -44,6 +44,7 @@ public class View extends Application implements Observer{
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
 	private final int SCENE_HEIGHT = 800;
+	private final int GP_CELL_SIZE = 80;
 	private final int CELL_GAP = 5;
 	private final int TITLE_TOP_MARGIN = 75;
 	private final int PROGRESSBAR_TOP_MARGIN = 50;
@@ -123,7 +124,7 @@ public class View extends Application implements Observer{
 		
 		// Create ImageViews for Astronaut & Alien
 		ImageView astronautImageView = new ImageView();
-		astronautImageView.setImage(new Image(DefenderTower.ASTRO_JOE_GIF, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
+		astronautImageView.setImage(new Image(DefenderTower.STARTRELL_CLUGGINS_GIF, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
 		
 		ImageView alienImageView = new ImageView();
 		alienImageView.setImage(new Image("file:assets/alien-sample.png", ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
@@ -258,7 +259,7 @@ public class View extends Application implements Observer{
 		gridPane = new GridPane();
 		gridPane.setHgap(CELL_GAP);
 		gridPane.setVgap(CELL_GAP);
-		gridPane.setGridLinesVisible(true);
+//		gridPane.setGridLinesVisible(true);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
 		
@@ -266,11 +267,11 @@ public class View extends Application implements Observer{
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				if (col == 0) {
-					gridPane.add(new ImageView(new Image("file:assets/red-circle.jpg", 70, 70, false, false)), col, row);
+					gridPane.add(new ImageView(new Image("file:assets/red-circle.jpg", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else if (col == 11){
-					gridPane.add(new ImageView(new Image("file:assets/blue-circle.png", 70, 70, false, false)), col, row);
+					gridPane.add(new ImageView(new Image("file:assets/blue-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else {
-					gridPane.add(new ImageView(new Image("file:assets/green-circle.png", 70, 70, false, false)), col, row);
+					gridPane.add(new ImageView(new Image("file:assets/green-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				}
 			}
 		}
@@ -316,7 +317,10 @@ public class View extends Application implements Observer{
 					int col = GridPane.getColumnIndex(target);
 					
 					ImageView view = (ImageView)target;
+					view.setFitHeight(GP_CELL_SIZE);
+					view.setFitWidth(GP_CELL_SIZE);
 					view.setImage(db.getImage());
+//					view.setImage(new Image(DefenderTower.MOON_ZEUS_FIRING_GIF));
 					
 					System.out.println("Dropping into " + row + "," + col);
 					
