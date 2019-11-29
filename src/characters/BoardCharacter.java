@@ -3,6 +3,11 @@ package characters;
 import javafx.scene.image.Image;
 
 public class BoardCharacter {
+	
+	// Constants
+	public static final int SPRITE_WIDTH = 70;
+	public static final int SPRITE_HEIGHT = 70;
+	
 	// Class fields
 	private int health;
 	private int attackSpeed;

@@ -1,16 +1,25 @@
 package characters.Astronauts;
 
+import characters.IncomeTowers.IncomeTower;
 import javafx.scene.image.Image;
 
-public class SpaceBucksPrinter extends DefenderTower{
+public class MoneyBush extends IncomeTower {
 	
-	public SpaceBucksPrinter() {
-		super(HEALTH_SPACEBUCKS_PRINTER, ATTACK_SPEED_SPACEBUCKS_PRINTER, 
-				DAMAGE_SPACEBUCKS_PRINTER, new Image(SPACEBUCKS_PRINTER_IMAGE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
+	public MoneyBush() {
+		super(HEALTH_MONEY_BUSH, ATTACK_SPEED_MONEY_BUSH, 
+				DAMAGE_MONEY_BUSH, new Image(MONEY_BUSH_GIF, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
 	
 	public int getCost() {
-		return COST_SPACEBUCKS_FACTORY;
+		return COST_MONEY_BUSH;
+	}
+	
+	public int getTimeline() {
+		return MONEY_BUSH_GEN_TIMELINE;
+	}
+	
+	public int getDepositAmount() {
+		return MONEY_BUSH_GEN_AMOUNT;
 	}
 	
 	public String toString() {
