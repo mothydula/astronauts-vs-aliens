@@ -40,7 +40,7 @@ import map.Tile;
 public class View extends Application implements Observer{
 	
 	// General constants
-	private final int NUM_DEFENDERS = 7;
+	private final int NUM_TOWERS = 9;
 	private final int CURRENCY_TIMELINE = 5; // seconds
 	private final int CURRENCY_DEPOSIT = 50;
 	
@@ -95,12 +95,13 @@ public class View extends Application implements Observer{
 		defenderTowers = new DefenderTower[]{
 				new AstroJoe(),
 				new Asteroid(),
+				new MoneyBush(),
 				new ExplosiveAstroJoe(),
 				new StartrellCluggins(),
 				new Tars(),
 				new MoonZeus(),
+				new MoneyTree(),
 				new MillenniumFalcon()
-				// TODO: Add SpaceBucks items
 		};
 		
 		// Currency generator - deposit 50 space bucks every 5 seconds
@@ -136,14 +137,6 @@ public class View extends Application implements Observer{
 					System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
 				}
 			}
-			bankAmount.setText(String.valueOf(model.getSpacebucks()));
-		} else if (arg instanceof Integer) {
-			if ((Integer)arg != -1) {
-				// Update bank amount
-				bankAmount.setText(String.valueOf((Integer)arg));
-			} else {
-				
-			}
 			
 		} else if (arg instanceof String) {
 			String reason = (String)arg;
@@ -162,9 +155,10 @@ public class View extends Application implements Observer{
 				int fadeOutTime= 150; //0.5 seconds
 				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 			}
-		}
+		}	
 		
-		
+		// Update bank amount after each update
+		bankAmount.setText(String.valueOf(model.getSpacebucks()));
 	}
 	
 	public void setupStartMenu() {
@@ -479,7 +473,7 @@ public class View extends Application implements Observer{
 		selectionBar.setPadding(new Insets(DEFENDERS_TOP_PADDING, 0, DEFENDERS_BOTTOM_PADDING, 0));
 		
 		// Add 6 Buttons as placeholder for tower items
-		for (int i = 0; i < NUM_DEFENDERS; i++) {
+		for (int i = 0; i < NUM_TOWERS; i++) {
 			DefenderTower defender = defenderTowers[i];
 			
 			// Create VBox containing defender image and cost label
