@@ -1,11 +1,12 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import characters.Astronauts.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -31,15 +32,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import map.Tile;
 
 public class View extends Application implements Observer{
 	
 	// General constants
 	private final int NUM_DEFENDERS = 7;
+	private final int CURRENCY_TIMELINE = 5; // seconds
+	private final int CURRENCY_DEPOSIT = 50;
 	
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
@@ -76,6 +79,9 @@ public class View extends Application implements Observer{
 	private BorderPane startBorderPane;
 	private BorderPane gameBorderPane;
 	
+	// Automatic currency generator
+	private Timeline timeline;
+	
 	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
 	private ProgressBar progressBar;
@@ -96,6 +102,12 @@ public class View extends Application implements Observer{
 				new MillenniumFalcon()
 				// TODO: Add SpaceBucks items
 		};
+		
+		// Currency generator - deposit 50 space bucks every 5 seconds
+		timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
+			controller.depositSpacebucks(CURRENCY_DEPOSIT);
+		}));
+		timeline.setCycleCount(Timeline.INDEFINITE);
 	}
 
 	@Override
@@ -124,6 +136,10 @@ public class View extends Application implements Observer{
 					System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
 				}
 			}
+			bankAmount.setText(String.valueOf(model.getSpacebucks()));
+		} else if (arg instanceof Integer) {
+			// Update bank amount
+			bankAmount.setText(String.valueOf((Integer)arg));
 		}
 		
 	}
@@ -238,6 +254,9 @@ public class View extends Application implements Observer{
 	            bSize));
 	    
 	    gameBorderPane.setBackground(borderPaneBackground);
+	    
+		// Start timeline
+		timeline.play();
 		
 		Scene scene = new Scene(gameBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
 		primaryStage.setTitle("Aliens vs. Astronauts");
@@ -423,7 +442,7 @@ public class View extends Application implements Observer{
 		ImageView imageView = new ImageView();
 		imageView.setImage(new Image(SPACEBUCKS_IMAGE, DefenderTower.SPRITE_WIDTH * 1.5, DefenderTower.SPRITE_HEIGHT * 1.25, false, false));
 		
-		bankAmount = new Label("BANK");
+		bankAmount = new Label("0"); // Start with empty bank
 		bankAmount.setFont(new Font("Courier New", 16));
 		bankAmount.setStyle("-fx-font-weight: bold;");
 		bankAmount.setTextFill(Color.GREEN);

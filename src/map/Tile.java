@@ -6,7 +6,6 @@ import javafx.scene.image.ImageView;
 
 public class Tile {
 	// Class fields
-	private boolean isOccupied;
 	private BoardCharacter characterAtTile;
 	private Image image;
 	private ImageView view; // Required for Node of GridPane
@@ -17,8 +16,8 @@ public class Tile {
 	}
 	
 	// Methods
-	public boolean isOccupied() {
-		return isOccupied;
+	public boolean isEmpty() {
+		return characterAtTile == null;
 	}
 	
 	public BoardCharacter getCharacter() {

@@ -26,26 +26,35 @@ public class Model extends Observable {
 		}
 	}
 	
+	public boolean isEmpty(int row, int col) {
+		return board[row][col].isEmpty();
+	}
+	
 	public Tile[][] getBoard() {
 		return board;
 	}
 	
-	public int getSpaceBucks() {
+	public int getSpacebucks() {
 		return bank;
 	}
 	
 	public void placeTower(DefenderTower defender, int row, int col) {
-		if (board[row][col].getCharacter() != null) {
-			System.out.println("This tile wasn't empty");
-		}
+		// Adjust bank amount
+		bank -= defender.getCost();
+		
+		// Place character
 		defender.setRow(row);
 		defender.setCol(col);
 		board[row][col].placeCharacter(defender);
+		
+		// Notifiy Observers
 		setChanged();
 		notifyObservers(defender); // TODO: Handle successful placement
 	}
 	
-	public void depositSpaceBucks(int amount) {
+	public void depositSpacebucks(int amount) {
 		bank += amount;
+		setChanged();
+		notifyObservers((Integer)bank); // Pass new bank amount to update UI
 	}
 }
