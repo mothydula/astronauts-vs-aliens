@@ -138,9 +138,32 @@ public class View extends Application implements Observer{
 			}
 			bankAmount.setText(String.valueOf(model.getSpacebucks()));
 		} else if (arg instanceof Integer) {
-			// Update bank amount
-			bankAmount.setText(String.valueOf((Integer)arg));
+			if ((Integer)arg != -1) {
+				// Update bank amount
+				bankAmount.setText(String.valueOf((Integer)arg));
+			} else {
+				
+			}
+			
+		} else if (arg instanceof String) {
+			String reason = (String)arg;
+			if (reason.equals("cost")) {
+				// Display "Not enough funds"
+				String toastMsg = "Not enough funds!";
+				int toastMsgTime = 1000; //3.5 seconds
+				int fadeInTime = 150; //0.5 seconds
+				int fadeOutTime= 150; //0.5 seconds
+				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+			} else if (reason.equals("taken")) {
+				// Display "Tile taken
+				String toastMsg = "Tile is already taken!";
+				int toastMsgTime = 1000; //3.5 seconds
+				int fadeInTime = 150; //0.5 seconds
+				int fadeOutTime= 150; //0.5 seconds
+				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+			}
 		}
+		
 		
 	}
 	

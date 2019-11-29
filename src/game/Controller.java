@@ -28,11 +28,11 @@ public class Controller {
 				model.placeTower(defender, row, col);
 			} else {
 				// TODO: Cannot afford tower, notify user
-				System.out.println("Cannot afford tower");
+				model.notifyInvalidPlacement("cost");
 			}
 		} else {
 			// TODO: Tile is taken, notify user
-			System.out.println("Tile is taken");
+			model.notifyInvalidPlacement("taken");
 		}
 	}
 	

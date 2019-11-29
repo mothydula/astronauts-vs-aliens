@@ -57,4 +57,9 @@ public class Model extends Observable {
 		setChanged();
 		notifyObservers((Integer)bank); // Pass new bank amount to update UI
 	}
+	
+	public void notifyInvalidPlacement(String reason) {
+		setChanged();
+		notifyObservers(reason);
+	}
 }
