@@ -29,7 +29,10 @@ public abstract class DefenderTower extends BoardCharacter{
 	public static final String ASTEROID_IMAGE 			= "file:assets/asteroid.png";
 	public static final String ASTEROID_GIF				= "file:assets/asteroid.gif";
 	
-	public static final String MILLENNIUM_FALCON_IMAGE	= "file:assets/millennium-falcon.png";
+	public static final String MILLENNIUM_FALCON_IMAGE		= "file:assets/spaceship.png";
+	public static final String MILLENNIUM_FALCON_GIF		= "file:assets/spaceship.gif";
+	public static final String MILLENNIUM_FALCON_FIRING_GIF = "file:assets/spaceship-firing.gif";
+	
 	public static final String SPACEBUCKS_PRINTER_IMAGE = "file:assets/spacebucks-printer.png";
 	public static final String SPACEBUCKS_FACTORY_IMAGE = "file:assets/spacebucks-factory.png";
 	
