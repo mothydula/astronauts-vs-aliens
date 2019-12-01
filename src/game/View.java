@@ -16,6 +16,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import map.Tile;
@@ -216,8 +219,33 @@ public class View extends Application implements Observer{
 		Button infoBtn = new Button("Info");
 		infoBtn.setMinHeight(40);
 		infoBtn.setMinWidth(100);
+		
+		//Pulls up the info window to show the user a general overview of game
+		//mechanics
 		infoBtn.setOnAction( e -> {
-			System.out.println("TODO: Insert info functionality");
+			Text infoText = new Text("INSTRUCTIONS\n"
+					+ "The objective of this game is to fend of your enemies\n"
+					+ "for as long as possible. You'll do this buy accumulating spaceBucks(?)\n"
+					+ "and spending them on defenders to protect your galaxy(?)\n"
+					+ "from the incoming aliens. THe more expensive a defender is,\n"
+					+ "the more useful they probably are. However, use your space-\n"
+					+ "bucks wisely!\n\n"
+					+ "HOW-TO\n"
+					+ "You can place a defender by clicking them from the queue and placing\n"
+					+ "them anywhere between the alien spawn station and the last line of defense.\n\n"
+					+ "No two defenders can occupy the same tile.\n\n"
+					+ "A defender can be removed by clicking and highlighting their tile and\n"
+					+ "clicking the remove button.\n\n"
+					+ "Hover over a defender in the queue for about 1-2 sec to view specs");
+			ScrollPane infoPane = new ScrollPane();
+			infoPane.setPadding(new Insets(12,12,12,12));
+			infoPane.setPrefHeight(350);
+			infoPane.setContent(infoText);
+			Scene infoScene = new Scene(infoPane);
+			Stage infoStage = new Stage();
+			infoStage.setScene(infoScene);
+			infoStage.setTitle("Info");
+			infoStage.show();
 		});
 		
 		Button tempBtn = new Button("?");
@@ -547,6 +575,11 @@ public class View extends Application implements Observer{
 		
 		// Add to VBox
 		vbox.getChildren().addAll(imageView, costLabel);
+		
+		//Sets the hover info card for the defender
+		Tooltip tooltip = new Tooltip(defender.toString());
+		Tooltip.install(vbox, tooltip);
+		
 		return vbox;
 	}
 

@@ -14,6 +14,6 @@ public class Asteroid extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "Asteroid";
+		return "Asteroid\n" + super.infoCard();
 	}
 }

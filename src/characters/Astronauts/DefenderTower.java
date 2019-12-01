@@ -75,4 +75,6 @@ public abstract class DefenderTower extends BoardCharacter{
 	
 	// Methods
 	public abstract int getCost();
+	
+	
 }

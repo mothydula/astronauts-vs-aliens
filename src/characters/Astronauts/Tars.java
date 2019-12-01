@@ -14,6 +14,6 @@ public class Tars extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "Tars";
+		return "Tars\n" + super.infoCard();
 	}
 }

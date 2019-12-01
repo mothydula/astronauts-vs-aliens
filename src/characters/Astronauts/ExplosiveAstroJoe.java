@@ -14,6 +14,6 @@ public class ExplosiveAstroJoe extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "ExplosiveAstroJoe";
+		return "ExplosiveAstroJoe\n" + super.infoCard();
 	}
 }

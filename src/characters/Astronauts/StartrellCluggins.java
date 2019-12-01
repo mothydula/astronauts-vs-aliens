@@ -14,6 +14,6 @@ public class StartrellCluggins extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "Startrell Cluggins";
+		return "Startrell Cluggins\n" + super.infoCard();
 	}
 }

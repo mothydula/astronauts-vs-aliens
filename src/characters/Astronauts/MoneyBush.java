@@ -23,6 +23,6 @@ public class MoneyBush extends IncomeTower {
 	}
 	
 	public String toString() {
-		return "SpaceBucksPrinter";
+		return "SpaceBucksPrinter\n" + super.infoCard();
 	}
 }

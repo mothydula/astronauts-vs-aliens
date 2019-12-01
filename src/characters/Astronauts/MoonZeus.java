@@ -14,6 +14,6 @@ public class MoonZeus extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "Moon Zeus";
+		return "Moon Zeus\n" + super.infoCard();
 	}
 }

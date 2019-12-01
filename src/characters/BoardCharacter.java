@@ -75,4 +75,10 @@ public class BoardCharacter {
 		this.col = col;
 	}
 	
+	public String infoCard() {
+		return "Health: " + String.valueOf(this.health) +
+				"\nAttack Spd:" + String.valueOf(this.attackSpeed) +
+				"\nDamage: " + String.valueOf(this.damage);
+	}
+	
 }

@@ -23,6 +23,6 @@ public class MoneyTree extends IncomeTower {
 	}
 	
 	public String toString() {
-		return "SpaceBucksFactory";
+		return "SpaceBucksFactory\n" + super.infoCard();
 	}
 }
