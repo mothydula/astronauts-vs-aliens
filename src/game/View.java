@@ -70,6 +70,8 @@ public class View extends Application implements Observer{
 	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/stage-one-background.png";
 	private final String TITLE_GRAPHIC 			= "file:assets/game-title.png";
 	private final String SPACEBUCKS_IMAGE	 	= "file:assets/spacebucks-image.png";
+	private final String RAIL_GUN_IMAGE 		= "file:assets/rail-gun.png";
+	private final String RAIL_GUN_GIF 			= "file:assets/rail-gun.gif";
 	
 	// Class fields
 	private Model model;
@@ -347,7 +349,7 @@ public class View extends Application implements Observer{
 		for (int row = 0; row < Controller.ROWS; row++) {
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
-					gridPane.add(new ImageView(new Image("file:assets/red-circle.jpg", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+					gridPane.add(new ImageView(new Image(RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else if (col == 11){
 					gridPane.add(new ImageView(new Image("file:assets/blue-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else {
