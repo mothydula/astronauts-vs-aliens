@@ -67,7 +67,7 @@ public class View extends Application implements Observer{
 	private final int ALIEN_HEIGHT = 300; // Start menu sprite
 	private final int ALIEN_RIGHT_MARGIN = 100;
 	
-	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/moon-background.png";
+	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/stage-one-background.png";
 	private final String TITLE_GRAPHIC 			= "file:assets/game-title.png";
 	private final String SPACEBUCKS_IMAGE	 	= "file:assets/spacebucks-image.png";
 	
@@ -351,7 +351,7 @@ public class View extends Application implements Observer{
 				} else if (col == 11){
 					gridPane.add(new ImageView(new Image("file:assets/blue-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else {
-					gridPane.add(new ImageView(new Image("file:assets/green-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+					gridPane.add(new ImageView(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				}
 			}
 		}
