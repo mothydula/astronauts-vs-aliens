@@ -49,9 +49,12 @@ public class Model extends Observable {
 		character.setCol(col);
 		board[row][col].placeCharacter(character);
 		
+		// Creating message to send to view
+		MoveMessage message = new MoveMessage(MoveMessage.VALID_MOVE, (DefenderTower)character, row, col, false);
+		
 		// Notify Observers
 		setChanged();
-		notifyObservers(character); // TODO: Handle successful placement
+		notifyObservers(message); // TODO: Handle successful placement
 	}
 	
 	public void depositSpacebucks(int amount) {
