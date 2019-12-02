@@ -12,8 +12,8 @@ public abstract class IncomeTower extends DefenderTower {
 	protected static final int COST_MONEY_BUSH = 50;
 	public static int MONEY_BUSH_GEN_AMOUNT = 50; // Gen 50 every 15 seconds
 	public static int MONEY_BUSH_GEN_TIMELINE = 15;
-	public static final String MONEY_BUSH_IMAGE = "file:assets/money-bush.png";
-	public static final String MONEY_BUSH_GIF = "file:assets/money-bush.gif";
+	public static final String MONEY_BUSH_IMAGE = "file:assets/defenders/money-bush.png";
+	public static final String MONEY_BUSH_GIF = "file:assets/defenders/money-bush.gif";
 
 	// MoneyTree
 	protected static final int HEALTH_MONEY_TREE = 100;
@@ -22,8 +22,8 @@ public abstract class IncomeTower extends DefenderTower {
 	protected static final int COST_MONEY_TREE = 150;
 	public static int MONEY_TREE_GEN_AMOUNT = 100; // Gen 100 every 10 seconds
 	public static int MONEY_TREE_GEN_TIMELINE = 10;
-	public static final String MONEY_TREE_IMAGE = "file:assets/money-tree.png";
-	public static final String MONEY_TREE_GIF = "file:assets/money-tree.gif";
+	public static final String MONEY_TREE_IMAGE = "file:assets/defenders/money-tree.png";
+	public static final String MONEY_TREE_GIF = "file:assets/defenders/money-tree.gif";
 
 	// Constructor
 	protected IncomeTower(int health, int attackSpeed, int damage, Image sprite) {

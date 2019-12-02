@@ -67,11 +67,17 @@ public class View extends Application implements Observer{
 	private final int ALIEN_HEIGHT = 300; // Start menu sprite
 	private final int ALIEN_RIGHT_MARGIN = 100;
 	
-	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/stage-one-background.png";
-	private final String TITLE_GRAPHIC 			= "file:assets/game-title.png";
-	private final String SPACEBUCKS_IMAGE	 	= "file:assets/spacebucks-image.png";
-	private final String RAIL_GUN_IMAGE 		= "file:assets/rail-gun.png";
-	private final String RAIL_GUN_GIF 			= "file:assets/rail-gun.gif";
+	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
+	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/general/stage-one-background.png";
+	private final String TITLE_GRAPHIC 			= "file:assets/general/game-title.png";
+	private final String SPACEBUCKS_IMAGE	 	= "file:assets/general/spacebucks-image.png";
+	private final String RAIL_GUN_IMAGE 		= "file:assets/general/rail-gun.png";
+	private final String RAIL_GUN_GIF 			= "file:assets/general/rail-gun.gif";
+	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
+	private final String ALIEN_STARTER_IMAGE 	= "file:assets/aliens/grunt-walk.gif";
+	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
+	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
+	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
 	
 	// Class fields
 	private Model model;
@@ -174,7 +180,7 @@ public class View extends Application implements Observer{
 
 						view.setFitHeight(GP_CELL_SIZE);
 						view.setFitWidth(GP_CELL_SIZE);
-						view.setImage(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
+						view.setImage(new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false));
 						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
 					}
 				}
@@ -219,13 +225,13 @@ public class View extends Application implements Observer{
 		
 		// Create ImageViews for Astronaut & Alien
 		ImageView astronautImageView = new ImageView();
-		astronautImageView.setImage(new Image(DefenderTower.STARTRELL_CLUGGINS_GIF, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
+		astronautImageView.setImage(new Image(ASTRONAUT_STARTER_IMAGE, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
 		
 		ImageView alienImageView = new ImageView();
-		alienImageView.setImage(new Image("file:assets/alien-sample.png", ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
+		alienImageView.setImage(new Image(ALIEN_STARTER_IMAGE, ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
 		
 		// Create & Set background for the border pane
-		Image bgImage = new Image("file:assets/space-gif.gif", SCENE_WIDTH, SCENE_HEIGHT, false, false);
+		Image bgImage = new Image(STARTER_BACKGROUND_IMAGE, SCENE_WIDTH, SCENE_HEIGHT, false, false);
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
 	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
 	            BackgroundRepeat.NO_REPEAT,
@@ -392,9 +398,9 @@ public class View extends Application implements Observer{
 				if (col == 0) {
 					gridPane.add(new ImageView(new Image(RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else if (col == 11){
-					gridPane.add(new ImageView(new Image("file:assets/blue-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+					gridPane.add(new ImageView(new Image(BLUE_CIRCLE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				} else {
-					gridPane.add(new ImageView(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+					gridPane.add(new ImageView(new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
 				}
 			}
 		}
@@ -576,7 +582,7 @@ public class View extends Application implements Observer{
 			// Allow Transfer Mode when drag initially detected
 			Dragboard rm = removeBtn.startDragAndDrop(TransferMode.ANY);
 			ClipboardContent content = new ClipboardContent();
-			content.putImage(new Image("file:assets/removeX.jpg"));
+			content.putImage(new Image(REMOVE_X_IMAGE));
 			rm.setContent(content);
 			e.consume();
 			
@@ -644,4 +650,3 @@ public class View extends Application implements Observer{
 	}
 
 }
-
