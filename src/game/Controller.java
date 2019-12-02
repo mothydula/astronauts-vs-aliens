@@ -50,6 +50,7 @@ public class Controller {
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
+		System.out.println("CONTROLLER");
 		int currBank = model.getSpacebucks();
 		
 		// Check if the tile is empty
