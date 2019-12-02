@@ -44,8 +44,8 @@ public class View extends Application implements Observer{
 	
 	// General constants
 	private final int NUM_TOWERS = 9;
-	private final int CURRENCY_TIMELINE = 1; // seconds
-	private final int CURRENCY_DEPOSIT = 500;
+	private final int CURRENCY_TIMELINE = 5; // seconds
+	private final int CURRENCY_DEPOSIT = 50;
 	
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
@@ -95,6 +95,7 @@ public class View extends Application implements Observer{
 	
 	// notifies update that defender is being removed, not placed.
 	private boolean removeToggled;
+	private int[] indexToRemove;
 
 	public View() {
 		model = new Model();
@@ -113,6 +114,7 @@ public class View extends Application implements Observer{
 		};
 		
 		removeToggled = false;
+		indexToRemove = new int[]{0, 0};
 		
 		// Currency generator - deposit 50 space bucks every 5 seconds
 		timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
@@ -163,8 +165,10 @@ public class View extends Application implements Observer{
 					}
 				}
 			} else { // Remove defender tower
+				int r = indexToRemove[0];
+				int c = indexToRemove[1];
 				for (Node node: children) {
-					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+					if (GridPane.getRowIndex(node) == r && GridPane.getColumnIndex(node) == c) {
 						// Place
 						ImageView view = (ImageView)node;
 
@@ -175,6 +179,7 @@ public class View extends Application implements Observer{
 					}
 				}
 				removeToggled = false;
+				indexToRemove = new int[] {0, 0};
 			}
 			
 		} else if (arg instanceof String) {
@@ -199,7 +204,7 @@ public class View extends Application implements Observer{
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
 		
-		// controller.isGameOver();
+		// TODO: controller.isGameOver();
 	}
 	
 	public void setupStartMenu() {
@@ -436,13 +441,14 @@ public class View extends Application implements Observer{
 					int col = GridPane.getColumnIndex(target);
 					if (!removeToggled) {
 						// Place tower
+						db.clear();
 						controller.placeCharacter(selectedTower, row, col);
 					} else {
+						indexToRemove = new int[]{row, col};
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
 						controller.removeTower(towerToRemove, row, col);
 					}
-					db.clear();
 				}
 				e.setDropCompleted(true);
 				e.consume();			

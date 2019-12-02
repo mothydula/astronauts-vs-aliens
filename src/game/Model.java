@@ -40,7 +40,7 @@ public class Model extends Observable {
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
 		// Adjust bank amount
-		if(character instanceof DefenderTower) {
+		if (character instanceof DefenderTower) {
 			bank -= ((DefenderTower)character).getCost();
 		}
 		
@@ -66,8 +66,8 @@ public class Model extends Observable {
 	}
 
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
-		// TODO: adjust bank amount
-		// bank += multiplier * towerToRemove.getCost();
+		// adjusts bank amount
+		bank += DefenderTower.REFUND_MULTIPLIER * towerToRemove.getCost();
 		
 		board[row][col] = new Tile(null);
 		setChanged();
