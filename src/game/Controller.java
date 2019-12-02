@@ -1,11 +1,15 @@
 package game;
 
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import characters.BoardCharacter;
 import characters.Astronauts.DefenderTower;
 import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.util.Duration;
 
 public class Controller {
@@ -13,6 +17,8 @@ public class Controller {
 	public static final int ROWS = 6;
 	public static final int COLS = 12;
 	private Model model;
+	private Timer timer;
+	private static final long FRAME_TIME = 16l;
 	
 	// Constructor
 	public Controller(Model model) {
@@ -20,6 +26,25 @@ public class Controller {
 	}
 	
 	// Methods
+	public void initialize() {
+		startTimer();
+	}
+	
+	private void startTimer() {
+		this.timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				Platform.runLater(() -> animate());
+			}
+		};
+		timer.schedule(task, 0, FRAME_TIME);
+	}
+	
+	private void animate() {
+		
+	}
+	
+	
 	public void purchaseTower() {
 		
 	}

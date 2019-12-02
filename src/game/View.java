@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +33,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -48,6 +50,10 @@ public class View extends Application implements Observer{
 	private final int CURRENCY_DEPOSIT = 50;
 	
 	// View-specific constants
+	private final int BOARD_OFFSET = 280;
+	private final int ROW_OFFSET = 82;
+	
+	
 	private final int SCENE_WIDTH = 1300;
 	private final int SCENE_HEIGHT = 800;
 	private final int GP_CELL_SIZE = 80;
@@ -86,7 +92,7 @@ public class View extends Application implements Observer{
 	private DefenderTower selectedTower;
 	
 	private Stage primaryStage;
-	private GridPane gridPane;
+	private Group mainGroup;
 	private BorderPane startBorderPane;
 	private BorderPane gameBorderPane;
 	
@@ -140,77 +146,77 @@ public class View extends Application implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		
-//		for (int row = 0; row < Controller.ROWS; row++) {
-//			for (int col = 0; col < Controller.COLS; col++) {
-//				if (model.getBoard()[row][col].isEmpty()) {
-//					System.out.print(" 0 ");
-//				} else {
-//					System.out.print(" 1 ");
+//		
+////		for (int row = 0; row < Controller.ROWS; row++) {
+////			for (int col = 0; col < Controller.COLS; col++) {
+////				if (model.getBoard()[row][col].isEmpty()) {
+////					System.out.print(" 0 ");
+////				} else {
+////					System.out.print(" 1 ");
+////				}
+////			}
+////			System.out.println();
+////		}
+////		System.out.println();
+//		
+//		if (arg instanceof DefenderTower) {
+//			DefenderTower defender = (DefenderTower)arg;
+//			ObservableList<Node> children = gridPane.getChildren();
+//			int row = defender.getRow();
+//			int col = defender.getCol();
+//			
+//			if (!removeToggled) { // Place defender tower
+//				for (Node node: children) {
+//					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+//						// Place
+//						ImageView view = (ImageView)node;
+//						view.setFitHeight(GP_CELL_SIZE);
+//						view.setFitWidth(GP_CELL_SIZE);
+//						view.setImage(defender.getImage());
+//						System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
+//					}
 //				}
+//			} else { // Remove defender tower
+//				int r = indexToRemove[0];
+//				int c = indexToRemove[1];
+//				for (Node node: children) {
+//					if (GridPane.getRowIndex(node) == r && GridPane.getColumnIndex(node) == c) {
+//						// Place
+//						ImageView view = (ImageView)node;
+//
+//						view.setFitHeight(GP_CELL_SIZE);
+//						view.setFitWidth(GP_CELL_SIZE);
+//						view.setImage(new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false));
+//						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
+//					}
+//				}
+//				removeToggled = false;
+//				indexToRemove = new int[] {0, 0};
 //			}
-//			System.out.println();
-//		}
-//		System.out.println();
-		
-		if (arg instanceof DefenderTower) {
-			DefenderTower defender = (DefenderTower)arg;
-			ObservableList<Node> children = gridPane.getChildren();
-			int row = defender.getRow();
-			int col = defender.getCol();
-			
-			if (!removeToggled) { // Place defender tower
-				for (Node node: children) {
-					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
-						// Place
-						ImageView view = (ImageView)node;
-						view.setFitHeight(GP_CELL_SIZE);
-						view.setFitWidth(GP_CELL_SIZE);
-						view.setImage(defender.getImage());
-						System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
-					}
-				}
-			} else { // Remove defender tower
-				int r = indexToRemove[0];
-				int c = indexToRemove[1];
-				for (Node node: children) {
-					if (GridPane.getRowIndex(node) == r && GridPane.getColumnIndex(node) == c) {
-						// Place
-						ImageView view = (ImageView)node;
-
-						view.setFitHeight(GP_CELL_SIZE);
-						view.setFitWidth(GP_CELL_SIZE);
-						view.setImage(new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false));
-						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
-					}
-				}
-				removeToggled = false;
-				indexToRemove = new int[] {0, 0};
-			}
-			
-		} else if (arg instanceof String) {
-			String reason = (String)arg;
-			if (reason.equals("cost")) {
-				// Display "Not enough funds"
-				String toastMsg = "Not enough funds!";
-				int toastMsgTime = 1000; //3.5 seconds
-				int fadeInTime = 150; //0.5 seconds
-				int fadeOutTime= 150; //0.5 seconds
-				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
-			} else if (reason.equals("taken")) {
-				// Display "Tile taken
-				String toastMsg = "Tile is already taken!";
-				int toastMsgTime = 1000; //3.5 seconds
-				int fadeInTime = 150; //0.5 seconds
-				int fadeOutTime= 150; //0.5 seconds
-				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
-			}
-		}	
-		
-		// Update bank amount after each update
-		bankAmount.setText(String.valueOf(model.getSpacebucks()));
-		
-		// TODO: controller.isGameOver();
+//			
+//		} else if (arg instanceof String) {
+//			String reason = (String)arg;
+//			if (reason.equals("cost")) {
+//				// Display "Not enough funds"
+//				String toastMsg = "Not enough funds!";
+//				int toastMsgTime = 1000; //3.5 seconds
+//				int fadeInTime = 150; //0.5 seconds
+//				int fadeOutTime= 150; //0.5 seconds
+//				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+//			} else if (reason.equals("taken")) {
+//				// Display "Tile taken
+//				String toastMsg = "Tile is already taken!";
+//				int toastMsgTime = 1000; //3.5 seconds
+//				int fadeInTime = 150; //0.5 seconds
+//				int fadeOutTime= 150; //0.5 seconds
+//				Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+//			}
+//		}	
+//		
+//		// Update bank amount after each update
+//		bankAmount.setText(String.valueOf(model.getSpacebucks()));
+//		
+//		// TODO: controller.isGameOver();
 	}
 	
 	public void setupStartMenu() {
@@ -324,36 +330,45 @@ public class View extends Application implements Observer{
 	 * assets and functionality
 	 */
 	public void setupGameScene() {
-		gameBorderPane = new BorderPane();
-		gameBorderPane.setPadding(new Insets(10,10,10,10));
+		mainGroup = new Group();
+//		gameBorderPane = new BorderPane();
+//		gameBorderPane.setPadding(new Insets(10,10,10,10));
 		
 		// Center Box will contain Progress Bar and GridPane
-		VBox centerBox = new VBox(2);
-		centerBox.setAlignment(Pos.CENTER);
+//		VBox centerBox = new VBox(2);
+//		centerBox.setAlignment(Pos.CENTER);
 		
-		setupProgressHBox();
-		setupGridPane();
+//		setupProgressHBox();
 		
-		centerBox.getChildren().addAll(progressHBox, gridPane);
+//		centerBox.getChildren().add(gridPane);
 		
-		gameBorderPane.setTop(setupTopMenuBar());
-		gameBorderPane.setCenter(centerBox);
+//		gameBorderPane.setTop(setupTopMenuBar());
+//		gameBorderPane.setCenter(centerBox);
+		
 		
 		Image bgImage = new Image(GAME_BACKGROUND_IMAGE);
-		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
-	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
-	            BackgroundRepeat.NO_REPEAT,
-	            BackgroundRepeat.NO_REPEAT,
-	            BackgroundPosition.CENTER,
-	            bSize));
+//		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
+//	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
+//	            BackgroundRepeat.NO_REPEAT,
+//	            BackgroundRepeat.NO_REPEAT,
+//	            BackgroundPosition.CENTER,
+//	            bSize));
 	    
-	    gameBorderPane.setBackground(borderPaneBackground);
+	    ImageView bgImageView = new ImageView(bgImage);
+	    bgImageView.setFitHeight(SCENE_HEIGHT);
+	    bgImageView.setFitWidth(SCENE_WIDTH);
+//	    gameBorderPane.setBackground(borderPaneBackground);
+	    mainGroup.getChildren().add(bgImageView);
+		mainGroup.getChildren().add(setupTopMenuBar());
+		setupGrid();
+//		mainGroup.getChildren().add(centerBox);
 	    
 		// Start timeline
 		timeline.play();
 		
-		Scene scene = new Scene(gameBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
+		Scene scene = new Scene(mainGroup, SCENE_WIDTH, SCENE_HEIGHT);
 		primaryStage.setTitle("Aliens vs. Astronauts");
+		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 	}
 	
@@ -380,31 +395,64 @@ public class View extends Application implements Observer{
 		progressHBox.getChildren().addAll(progressLabel, progressBar);
 	}
 	
+//	/**
+//	 * Sets up the GridPane containing a grid of open Tile objects
+//	 * as well as the extreme home-base/enemy-entry points
+//	 */
+//	public void setupGridPane() {
+//		gridPane = new GridPane();
+//		gridPane.setHgap(CELL_GAP);
+//		gridPane.setVgap(CELL_GAP);
+//		// gridPane.setGridLinesVisible(true);
+//		gridPane.setAlignment(Pos.CENTER);
+//		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
+//		
+//		// TODO: Modify the base images below to be a neutral image representing open slot
+//		for (int row = 0; row < Controller.ROWS; row++) {
+//			for (int col = 0; col < Controller.COLS; col++) {
+//				if (col == 0) {
+//					gridPane.add(new ImageView(new Image(RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+//				} else if (col == 11){
+//					gridPane.add(new ImageView(new Image(BLUE_CIRCLE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+//				} else {
+//					gridPane.add(new ImageView(new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+//				}
+//			}
+//		}
+//		setupGridPaneDragHandlers();
+//	}
+	
 	/**
 	 * Sets up the GridPane containing a grid of open Tile objects
 	 * as well as the extreme home-base/enemy-entry points
 	 */
-	public void setupGridPane() {
-		gridPane = new GridPane();
-		gridPane.setHgap(CELL_GAP);
-		gridPane.setVgap(CELL_GAP);
-		// gridPane.setGridLinesVisible(true);
-		gridPane.setAlignment(Pos.CENTER);
-		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
+	public void setupGrid() {
+		Image square = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
+		Image gunImage = new Image(RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 		
-		// TODO: Modify the base images below to be a neutral image representing open slot
-		for (int row = 0; row < Controller.ROWS; row++) {
+		for (int row = 0; row < Controller.ROWS; row ++) {
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
-					gridPane.add(new ImageView(new Image(RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
-				} else if (col == 11){
-					gridPane.add(new ImageView(new Image(BLUE_CIRCLE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
-				} else {
-					gridPane.add(new ImageView(new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false)), col, row);
+					StackPane gunStackPane = new StackPane();
+					gunStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
+					gunStackPane.setTranslateX(50);
+					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+					ImageView gunImageView = new ImageView(gunImage);
+					gunStackPane.getChildren().add(gunImageView);
+					mainGroup.getChildren().add(gunStackPane);
+				} else if (col <= Controller.COLS - 1) {
+					StackPane tempStackPane = new StackPane();
+					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
+					tempStackPane.setTranslateX((100 * col) + 50);
+					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+
+					ImageView squareImageView = new ImageView(square);
+					tempStackPane.getChildren().add(squareImageView);
+					mainGroup.getChildren().add(tempStackPane);
 				}
 			}
 		}
-		setupGridPaneDragHandlers();
+		
 	}
 	
 	/**
@@ -416,50 +464,50 @@ public class View extends Application implements Observer{
 	 * Performs the necessary updates to place/reject placement.
 	 */
 	public void setupGridPaneDragHandlers() {
-		List<Node> cells = gridPane.getChildrenUnmodifiable();
-		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
-			Node target = cells.get(i);
-			
-//			// TODO: This handler is for debugging purposes only, may remove afterwards
-			target.setOnDragOver(e -> {
-				
-				try {
-					if (e.getDragboard().hasImage()) {
-						e.acceptTransferModes(TransferMode.ANY);
-					}
-
-					int row = GridPane.getRowIndex(target);
-					int col = GridPane.getColumnIndex(target);
-					//System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
-					e.consume();
-				} catch (NullPointerException ex) {
-					// Silences errors when dragging over HGaps & VGaps
-				}
-				
-			});
-			
-			target.setOnDragDropped( e -> {
-				e.acceptTransferModes(TransferMode.ANY);
-				
-				Dragboard db = e.getDragboard();
-				if (db.hasImage()) {
-					int row = GridPane.getRowIndex(target);
-					int col = GridPane.getColumnIndex(target);
-					if (!removeToggled) {
-						// Place tower
-						db.clear();
-						controller.placeCharacter(selectedTower, row, col);
-					} else {
-						indexToRemove = new int[]{row, col};
-						DefenderTower towerToRemove = model.getDefenderAt(row, col);
-						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
-						controller.removeTower(towerToRemove, row, col);
-					}
-				}
-				e.setDropCompleted(true);
-				e.consume();			
-			});
-		}
+//		List<Node> cells = mainGroup.getChildrenUnmodifiable();
+//		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
+//			Node target = cells.get(i);
+//			
+////			// TODO: This handler is for debugging purposes only, may remove afterwards
+//			target.setOnDragOver(e -> {
+//				
+//				try {
+//					if (e.getDragboard().hasImage()) {
+//						e.acceptTransferModes(TransferMode.ANY);
+//					}
+//
+//					int row = GridPane.getRowIndex(target);
+//					int col = GridPane.getColumnIndex(target);
+//					//System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
+//					e.consume();
+//				} catch (NullPointerException ex) {
+//					// Silences errors when dragging over HGaps & VGaps
+//				}
+//				
+//			});
+//			
+//			target.setOnDragDropped( e -> {
+//				e.acceptTransferModes(TransferMode.ANY);
+//				
+//				Dragboard db = e.getDragboard();
+//				if (db.hasImage()) {
+//					int row = GridPane.getRowIndex(target);
+//					int col = GridPane.getColumnIndex(target);
+//					if (!removeToggled) {
+//						// Place tower
+//						db.clear();
+//						controller.placeCharacter(selectedTower, row, col);
+//					} else {
+//						indexToRemove = new int[]{row, col};
+//						DefenderTower towerToRemove = model.getDefenderAt(row, col);
+//						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
+//						controller.removeTower(towerToRemove, row, col);
+//					}
+//				}
+//				e.setDropCompleted(true);
+//				e.consume();			
+//			});
+//		}
 	}
 	
 	/**
