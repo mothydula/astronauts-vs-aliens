@@ -40,7 +40,7 @@ public class Model extends Observable {
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
 		// Adjust bank amount
-		if(character instanceof DefenderTower) {
+		if (character instanceof DefenderTower) {
 			bank -= ((DefenderTower)character).getCost();
 		}
 		
