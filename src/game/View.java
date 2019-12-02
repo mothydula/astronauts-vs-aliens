@@ -44,8 +44,8 @@ public class View extends Application implements Observer{
 	
 	// General constants
 	private final int NUM_TOWERS = 9;
-	private final int CURRENCY_TIMELINE = 5; // seconds
-	private final int CURRENCY_DEPOSIT = 50;
+	private final int CURRENCY_TIMELINE = 1; // seconds
+	private final int CURRENCY_DEPOSIT = 500;
 	
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
@@ -133,6 +133,18 @@ public class View extends Application implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		
+//		for (int row = 0; row < Controller.ROWS; row++) {
+//			for (int col = 0; col < Controller.COLS; col++) {
+//				if (model.getBoard()[row][col].isEmpty()) {
+//					System.out.print(" 0 ");
+//				} else {
+//					System.out.print(" 1 ");
+//				}
+//			}
+//			System.out.println();
+//		}
+//		System.out.println();
+		
 		if (arg instanceof DefenderTower) {
 			DefenderTower defender = (DefenderTower)arg;
 			ObservableList<Node> children = gridPane.getChildren();
@@ -155,7 +167,10 @@ public class View extends Application implements Observer{
 					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
 						// Place
 						ImageView view = (ImageView)node;
-						view.setImage(new Image("file:assets/green-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
+
+						view.setFitHeight(GP_CELL_SIZE);
+						view.setFitWidth(GP_CELL_SIZE);
+						view.setImage(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
 						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
 					}
 				}
@@ -183,6 +198,8 @@ public class View extends Application implements Observer{
 		
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
+		
+		// controller.isGameOver();
 	}
 	
 	public void setupStartMenu() {
@@ -392,7 +409,7 @@ public class View extends Application implements Observer{
 		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
 			Node target = cells.get(i);
 			
-			// TODO: This handler is for debugging purposes only, may remove afterwards
+//			// TODO: This handler is for debugging purposes only, may remove afterwards
 			target.setOnDragOver(e -> {
 				
 				try {
@@ -402,7 +419,7 @@ public class View extends Application implements Observer{
 
 					int row = GridPane.getRowIndex(target);
 					int col = GridPane.getColumnIndex(target);
-					System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
+					//System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
 					e.consume();
 				} catch (NullPointerException ex) {
 					// Silences errors when dragging over HGaps & VGaps
@@ -422,6 +439,7 @@ public class View extends Application implements Observer{
 						controller.placeTower(selectedTower, row, col);
 					} else {
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
+						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
 						controller.removeTower(towerToRemove, row, col);
 					}
 					db.clear();
@@ -552,7 +570,7 @@ public class View extends Application implements Observer{
 			// Allow Transfer Mode when drag initially detected
 			Dragboard rm = removeBtn.startDragAndDrop(TransferMode.ANY);
 			ClipboardContent content = new ClipboardContent();
-			content.putImage(new Image("file:assets/removeX.png"));
+			content.putImage(new Image("file:assets/removeX.jpg"));
 			rm.setContent(content);
 			e.consume();
 			
@@ -599,7 +617,7 @@ public class View extends Application implements Observer{
 			content.putImage(defender.getImage());
 			db.setContent(content);
 
-			System.out.println("Drag detected for " + defender.toString());
+			//System.out.println("Drag detected for " + defender.toString());
 			e.consume();
 		});
 		
