@@ -38,9 +38,11 @@ public class Model extends Observable {
 		return bank;
 	}
 	
-	public void placeTower(DefenderTower defender, int row, int col) {
+	public void placeCharacter(BoardCharacter character, int row, int col) {
 		// Adjust bank amount
-		bank -= defender.getCost();
+		if(character instanceof DefenderTower) {
+		bank -= character.getCost();
+		}
 		
 		// Place character
 		defender.setRow(row);
