@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 public abstract class DefenderTower extends BoardCharacter{
 	// Default values for characters
 	public static final int MONEY_GEN_TIMELINE = 15; // Currency
+	public static final double REFUND_MULTIPLIER = 0.6; // Refund multiplier (60%)
 	
 	// AstroJoe
 	protected static final int HEALTH_ASTROJOE = 100;

@@ -44,8 +44,8 @@ public class View extends Application implements Observer{
 	
 	// General constants
 	private final int NUM_TOWERS = 9;
-	private final int CURRENCY_TIMELINE = 1; // seconds
-	private final int CURRENCY_DEPOSIT = 500;
+	private final int CURRENCY_TIMELINE = 5; // seconds
+	private final int CURRENCY_DEPOSIT = 50;
 	
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
