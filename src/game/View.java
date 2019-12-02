@@ -113,6 +113,7 @@ public class View extends Application implements Observer{
 	private StackPane[][] defendersGrid;
 
 	public View() {
+		System.out.println("VIEW");
 		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
 		model = new Model();
 		controller = new Controller(model);
@@ -257,8 +258,8 @@ public class View extends Application implements Observer{
 //			}
 //		}	
 //		
-//		// Update bank amount after each update
-//		bankAmount.setText(String.valueOf(model.getSpacebucks()));
+		// Update bank amount after each update
+		bankAmount.setText(String.valueOf(model.getSpacebucks()));
 //		
 //		// TODO: controller.isGameOver();
 	}
