@@ -44,8 +44,8 @@ public class View extends Application implements Observer{
 	
 	// General constants
 	private final int NUM_TOWERS = 9;
-	private final int CURRENCY_TIMELINE = 5; // seconds
-	private final int CURRENCY_DEPOSIT = 50;
+	private final int CURRENCY_TIMELINE = 1; // seconds
+	private final int CURRENCY_DEPOSIT = 500;
 	
 	// View-specific constants
 	private final int SCENE_WIDTH = 1300;
@@ -133,6 +133,18 @@ public class View extends Application implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		
+//		for (int row = 0; row < Controller.ROWS; row++) {
+//			for (int col = 0; col < Controller.COLS; col++) {
+//				if (model.getBoard()[row][col].isEmpty()) {
+//					System.out.print(" 0 ");
+//				} else {
+//					System.out.print(" 1 ");
+//				}
+//			}
+//			System.out.println();
+//		}
+//		System.out.println();
+		
 		if (arg instanceof DefenderTower) {
 			DefenderTower defender = (DefenderTower)arg;
 			ObservableList<Node> children = gridPane.getChildren();
@@ -155,6 +167,7 @@ public class View extends Application implements Observer{
 					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
 						// Place
 						ImageView view = (ImageView)node;
+
 						view.setFitHeight(GP_CELL_SIZE);
 						view.setFitWidth(GP_CELL_SIZE);
 						view.setImage(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
@@ -185,6 +198,8 @@ public class View extends Application implements Observer{
 		
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
+		
+		// controller.isGameOver();
 	}
 	
 	public void setupStartMenu() {
@@ -424,9 +439,10 @@ public class View extends Application implements Observer{
 						controller.placeCharacter(selectedTower, row, col);
 					} else {
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
+						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
 						controller.removeTower(towerToRemove, row, col);
 					}
-//					db.clear();
+					db.clear();
 				}
 				e.setDropCompleted(true);
 				e.consume();			
