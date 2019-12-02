@@ -39,7 +39,6 @@ public class Model extends Observable {
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
-		System.out.println("PLACE CHAR");
 		// Adjust bank amount
 		if (character instanceof DefenderTower) {
 			bank -= ((DefenderTower)character).getCost();
@@ -64,9 +63,16 @@ public class Model extends Observable {
 		notifyObservers();
 	}
 	
-	public void notifyInvalidPlacement(String reason) {
+	public void notifyInvalidPlacement() {
+		MoveMessage message = new MoveMessage(MoveMessage.INVALID_MOVE);
 		setChanged();
-		notifyObservers(reason);
+		notifyObservers(message);
+	}
+	
+	public void notifyInsufficientFunds() {
+		MoveMessage message = new MoveMessage(MoveMessage.INSUFFICIENT_FUNDS);
+		setChanged();
+		notifyObservers(message);
 	}
 
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {

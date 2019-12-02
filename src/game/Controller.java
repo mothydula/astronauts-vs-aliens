@@ -50,7 +50,6 @@ public class Controller {
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
-		System.out.println("CONTROLLER");
 		int currBank = model.getSpacebucks();
 		
 		// Check if the tile is empty
@@ -71,10 +70,10 @@ public class Controller {
 				}
 				model.placeCharacter(character, row, col);
 			} else {
-				model.notifyInvalidPlacement("cost"); // not enough funds
+				model.notifyInsufficientFunds(); // not enough funds
 			}
 		} else {
-			model.notifyInvalidPlacement("taken"); // tile is taken
+			model.notifyInvalidPlacement(); // tile is taken
 		}
 	}
 	

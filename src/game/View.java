@@ -505,23 +505,80 @@ public class View extends Application implements Observer{
 		
 	}
 	
+//	/**
+//	 * Adds DragEvent Handlers for each Node in the GridPane
+//	 * 
+//	 * To support drag & drop, DragEvent handlers will be added to
+//	 * each Node to detect when an Object is being dragged OVER that
+//	 * node and when the Object has been DROPPED into that Node.
+//	 * Performs the necessary updates to place/reject placement.
+//	 */
+//	public void setupGridPaneDragHandlers() {
+//		List<Node> cells = gridPane.getChildrenUnmodifiable();
+//		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
+//			Node target = cells.get(i);
+//			
+////			// TODO: This handler is for debugging purposes only, may remove afterwards
+//			target.setOnDragOver(e -> {
+//				
+//				try {
+//					if (e.getDragboard().hasImage()) {
+//						e.acceptTransferModes(TransferMode.ANY);
+//					}
+//
+//					int row = GridPane.getRowIndex(target);
+//					int col = GridPane.getColumnIndex(target);
+//					//System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
+//					e.consume();
+//				} catch (NullPointerException ex) {
+//					// Silences errors when dragging over HGaps & VGaps
+//				}
+//				
+//			});
+//			
+//			target.setOnDragDropped( e -> {
+//				e.acceptTransferModes(TransferMode.ANY);
+//				
+//				Dragboard db = e.getDragboard();
+//				if (db.hasImage()) {
+//					int row = GridPane.getRowIndex(target);
+//					int col = GridPane.getColumnIndex(target);
+//					if (!removeToggled) {
+//						// Place tower
+//						db.clear();
+//						controller.placeCharacter(selectedTower, row, col);
+//					} else {
+//						indexToRemove = new int[]{row, col};
+//						DefenderTower towerToRemove = model.getDefenderAt(row, col);
+//						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
+//						controller.removeTower(towerToRemove, row, col);
+//					}
+//				}
+//				e.setDropCompleted(true);
+//				e.consume();			
+//			});
+//		}
+//	}
+	
 	private void setupGridHandler() {
 		mainGroup.setOnDragOver(e -> {
-			int col = -1;
-			int row = -1;
-			if (e.getX() >= COLUMN_OFFSET && e.getX() <= (GP_CELL_SIZE * Controller.COLS) + COLUMN_OFFSET) {
-				col = (int)(e.getX() - COLUMN_OFFSET) / GP_CELL_SIZE;
-			}
-			if (e.getY() >= BOARD_OFFSET && e.getY() <= SCENE_HEIGHT) {
-				row = (int)(e.getY() - BOARD_OFFSET) / GP_CELL_SIZE;
-			}
-			
-			if (col != -1 && row != -1) {
-			}
+			e.acceptTransferModes(TransferMode.ANY);
+//			int col = -1;
+//			int row = -1;
+//			if (e.getX() >= COLUMN_OFFSET && e.getX() <= (GP_CELL_SIZE * Controller.COLS) + COLUMN_OFFSET) {
+//				col = (int)(e.getX() - COLUMN_OFFSET) / GP_CELL_SIZE;
+//			}
+//			if (e.getY() >= BOARD_OFFSET && e.getY() <= SCENE_HEIGHT) {
+//				row = (int)(e.getY() - BOARD_OFFSET) / GP_CELL_SIZE;
+//			}
+//			
+//			if (col != -1 && row != -1) {
+//			}
+//			
+			e.consume();
 		});
 		
 		mainGroup.setOnDragDropped(e -> {
-			System.out.println("sdfghjhgf");
 			e.acceptTransferModes(TransferMode.ANY);
 			Dragboard db = e.getDragboard();
 			if (db.hasImage()) {
@@ -548,6 +605,8 @@ public class View extends Application implements Observer{
 						mainGroup.getChildren().remove(defendersGrid[row][col]);
 					}
 				}
+				e.setDropCompleted(true);
+				e.consume();
 			}
 		});
 	}
