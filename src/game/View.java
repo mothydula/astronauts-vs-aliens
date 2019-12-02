@@ -50,8 +50,9 @@ public class View extends Application implements Observer{
 	private final int CURRENCY_DEPOSIT = 50;
 	
 	// View-specific constants
-	private final int BOARD_OFFSET = 280;
+	private final int BOARD_OFFSET = 310;
 	private final int ROW_OFFSET = 82;
+	private final int COLUMN_OFFSET = 170;
 	
 	
 	private final int SCENE_WIDTH = 1300;
@@ -108,8 +109,11 @@ public class View extends Application implements Observer{
 	// notifies update that defender is being removed, not placed.
 	private boolean removeToggled;
 	private int[] indexToRemove;
+	
+	private StackPane[][] defendersGrid;
 
 	public View() {
+		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
 		model = new Model();
 		controller = new Controller(model);
 		model.addObserver(this);
@@ -146,6 +150,46 @@ public class View extends Application implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		if (arg instanceof MoveMessage) {
+			MoveMessage message = (MoveMessage) arg;
+			
+			switch(message.getType()) {
+				case MoveMessage.VALID_MOVE:
+					if (message.isRemove()) {
+						
+					} else {
+						StackPane towerPane = new StackPane();
+						towerPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
+						towerPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
+						towerPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+						Image towerImage = message.getTower().getImage();
+						ImageView towerImageView = new ImageView(towerImage);
+						towerPane.getChildren().add(towerImageView);
+						mainGroup.getChildren().add(towerPane);
+						
+						defendersGrid[message.getRow()][message.getCol()] = towerPane;
+					}
+					break;
+				case MoveMessage.INVALID_MOVE:
+					// Display "Tile taken
+					String toastMsgInvalid = "Tile is already taken!";
+					int toastMsgTimeInvalid = 1000; //3.5 seconds
+					int fadeInTimeInvalid = 150; //0.5 seconds
+					int fadeOutTimeInvalid = 150; //0.5 seconds
+					Toast.makeText(primaryStage, toastMsgInvalid, 
+							toastMsgTimeInvalid, fadeInTimeInvalid, fadeOutTimeInvalid);
+					break;
+				case MoveMessage.INSUFFICIENT_FUNDS:
+					// Display "Not enough funds"
+					String toastMsg = "Not enough funds!";
+					int toastMsgTime = 1000; //3.5 seconds
+					int fadeInTime = 150; //0.5 seconds
+					int fadeOutTime= 150; //0.5 seconds
+					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+					break;
+				
+			}
+		}
 //		
 ////		for (int row = 0; row < Controller.ROWS; row++) {
 ////			for (int col = 0; col < Controller.COLS; col++) {
@@ -361,6 +405,7 @@ public class View extends Application implements Observer{
 	    mainGroup.getChildren().add(bgImageView);
 		mainGroup.getChildren().add(setupTopMenuBar());
 		setupGrid();
+		setupGridHandler();
 //		mainGroup.getChildren().add(centerBox);
 	    
 		// Start timeline
@@ -434,16 +479,20 @@ public class View extends Application implements Observer{
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
 					StackPane gunStackPane = new StackPane();
+//					gunStackPane.setStyle("-fx-border-color: black");
 					gunStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
-					gunStackPane.setTranslateX(50);
+					gunStackPane.setTranslateX(COLUMN_OFFSET);
 					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					ImageView gunImageView = new ImageView(gunImage);
 					gunStackPane.getChildren().add(gunImageView);
 					mainGroup.getChildren().add(gunStackPane);
+					
+					defendersGrid[row][col] = gunStackPane;
 				} else if (col <= Controller.COLS - 1) {
 					StackPane tempStackPane = new StackPane();
+//					tempStackPane.setStyle("-fx-border-color: black");
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
-					tempStackPane.setTranslateX((100 * col) + 50);
+					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 
 					ImageView squareImageView = new ImageView(square);
@@ -455,60 +504,52 @@ public class View extends Application implements Observer{
 		
 	}
 	
-	/**
-	 * Adds DragEvent Handlers for each Node in the GridPane
-	 * 
-	 * To support drag & drop, DragEvent handlers will be added to
-	 * each Node to detect when an Object is being dragged OVER that
-	 * node and when the Object has been DROPPED into that Node.
-	 * Performs the necessary updates to place/reject placement.
-	 */
-	public void setupGridPaneDragHandlers() {
-//		List<Node> cells = mainGroup.getChildrenUnmodifiable();
-//		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
-//			Node target = cells.get(i);
+	private void setupGridHandler() {
+//		mainGroup.setOnDragOver(e -> {
+//			int col = -1;
+//			int row = -1;
+//			if (e.getX() >= COLUMN_OFFSET && e.getX() <= (GP_CELL_SIZE * Controller.COLS) + COLUMN_OFFSET) {
+//				col = (int)(e.getX() - COLUMN_OFFSET) / GP_CELL_SIZE;
+//			}
+//			if (e.getY() >= BOARD_OFFSET && e.getY() <= SCENE_HEIGHT) {
+//				row = (int)(e.getY() - BOARD_OFFSET) / GP_CELL_SIZE;
+//			}
 //			
-////			// TODO: This handler is for debugging purposes only, may remove afterwards
-//			target.setOnDragOver(e -> {
-//				
-//				try {
-//					if (e.getDragboard().hasImage()) {
-//						e.acceptTransferModes(TransferMode.ANY);
-//					}
-//
-//					int row = GridPane.getRowIndex(target);
-//					int col = GridPane.getColumnIndex(target);
-//					//System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
-//					e.consume();
-//				} catch (NullPointerException ex) {
-//					// Silences errors when dragging over HGaps & VGaps
-//				}
-//				
-//			});
-//			
-//			target.setOnDragDropped( e -> {
-//				e.acceptTransferModes(TransferMode.ANY);
-//				
-//				Dragboard db = e.getDragboard();
-//				if (db.hasImage()) {
-//					int row = GridPane.getRowIndex(target);
-//					int col = GridPane.getColumnIndex(target);
-//					if (!removeToggled) {
-//						// Place tower
-//						db.clear();
-//						controller.placeCharacter(selectedTower, row, col);
-//					} else {
-//						indexToRemove = new int[]{row, col};
-//						DefenderTower towerToRemove = model.getDefenderAt(row, col);
-//						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
-//						controller.removeTower(towerToRemove, row, col);
-//					}
-//				}
-//				e.setDropCompleted(true);
-//				e.consume();			
-//			});
-//		}
+//			if (col != -1 && row != -1) {
+//			}
+//		});
+		
+		mainGroup.setOnDragDropped(e -> {
+			e.acceptTransferModes(TransferMode.ANY);
+			Dragboard db = e.getDragboard();
+			if (db.hasImage()) {
+				int col = -1;
+				int row = -1;
+				if (e.getX() >= COLUMN_OFFSET && e.getX() <= (GP_CELL_SIZE * Controller.COLS) + COLUMN_OFFSET) {
+					col = (int)(e.getX() - COLUMN_OFFSET) / GP_CELL_SIZE;
+				}
+				if (e.getY() >= BOARD_OFFSET && e.getY() <= SCENE_HEIGHT) {
+					row = (int)(e.getY() - BOARD_OFFSET) / GP_CELL_SIZE;
+				}
+				
+				if (col != -1 && row != -1) {
+					if (!removeToggled) {
+						// Place tower
+						db.clear();
+						controller.placeCharacter(selectedTower, row, col);
+						
+					} else {
+						indexToRemove = new int[]{row, col};
+						DefenderTower towerToRemove = model.getDefenderAt(row, col);
+						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
+						controller.removeTower(towerToRemove, row, col);
+						mainGroup.getChildren().remove(defendersGrid[row][col]);
+					}
+				}
+			}
+		});
 	}
+	
 	
 	/**
 	 * Sets up top navigation bar containing the defenders that
