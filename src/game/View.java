@@ -155,6 +155,8 @@ public class View extends Application implements Observer{
 					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
 						// Place
 						ImageView view = (ImageView)node;
+						view.setFitHeight(GP_CELL_SIZE);
+						view.setFitWidth(GP_CELL_SIZE);
 						view.setImage(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
 						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
 					}
@@ -392,7 +394,7 @@ public class View extends Application implements Observer{
 		for (int i = 0; i < Controller.ROWS * Controller.COLS; i++) {
 			Node target = cells.get(i);
 			
-			// TODO: This handler is for debugging purposes only, may remove afterwards
+//			// TODO: This handler is for debugging purposes only, may remove afterwards
 			target.setOnDragOver(e -> {
 				
 				try {
@@ -402,7 +404,7 @@ public class View extends Application implements Observer{
 
 					int row = GridPane.getRowIndex(target);
 					int col = GridPane.getColumnIndex(target);
-					System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
+					//System.out.println("Dragging " + selectedTower.toString() + " over " + row + "," + col);
 					e.consume();
 				} catch (NullPointerException ex) {
 					// Silences errors when dragging over HGaps & VGaps
@@ -424,7 +426,7 @@ public class View extends Application implements Observer{
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						controller.removeTower(towerToRemove, row, col);
 					}
-					db.clear();
+//					db.clear();
 				}
 				e.setDropCompleted(true);
 				e.consume();			
@@ -552,7 +554,7 @@ public class View extends Application implements Observer{
 			// Allow Transfer Mode when drag initially detected
 			Dragboard rm = removeBtn.startDragAndDrop(TransferMode.ANY);
 			ClipboardContent content = new ClipboardContent();
-			content.putImage(new Image("file:assets/removeX.png"));
+			content.putImage(new Image("file:assets/removeX.jpg"));
 			rm.setContent(content);
 			e.consume();
 			
@@ -599,7 +601,7 @@ public class View extends Application implements Observer{
 			content.putImage(defender.getImage());
 			db.setContent(content);
 
-			System.out.println("Drag detected for " + defender.toString());
+			//System.out.println("Drag detected for " + defender.toString());
 			e.consume();
 		});
 		

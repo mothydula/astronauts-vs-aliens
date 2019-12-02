@@ -67,7 +67,7 @@ public class Model extends Observable {
 		// TODO: adjust bank amount
 		// bank += multiplier * towerToRemove.getCost();
 		
-		board[row][col].deleteCharacter();
+		board[row][col] = new Tile(null);
 		setChanged();
 		notifyObservers(towerToRemove);
 	}
