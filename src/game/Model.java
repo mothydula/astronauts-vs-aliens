@@ -38,18 +38,20 @@ public class Model extends Observable {
 		return bank;
 	}
 	
-	public void placeTower(DefenderTower defender, int row, int col) {
+	public void placeCharacter(BoardCharacter character, int row, int col) {
 		// Adjust bank amount
-		bank -= defender.getCost();
+		if (character instanceof DefenderTower) {
+			bank -= ((DefenderTower)character).getCost();
+		}
 		
 		// Place character
-		defender.setRow(row);
-		defender.setCol(col);
-		board[row][col].placeCharacter(defender);
+		character.setRow(row);
+		character.setCol(col);
+		board[row][col].placeCharacter(character);
 		
 		// Notify Observers
 		setChanged();
-		notifyObservers(defender); // TODO: Handle successful placement
+		notifyObservers(character); // TODO: Handle successful placement
 	}
 	
 	public void depositSpacebucks(int amount) {
@@ -64,8 +66,8 @@ public class Model extends Observable {
 	}
 
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
-		// TODO: adjust bank amount
-		// bank += multiplier * towerToRemove.getCost();
+		// adjusts bank amount
+		bank += DefenderTower.REFUND_MULTIPLIER * towerToRemove.getCost();
 		
 		board[row][col] = new Tile(null);
 		setChanged();
