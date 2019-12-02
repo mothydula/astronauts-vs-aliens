@@ -43,7 +43,7 @@ public class Controller {
 					timeline.setCycleCount(Timeline.INDEFINITE);
 					timeline.play();
 				}
-				model.placeTower(character, row, col);
+				model.placeCharacter(character, row, col);
 			} else {
 				model.notifyInvalidPlacement("cost"); // not enough funds
 			}

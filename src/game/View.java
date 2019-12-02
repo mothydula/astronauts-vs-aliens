@@ -421,7 +421,7 @@ public class View extends Application implements Observer{
 					int col = GridPane.getColumnIndex(target);
 					if (!removeToggled) {
 						// Place tower
-						controller.placeTower(selectedTower, row, col);
+						controller.placeCharacter(selectedTower, row, col);
 					} else {
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						controller.removeTower(towerToRemove, row, col);
