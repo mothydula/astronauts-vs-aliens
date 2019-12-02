@@ -155,7 +155,7 @@ public class View extends Application implements Observer{
 					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
 						// Place
 						ImageView view = (ImageView)node;
-						view.setImage(new Image("file:assets/placement-square.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
+						view.setImage(new Image("file:assets/green-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
 						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
 					}
 				}
