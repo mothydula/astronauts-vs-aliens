@@ -47,7 +47,7 @@ public class Model extends Observable {
 		defender.setCol(col);
 		board[row][col].placeCharacter(defender);
 		
-		// Notifiy Observers
+		// Notify Observers
 		setChanged();
 		notifyObservers(defender); // TODO: Handle successful placement
 	}
@@ -61,5 +61,18 @@ public class Model extends Observable {
 	public void notifyInvalidPlacement(String reason) {
 		setChanged();
 		notifyObservers(reason);
+	}
+
+	public void removeTower(DefenderTower towerToRemove, int row, int col) {
+		// TODO: adjust bank amount
+		// bank += multiplier * towerToRemove.getCost();
+		
+		board[row][col].deleteCharacter();
+		setChanged();
+		notifyObservers(towerToRemove);
+	}
+
+	public DefenderTower getDefenderAt(int row, int col) {
+		return (DefenderTower) board[row][col].getCharacter();
 	}
 }

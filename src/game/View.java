@@ -92,6 +92,9 @@ public class View extends Application implements Observer{
 	private ProgressBar progressBar;
 	private Label progressLabel;
 	private Label bankAmount;
+	
+	// notifies update that defender is being removed, not placed.
+	private boolean removeToggled;
 
 	public View() {
 		model = new Model();
@@ -108,6 +111,8 @@ public class View extends Application implements Observer{
 				new MoneyTree(),
 				new MillenniumFalcon()
 		};
+		
+		removeToggled = false;
 		
 		// Currency generator - deposit 50 space bucks every 5 seconds
 		timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
@@ -129,18 +134,32 @@ public class View extends Application implements Observer{
 	public void update(Observable o, Object arg) {
 		
 		if (arg instanceof DefenderTower) {
-			// Place defender tower
 			DefenderTower defender = (DefenderTower)arg;
 			ObservableList<Node> children = gridPane.getChildren();
-			for (Node node: children) {
-				if (GridPane.getRowIndex(node) == defender.getRow() && GridPane.getColumnIndex(node) == defender.getCol()) {
-					// Place
-					ImageView view = (ImageView)node;
-					view.setFitHeight(GP_CELL_SIZE);
-					view.setFitWidth(GP_CELL_SIZE);
-					view.setImage(defender.getImage());
-					System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
+			int row = defender.getRow();
+			int col = defender.getCol();
+			
+			if (!removeToggled) { // Place defender tower
+				for (Node node: children) {
+					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+						// Place
+						ImageView view = (ImageView)node;
+						view.setFitHeight(GP_CELL_SIZE);
+						view.setFitWidth(GP_CELL_SIZE);
+						view.setImage(defender.getImage());
+						System.out.println("Dropped " + defender.toString() + " into " + defender.getRow() + " " + defender.getCol());
+					}
 				}
+			} else { // Remove defender tower
+				for (Node node: children) {
+					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+						// Place
+						ImageView view = (ImageView)node;
+						view.setImage(new Image("file:assets/green-circle.png", GP_CELL_SIZE, GP_CELL_SIZE, false, false));
+						System.out.println("Deleted " + defender.toString() + " in " + defender.getRow() + " " + defender.getCol());
+					}
+				}
+				removeToggled = false;
 			}
 			
 		} else if (arg instanceof String) {
@@ -341,7 +360,7 @@ public class View extends Application implements Observer{
 		gridPane = new GridPane();
 		gridPane.setHgap(CELL_GAP);
 		gridPane.setVgap(CELL_GAP);
-//		gridPane.setGridLinesVisible(true);
+		// gridPane.setGridLinesVisible(true);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setPadding(new Insets(GRIDPANE_TOP_MARGIN, 0, 0, 0));
 		
@@ -396,8 +415,16 @@ public class View extends Application implements Observer{
 				
 				Dragboard db = e.getDragboard();
 				if (db.hasImage()) {
-					// Place tower
-					controller.placeTower(selectedTower, GridPane.getRowIndex(target), GridPane.getColumnIndex(target));
+					int row = GridPane.getRowIndex(target);
+					int col = GridPane.getColumnIndex(target);
+					if (!removeToggled) {
+						// Place tower
+						controller.placeTower(selectedTower, row, col);
+					} else {
+						DefenderTower towerToRemove = model.getDefenderAt(row, col);
+						controller.removeTower(towerToRemove, row, col);
+					}
+					db.clear();
 				}
 				e.setDropCompleted(true);
 				e.consume();			
@@ -519,9 +546,16 @@ public class View extends Application implements Observer{
 		removeBtn.setMinHeight(50);
 		removeBtn.setMaxHeight(50);
 		
-		removeBtn.setOnAction( e -> {
-			// TODO: Implement removal functionality here
-			// controller.removeTower()
+		removeBtn.setOnDragDetected( e -> {
+			removeToggled = true;
+			
+			// Allow Transfer Mode when drag initially detected
+			Dragboard rm = removeBtn.startDragAndDrop(TransferMode.ANY);
+			ClipboardContent content = new ClipboardContent();
+			content.putImage(new Image("file:assets/removeX.png"));
+			rm.setContent(content);
+			e.consume();
+			
 			System.out.println("Remove button pressed");
 		});
 		
