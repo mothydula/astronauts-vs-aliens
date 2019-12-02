@@ -28,6 +28,10 @@ public class Tile {
 		this.characterAtTile = character;
 	}
 	
+	public void deleteCharacter() {
+		this.characterAtTile = null;
+	}
+	
 	public Image getImage() {
 		return image;
 	}
