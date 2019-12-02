@@ -95,6 +95,7 @@ public class View extends Application implements Observer{
 	
 	// notifies update that defender is being removed, not placed.
 	private boolean removeToggled;
+	private int[] indexToRemove;
 
 	public View() {
 		model = new Model();
@@ -113,6 +114,7 @@ public class View extends Application implements Observer{
 		};
 		
 		removeToggled = false;
+		indexToRemove = new int[]{0, 0};
 		
 		// Currency generator - deposit 50 space bucks every 5 seconds
 		timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
@@ -163,8 +165,10 @@ public class View extends Application implements Observer{
 					}
 				}
 			} else { // Remove defender tower
+				int r = indexToRemove[0];
+				int c = indexToRemove[1];
 				for (Node node: children) {
-					if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+					if (GridPane.getRowIndex(node) == r && GridPane.getColumnIndex(node) == c) {
 						// Place
 						ImageView view = (ImageView)node;
 
@@ -175,6 +179,7 @@ public class View extends Application implements Observer{
 					}
 				}
 				removeToggled = false;
+				indexToRemove = new int[] {0, 0};
 			}
 			
 		} else if (arg instanceof String) {
@@ -437,12 +442,13 @@ public class View extends Application implements Observer{
 					if (!removeToggled) {
 						// Place tower
 						controller.placeTower(selectedTower, row, col);
+						db.clear();
 					} else {
+						indexToRemove = new int[]{row, col};
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
 						controller.removeTower(towerToRemove, row, col);
 					}
-					db.clear();
 				}
 				e.setDropCompleted(true);
 				e.consume();			
