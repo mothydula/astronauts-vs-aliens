@@ -1,6 +1,7 @@
 package game;
 
 
+import characters.BoardCharacter;
 import characters.Astronauts.DefenderTower;
 import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
@@ -23,26 +24,26 @@ public class Controller {
 		
 	}
 	
-	public void placeTower(DefenderTower tower, int row, int col) {
+	public void placeCharacter(BoardCharacter character, int row, int col) {
 		int currBank = model.getSpacebucks();
 		
 		// Check if the tile is empty
 		if (model.isEmpty(row, col)) {
 			
 			// Check if user can afford the tower
-			if (currBank >= tower.getCost()) {
+			if ((character instanceof DefenderTower) && (currBank >= ((DefenderTower)character).getCost())) {
 				
 				// Check if currency tower
-				if (tower instanceof IncomeTower) {
+				if (character instanceof IncomeTower) {
 					// Add a timeline for currency generation for this specific income tower
-					IncomeTower incomeTower = (IncomeTower)tower;
+					IncomeTower incomeTower = (IncomeTower)character;
 					Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(incomeTower.getTimeline()), e -> {
 						model.depositSpacebucks(incomeTower.getDepositAmount());
 					}));
 					timeline.setCycleCount(Timeline.INDEFINITE);
 					timeline.play();
 				}
-				model.placeTower(tower, row, col);
+				model.placeTower(character, row, col);
 			} else {
 				model.notifyInvalidPlacement("cost"); // not enough funds
 			}
