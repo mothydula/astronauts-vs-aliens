@@ -55,11 +55,15 @@ public class Controller {
 		model.depositSpacebucks(amount);
 	}
 	
-	public void removeTower() {
-		
+	public void removeTower(DefenderTower towerToRemove, int row, int col) {
+		if (model.isEmpty(row, col)) {
+			// model.notifyInvalidRemoval();
+		} else {
+			model.removeTower(towerToRemove, row, col);
+		}
 	}
 	
 	public void collectSpaceBucks() {
-		
+		// TODO: implement
 	}
 }
