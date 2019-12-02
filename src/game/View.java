@@ -74,7 +74,7 @@ public class View extends Application implements Observer{
 	private final String RAIL_GUN_IMAGE 		= "file:assets/general/rail-gun.png";
 	private final String RAIL_GUN_GIF 			= "file:assets/general/rail-gun.gif";
 	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
-	private final String ALIEN_STARTER_IMAGE 	= "file:assets/general/alien-sample.png";
+	private final String ALIEN_STARTER_IMAGE 	= "file:assets/aliens/grunt-walk.gif";
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
@@ -101,7 +101,7 @@ public class View extends Application implements Observer{
 	
 	// notifies update that defender is being removed, not placed.
 	private boolean removeToggled;
-
+	
 	public View() {
 		model = new Model();
 		controller = new Controller(model);
