@@ -44,11 +44,8 @@ public class Controller {
 		currentIncome = 0;
 		model.setSpeedMultiplier(1);
 		generateAliens();
-//		Thread timerThread = new Thread(() -> startTimer());
-//		timerThread.start();
 		new Thread(() -> startAlienTimeline()).start();
 		startMoneyTimeline();
-//		startTimer();
 	}
 	
 	private void startMoneyTimeline() {
@@ -105,15 +102,6 @@ public class Controller {
 		startAlienTimeline();
 	}
 	
-	private void startTimer() {
-		this.timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				Platform.runLater(() -> animate());
-			}
-		};
-		timer.schedule(task, 1000, FRAME_TIME);
-	}
 	
 	public void pause() {
 		moneyTimeline.pause();
@@ -123,12 +111,6 @@ public class Controller {
 	public void resume() {
 		moneyTimeline.play();
 		alienTimeline.play();
-//		TimerTask task = new TimerTask() {
-//			public void run() {
-//				animate(speedMultiplier);
-//			}
-//		};
-//		timer.schedule(task, 0, FRAME_TIME);
 	}
 	
 	private void animate() {
