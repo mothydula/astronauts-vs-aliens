@@ -157,7 +157,8 @@ public class View extends Application implements Observer{
 			switch(message.getType()) {
 				case MoveMessage.VALID_MOVE:
 					if (message.isRemove()) {
-						
+						mainGroup.getChildren().remove(defendersGrid[message.getRow()][message.getCol()]);
+						removeToggled = false;
 					} else {
 						StackPane towerPane = new StackPane();
 						towerPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
@@ -602,7 +603,6 @@ public class View extends Application implements Observer{
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
 						controller.removeTower(towerToRemove, row, col);
-						mainGroup.getChildren().remove(defendersGrid[row][col]);
 					}
 				}
 				e.setDropCompleted(true);
@@ -735,8 +735,6 @@ public class View extends Application implements Observer{
 			content.putImage(new Image(REMOVE_X_IMAGE));
 			rm.setContent(content);
 			e.consume();
-			
-			System.out.println("Remove button pressed");
 		});
 		
 		defenderBar.getChildren().addAll(currencyCard, selectionBar, removeBtn);
