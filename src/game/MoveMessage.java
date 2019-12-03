@@ -27,6 +27,7 @@ public class MoveMessage {
 		this.remove = remove;
 	}
 	
+	
 	public int getType() {
 		return type;
 	}

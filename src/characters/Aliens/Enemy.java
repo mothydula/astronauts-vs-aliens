@@ -66,11 +66,11 @@ public class Enemy extends BoardCharacter {
 		return stackPane;
 	}
 	
-	public void move(int speedMultiplier) {
+	public void move(double speedMultiplier) {
 		double xPos = stackPane.getTranslateX();
 		this.setCol(calculateCol(xPos));
 		System.out.println(this.getCol());
-		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.7) * speedMultiplier));
+		stackPane.setTranslateX((xPos - (0.3 * speedMultiplier)));
 	}
 	
 	private int calculateCol(double xPos) {

@@ -13,13 +13,14 @@ public class Model extends Observable {
 	private Tile[][] board;
 	// TODO: add list of defenders to be able to iterate while animating?? Maybe not necessary of checking with row, col from alien.
 	private int bank;
-	private int stage;
+	private int wave;
 	private List<Enemy> aliens;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
-		stage = 1;
+		bank = 50;
+		wave = 1;
 		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
@@ -27,6 +28,13 @@ public class Model extends Observable {
 	
 	public void addAlien(Enemy alien) {
 		aliens.add(alien);
+	}
+	
+	public void removeAlien(Enemy alien) {
+		aliens.remove(alien);
+		MoveMessage message = new MoveMessage(MoveMessage.VALID_MOVE, alien, 0, 0, true);
+		setChanged();
+		notifyObservers(message);
 	}
 	
 	public List<Enemy> getAliens() {
@@ -37,8 +45,8 @@ public class Model extends Observable {
 		return !aliens.isEmpty();
 	}
 	
-	public int getStage() {
-		return stage;
+	public int getWaveNumber() {
+		return wave;
 	}
 	
 	// Methods
@@ -88,7 +96,7 @@ public class Model extends Observable {
 	public void depositSpacebucks(int amount) {
 		bank += amount;
 		setChanged();
-		notifyObservers(); // TODO: add new type of message to add money and implement in view
+		notifyObservers();
 	}
 	
 	public void notifyInvalidPlacement() {

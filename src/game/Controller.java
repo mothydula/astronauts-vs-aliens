@@ -1,6 +1,8 @@
 package game;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,13 +27,17 @@ public class Controller {
 	private static final int STAGE_ONE_ALIENS = 5;
 	private static final int STAGE_TWO_ALIENS = 10;
 	private static final int STAGE_THREE_ALIENS = 20;
-	private int speedMultiplier;
+	private double speedMultiplier;
+	private int currentIncome;
+	private final int CURRENCY_TIMELINE = 10; // seconds
+	private final int CURRENCY_DEPOSIT = 25;
 
 	
 	// Constructor
 	public Controller(Model model) {
 		this.model = model;
 		speedMultiplier = 1;
+		currentIncome = 0;
 	}
 	
 	// Methods
@@ -39,18 +45,28 @@ public class Controller {
 		generateAliens();
 		Thread timerThread = new Thread(() -> startTimer());
 		timerThread.start();
+		startMoneyTimeline();
 //		startTimer();
+	}
+	
+	private void startMoneyTimeline() {
+		// Currency generator - deposit 50 space bucks every 5 seconds
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
+			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
+		}));
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
 	}
 	
 	private void generateAliens() {
 		Random rand = new Random();
-		int stage = model.getStage();
+		int waveNumber = model.getWaveNumber();
 		
-		if (stage == 1) {
-			for (int i = 0; i < STAGE_ONE_ALIENS; i++) {
+		if (waveNumber == 1) {
+			for (int i = 0; i < STAGE_ONE_ALIENS; i++) { 
 				LittleGreenMen alien = new LittleGreenMen();
 				int row = rand.nextInt(ROWS);
-				int col = COLS;
+				int col = rand.nextInt(3) + COLS+2;
 				alien.setRow(row);
 				alien.setCol(col);
 				alien.setStackPane();
@@ -58,19 +74,22 @@ public class Controller {
 				model.addAlien(alien);
 				Platform.runLater(() -> model.placeCharacter(alien, row, col));
 			}
-		} else if (stage == 2) {
+		} else if (waveNumber == 2) {
 			
-		} else if (stage == 3) {
+		} else if (waveNumber == 3) {
 			
 		}
+	}
+	
+	public void increaseSpeed() {
+		speedMultiplier += 1;
 	}
 	
 	private void startTimer() {
 		this.timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				animate(speedMultiplier);
-//				Platform.runLater(() -> animate(speedMultiplier));
+				Platform.runLater(() -> animate(speedMultiplier));
 			}
 		};
 		timer.schedule(task, 1000, FRAME_TIME);
@@ -89,8 +108,8 @@ public class Controller {
 		timer.schedule(task, 0, FRAME_TIME);
 	}
 	
-	private void animate(int speedMultiplier) {
-		// TODO: Call another function to calculate hits or deaths
+	private void animate(double speedMultiplier) {
+		calculateHitsOrDeaths();
 		for (Enemy alien : model.getAliens()) {
 			alien.move(speedMultiplier);
 		}
@@ -99,7 +118,12 @@ public class Controller {
 	}
 	
 	private void calculateHitsOrDeaths() {
-		
+		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
+		for (Enemy alien : aliens) {
+			if (alien.getCol() == -1) {
+				model.removeAlien(alien);
+			}
+		}
 	}
 	
 	

@@ -45,8 +45,6 @@ public class View extends Application implements Observer{
 	
 	// General constants
 	private final int NUM_TOWERS = 9;
-	private final int CURRENCY_TIMELINE = 5; // seconds
-	private final int CURRENCY_DEPOSIT = 50;
 	
 	// View-specific constants
 	private final int BOARD_OFFSET = 310;
@@ -134,11 +132,6 @@ public class View extends Application implements Observer{
 		removeToggled = false;
 		indexToRemove = new int[]{0, 0};
 		
-		// Currency generator - deposit 50 space bucks every 5 seconds
-		timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
-			controller.depositSpacebucks(CURRENCY_DEPOSIT);
-		}));
-		timeline.setCycleCount(Timeline.INDEFINITE);
 	}
 
 	@Override
@@ -165,7 +158,11 @@ public class View extends Application implements Observer{
 			switch(message.getType()) {
 				case MoveMessage.VALID_MOVE:
 					if (message.isRemove()) {
-						mainGroup.getChildren().remove(defendersGrid[message.getRow()][message.getCol()]);
+						if (message.getCharacter() instanceof DefenderTower) {
+							mainGroup.getChildren().remove(defendersGrid[message.getRow()][message.getCol()]);
+						} else {
+							mainGroup.getChildren().remove(((Enemy) message.getCharacter()).getStackPane());
+						}
 						removeToggled = false;
 					} else {
 						if (message.getCharacter() instanceof DefenderTower) {
@@ -207,6 +204,7 @@ public class View extends Application implements Observer{
 					int fadeOutTime= 150; //0.5 seconds
 					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 					break;
+					
 				
 			}
 		}	
@@ -352,8 +350,6 @@ public class View extends Application implements Observer{
 		setupGrid();
 		setupGridHandler();
 	    
-		// Start timeline
-		timeline.play();
 		
 		Scene scene = new Scene(mainGroup, SCENE_WIDTH, SCENE_HEIGHT);
 		primaryStage.setTitle("Aliens vs. Astronauts");
@@ -506,6 +502,7 @@ public class View extends Application implements Observer{
 		
 		// Handlers
 		fastForwardBtn.setOnAction( e -> {
+			controller.increaseSpeed();
 			// TODO Implement Fast Forward functionality
 			System.out.println("Fast forward button pressed");
 		});
