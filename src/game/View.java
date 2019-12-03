@@ -505,6 +505,7 @@ public class View extends Application implements Observer{
 		// Handlers
 		fastForwardBtn.setOnAction( e -> {
 			controller.increaseSpeed();
+			fastForwardBtn.setText(model.getSpeedMultiplier() + "X");
 			// TODO Implement Fast Forward functionality
 			System.out.println("Fast forward button pressed");
 		});
@@ -512,10 +513,12 @@ public class View extends Application implements Observer{
 		pauseBtn.setOnAction( e -> {
 			if (paused) {				// TODO: create pause menu modal
 				controller.resume();
+				pauseBtn.setText("Pause");
 				paused = false;
 			} else {
 				controller.pause();
 				paused = true;
+				pauseBtn.setText("Resume");
 			}
 			// TODO: Implement pause functionality
 			System.out.println("Pause button pressed");

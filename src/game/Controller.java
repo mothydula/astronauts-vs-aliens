@@ -96,16 +96,10 @@ public class Controller {
 	
 	public void increaseSpeed() {
 		int speed = model.getSpeedMultiplier();
-		switch (speed) {
-			case 1:
-				model.setSpeedMultiplier(2);
-				break;
-			case 2:
-				model.setSpeedMultiplier(4);
-				break;
-			case 4:
-				model.setSpeedMultiplier(1);
-				break;
+		if (speed == 8) {
+			model.setSpeedMultiplier(1);
+		} else {
+			model.setSpeedMultiplier(speed * 2);
 		}
 		alienTimeline.stop();
 		startAlienTimeline();
