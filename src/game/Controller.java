@@ -1,11 +1,13 @@
 package game;
 
 
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import characters.BoardCharacter;
+import characters.Aliens.Enemy;
 import characters.Aliens.LittleGreenMen;
 import characters.Astronauts.DefenderTower;
 import characters.IncomeTowers.IncomeTower;
@@ -49,6 +51,7 @@ public class Controller {
 				alien.setCol(col);
 				
 				model.addAlien(alien);
+				model.placeCharacter(alien, row, col);
 			}
 		} else if (stage == 2) {
 			
@@ -68,6 +71,7 @@ public class Controller {
 	}
 	
 	private void animate() {
+		List<Enemy> aliens = model.getAliens();
 		
 	}
 	
