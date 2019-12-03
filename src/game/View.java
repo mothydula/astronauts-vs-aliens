@@ -328,7 +328,6 @@ public class View extends Application implements Observer{
 	 */
 	public void setupGameScene() {
 		mainGroup = new Group();
-		controller.setMainGroup(mainGroup);
 
 		Image bgImage = new Image(GAME_BACKGROUND_IMAGE);
 
