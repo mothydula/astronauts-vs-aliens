@@ -6,16 +6,16 @@ import java.util.Observable;
 import characters.*;
 import characters.Aliens.Enemy;
 import characters.Astronauts.DefenderTower;
-import javafx.scene.Group;
-import javafx.scene.image.Image;
 import map.Tile;
 
 public class Model extends Observable {
 	// Class fields
 	private Tile[][] board;
+	// TODO: add list of defenders to be able to iterate while animating?? Maybe not necessary of checking with row, col from alien.
 	private int bank;
 	private int stage;
 	private List<Enemy> aliens;
+	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
@@ -88,7 +88,7 @@ public class Model extends Observable {
 	public void depositSpacebucks(int amount) {
 		bank += amount;
 		setChanged();
-		notifyObservers();
+		notifyObservers(); // TODO: add new type of message to add money and implement in view
 	}
 	
 	public void notifyInvalidPlacement() {

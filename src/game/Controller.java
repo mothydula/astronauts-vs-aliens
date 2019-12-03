@@ -1,7 +1,6 @@
 package game;
 
 
-import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,9 +78,15 @@ public class Controller {
 	}
 	
 	private void animate() {
+		// TODO: Call another function to calculate hits or deaths
 		for (Enemy alien : model.getAliens()) {
 			alien.move();
 		}
+		// TODO: Call another method to move bullets
+		
+	}
+	
+	private void calculateHitsOrDeaths() {
 		
 	}
 	
