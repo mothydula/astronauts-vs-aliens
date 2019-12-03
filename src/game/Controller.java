@@ -37,7 +37,9 @@ public class Controller {
 	// Methods
 	public void initialize() {
 		generateAliens();
-		startTimer();
+		Thread timerThread = new Thread(() -> startTimer());
+		timerThread.start();
+//		startTimer();
 	}
 	
 	private void generateAliens() {
@@ -67,7 +69,8 @@ public class Controller {
 		this.timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				Platform.runLater(() -> animate(speedMultiplier));
+				animate(speedMultiplier);
+//				Platform.runLater(() -> animate(speedMultiplier));
 			}
 		};
 		timer.schedule(task, 1000, FRAME_TIME);
@@ -78,10 +81,9 @@ public class Controller {
 	}
 	
 	public void resume() {
-		this.timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				Platform.runLater(() -> animate(speedMultiplier));
+				animate(speedMultiplier);
 			}
 		};
 		timer.schedule(task, 0, FRAME_TIME);
