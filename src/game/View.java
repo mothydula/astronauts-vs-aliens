@@ -8,6 +8,7 @@ import characters.Astronauts.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,6 +42,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import map.Tile;
+import characters.Aliens.Enemy;
 
 public class View extends Application implements Observer{
 	
@@ -159,17 +161,25 @@ public class View extends Application implements Observer{
 						mainGroup.getChildren().remove(defendersGrid[message.getRow()][message.getCol()]);
 						removeToggled = false;
 					} else {
-						StackPane towerPane = new StackPane();
-						towerPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
-						towerPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
-						towerPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-						Image towerImage = message.getCharacter().getImage();
-						ImageView towerImageView = new ImageView(towerImage);
-						towerPane.getChildren().add(towerImageView);
-						mainGroup.getChildren().add(towerPane);
-						
 						if (message.getCharacter() instanceof DefenderTower) {
-							defendersGrid[message.getRow()][message.getCol()] = towerPane;
+							StackPane characterPane = new StackPane();
+							characterPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+							characterPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
+							characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
+
+							Image towerImage = message.getCharacter().getImage();
+							ImageView towerImageView = new ImageView(towerImage);
+							characterPane.getChildren().add(towerImageView);
+							mainGroup.getChildren().add(characterPane);
+							defendersGrid[message.getRow()][message.getCol()] = characterPane;
+						} else {
+							StackPane alienPane = ((Enemy) message.getCharacter()).getStackPane();
+							alienPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+							alienPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
+							alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
+//							alienPane.setStyle("-fx-border-color: black");
+//							Platform.runLater(() -> mainGroup.getChildren().add(alienPane));
+							mainGroup.getChildren().add(alienPane);
 						}
 					}
 					break;
@@ -378,6 +388,7 @@ public class View extends Application implements Observer{
 	 */
 	public void setupGameScene() {
 		mainGroup = new Group();
+		controller.setMainGroup(mainGroup);
 //		gameBorderPane = new BorderPane();
 //		gameBorderPane.setPadding(new Insets(10,10,10,10));
 		
@@ -418,6 +429,9 @@ public class View extends Application implements Observer{
 		primaryStage.setTitle("Aliens vs. Astronauts");
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
+		
+		
+		controller.initialize();
 	}
 	
 	/**
@@ -482,7 +496,7 @@ public class View extends Application implements Observer{
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
 					StackPane gunStackPane = new StackPane();
-//					gunStackPane.setStyle("-fx-border-color: black");
+					gunStackPane.setStyle("-fx-border-color: black");
 					gunStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					gunStackPane.setTranslateX(COLUMN_OFFSET);
 					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -493,7 +507,7 @@ public class View extends Application implements Observer{
 					defendersGrid[row][col] = gunStackPane;
 				} else if (col <= Controller.COLS - 1) {
 					StackPane tempStackPane = new StackPane();
-//					tempStackPane.setStyle("-fx-border-color: black");
+					tempStackPane.setStyle("-fx-border-color: black");
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);

@@ -14,6 +14,7 @@ import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.util.Duration;
 
 public class Controller {
@@ -26,6 +27,8 @@ public class Controller {
 	private static final int STAGE_ONE_ALIENS = 5;
 	private static final int STAGE_TWO_ALIENS = 10;
 	private static final int STAGE_THREE_ALIENS = 20;
+	private Group mainGroup;
+
 	
 	// Constructor
 	public Controller(Model model) {
@@ -33,6 +36,10 @@ public class Controller {
 	}
 	
 	// Methods
+	public void setMainGroup(Group mainGroup) {
+		this.mainGroup = mainGroup;
+	}
+	
 	public void initialize() {
 		generateAliens();
 		startTimer();
@@ -46,12 +53,13 @@ public class Controller {
 			for (int i = 0; i < STAGE_ONE_ALIENS; i++) {
 				LittleGreenMen alien = new LittleGreenMen();
 				int row = rand.nextInt(ROWS);
-				int col = COLS - 1;
+				int col = COLS;
 				alien.setRow(row);
 				alien.setCol(col);
+				alien.setStackPane();
 				
 				model.addAlien(alien);
-				model.placeCharacter(alien, row, col);
+				Platform.runLater(() -> model.placeCharacter(alien, row, col));
 			}
 		} else if (stage == 2) {
 			
@@ -71,7 +79,9 @@ public class Controller {
 	}
 	
 	private void animate() {
-		List<Enemy> aliens = model.getAliens();
+		for (Enemy alien : model.getAliens()) {
+			alien.move();
+		}
 		
 	}
 	

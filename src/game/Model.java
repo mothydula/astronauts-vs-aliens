@@ -6,6 +6,7 @@ import java.util.Observable;
 import characters.*;
 import characters.Aliens.Enemy;
 import characters.Astronauts.DefenderTower;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import map.Tile;
 
