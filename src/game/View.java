@@ -92,6 +92,7 @@ public class View extends Application implements Observer{
 	private Group mainGroup;
 	private BorderPane startBorderPane;
 	private BorderPane gameBorderPane;
+	private boolean paused;
 	
 	// Automatic currency generator
 	private Timeline timeline;
@@ -109,6 +110,7 @@ public class View extends Application implements Observer{
 	private StackPane[][] defendersGrid;
 
 	public View() {
+		paused = false;
 		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
 		model = new Model();
 		controller = new Controller(model);
@@ -495,6 +497,11 @@ public class View extends Application implements Observer{
 		});
 		
 		pauseBtn.setOnAction( e -> {
+			if (paused) {				// TODO: create pause menu modal
+				controller.resume();
+			} else {
+				controller.pause();
+			}
 			// TODO: Implement pause functionality
 			System.out.println("Pause button pressed");
 		});

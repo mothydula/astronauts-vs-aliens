@@ -13,7 +13,6 @@ import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.util.Duration;
 
 public class Controller {
@@ -22,15 +21,17 @@ public class Controller {
 	public static final int COLS = 12;
 	private Model model;
 	private Timer timer;
-	private static final long FRAME_TIME = 16l;
+	private static final long FRAME_TIME = 35l;
 	private static final int STAGE_ONE_ALIENS = 5;
 	private static final int STAGE_TWO_ALIENS = 10;
 	private static final int STAGE_THREE_ALIENS = 20;
+	private int speedMultiplier;
 
 	
 	// Constructor
 	public Controller(Model model) {
 		this.model = model;
+		speedMultiplier = 1;
 	}
 	
 	// Methods
@@ -66,16 +67,30 @@ public class Controller {
 		this.timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				Platform.runLater(() -> animate());
+				Platform.runLater(() -> animate(speedMultiplier));
 			}
 		};
 		timer.schedule(task, 0, FRAME_TIME);
 	}
 	
-	private void animate() {
+	public void pause() {
+		timer.cancel();
+	}
+	
+	public void resume() {
+		this.timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				Platform.runLater(() -> animate(speedMultiplier));
+			}
+		};
+		timer.schedule(task, 0, FRAME_TIME);
+	}
+	
+	private void animate(int speedMultiplier) {
 		// TODO: Call another function to calculate hits or deaths
 		for (Enemy alien : model.getAliens()) {
-			alien.move();
+			alien.move(speedMultiplier);
 		}
 		// TODO: Call another method to move bullets
 		

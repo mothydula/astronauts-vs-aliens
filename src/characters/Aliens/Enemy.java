@@ -65,8 +65,8 @@ public class Enemy extends BoardCharacter {
 		return stackPane;
 	}
 	
-	public void move() {
+	public void move(int speedMultiplier) {
 		double xPos = stackPane.getTranslateX();
-		stackPane.setTranslateX(xPos - 0.07);
+		stackPane.setTranslateX((xPos - 0.07) * speedMultiplier);
 	}
 }
