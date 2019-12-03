@@ -403,18 +403,6 @@ public class View extends Application implements Observer{
 	private void setupGridHandler() {
 		mainGroup.setOnDragOver(e -> {
 			e.acceptTransferModes(TransferMode.ANY);
-//			int col = -1;
-//			int row = -1;
-//			if (e.getX() >= COLUMN_OFFSET && e.getX() <= (GP_CELL_SIZE * Controller.COLS) + COLUMN_OFFSET) {
-//				col = (int)(e.getX() - COLUMN_OFFSET) / GP_CELL_SIZE;
-//			}
-//			if (e.getY() >= BOARD_OFFSET && e.getY() <= SCENE_HEIGHT) {
-//				row = (int)(e.getY() - BOARD_OFFSET) / GP_CELL_SIZE;
-//			}
-//			
-//			if (col != -1 && row != -1) {
-//			}
-//			
 			e.consume();
 		});
 		
