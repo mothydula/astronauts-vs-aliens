@@ -37,6 +37,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import map.Tile;
 
@@ -290,18 +291,22 @@ public class View extends Application implements Observer{
 			infoPane.setPadding(new Insets(12,12,12,12));
 			infoPane.setPrefHeight(350);
 			infoPane.setContent(infoText);
-			VBox infoVBox = new VBox();
+			VBox infoVBox = new VBox(8);
+			infoVBox.setPadding(new Insets(50,12,12,12));
 			Button returntoMenu = new Button("Close");
 			infoVBox.getChildren().add(infoPane);
 			infoVBox.getChildren().add(returntoMenu);
 			infoVBox.setAlignment(Pos.CENTER);
-			Scene infoScene = new Scene(infoPane);
+			Scene infoScene = new Scene(infoVBox);
 			Stage infoStage = new Stage();
 			returntoMenu.setOnAction(ba->{
 				infoStage.close();
 			});
 			infoStage.setScene(infoScene);
 			infoStage.setTitle("Info");
+			
+			//Removes the minimize, maximize and close buttons
+			infoStage.initStyle(StageStyle.UNDECORATED);
 			infoStage.show();
 		});
 		
