@@ -1,6 +1,6 @@
 package game;
 
-import characters.Astronauts.DefenderTower;
+import characters.BoardCharacter;
 
 public class MoveMessage {	
 	// Class constants
@@ -9,7 +9,7 @@ public class MoveMessage {
 	public static final int VALID_MOVE = 2;
 	
 	private int type;
-	private DefenderTower tower;
+	private BoardCharacter character;
 	private int row;
 	private int col;
 	private boolean remove;
@@ -19,9 +19,9 @@ public class MoveMessage {
 		this.type = type;
 	}
 	
-	public MoveMessage(int type, DefenderTower tower, int row, int col, boolean remove) {
+	public MoveMessage(int type, BoardCharacter character, int row, int col, boolean remove) {
 		this.type = type;
-		this.tower = tower;
+		this.character = character;
 		this.row = row;
 		this.col = col;
 		this.remove = remove;
@@ -31,8 +31,8 @@ public class MoveMessage {
 		return type;
 	}
 	
-	public DefenderTower getTower() {
-		return tower;
+	public BoardCharacter getCharacter() {
+		return character;
 	}
 	
 	public int getRow() {
