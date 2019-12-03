@@ -51,12 +51,12 @@ public class View extends Application implements Observer{
 	// View-specific constants
 	private final int BOARD_OFFSET = 310;
 	private final int ROW_OFFSET = 82;
-	private final int COLUMN_OFFSET = 170;
+	public static final int COLUMN_OFFSET = 170;
 	
 	
 	private final int SCENE_WIDTH = 1300;
 	private final int SCENE_HEIGHT = 800;
-	private final int GP_CELL_SIZE = 80;
+	public static final int GP_CELL_SIZE = 80;
 	private final int CELL_GAP = 5;
 	private final int TITLE_TOP_MARGIN = 75;
 	private final int PROGRESSBAR_TOP_MARGIN = 50;
