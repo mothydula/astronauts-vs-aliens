@@ -4,6 +4,9 @@ import characters.Astronauts.DefenderTower;
 import characters.Astronauts.StartrellCluggins;
 import javafx.scene.image.Image;
 
+/**
+ * Startrell's Ammo class
+ * */
 public class StartrellClugginsAmmo extends Ammo{
 
 	public StartrellClugginsAmmo(DefenderTower dt, Image sprite) {
