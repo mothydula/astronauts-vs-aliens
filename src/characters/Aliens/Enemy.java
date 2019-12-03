@@ -2,6 +2,7 @@ package characters.Aliens;
 
 import characters.BoardCharacter;
 import game.View;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -67,6 +68,6 @@ public class Enemy extends BoardCharacter {
 	
 	public void move(int speedMultiplier) {
 		double xPos = stackPane.getTranslateX();
-		stackPane.setTranslateX((xPos - 0.07) * speedMultiplier);
+		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.07) * speedMultiplier));
 	}
 }
