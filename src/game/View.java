@@ -113,7 +113,6 @@ public class View extends Application implements Observer{
 	private StackPane[][] defendersGrid;
 
 	public View() {
-		System.out.println("VIEW");
 		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
 		model = new Model();
 		controller = new Controller(model);
@@ -164,12 +163,14 @@ public class View extends Application implements Observer{
 						towerPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
 						towerPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
 						towerPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-						Image towerImage = message.getTower().getImage();
+						Image towerImage = message.getCharacter().getImage();
 						ImageView towerImageView = new ImageView(towerImage);
 						towerPane.getChildren().add(towerImageView);
 						mainGroup.getChildren().add(towerPane);
 						
-						defendersGrid[message.getRow()][message.getCol()] = towerPane;
+						if (message.getCharacter() instanceof DefenderTower) {
+							defendersGrid[message.getRow()][message.getCol()] = towerPane;
+						}
 					}
 					break;
 				case MoveMessage.INVALID_MOVE:
