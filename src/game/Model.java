@@ -10,9 +10,11 @@ public class Model extends Observable {
 	// Class fields
 	private Tile[][] board;
 	private int bank;
+	private int enemyWave;
 	
 	// Constructor
 	public Model () {
+		enemyWave = 5;
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
 	}
