@@ -3,6 +3,9 @@ package ammo;
 import characters.Astronauts.AstroJoe;
 import javafx.scene.image.Image;
 
+/**
+ * AstroJoe's Ammo class
+ * */
 public class AstroJoeAmmo extends Ammo{
 	
 	public AstroJoeAmmo() {
