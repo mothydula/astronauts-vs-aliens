@@ -6,12 +6,16 @@ import javafx.scene.image.Image;
  * Super class for all ammo
  * */
 public class Ammo {
+	
+	//The basic stats of the ammo
 	private int damage;
 	private int speed;
 	private Image sprite;
 	
+	//Image sizing
 	protected static final int SPRITE_WIDTH = 35;
 	protected static final int SPRITE_HEIGHT = 35;
+	
 	//AstroJoe Ammo Image
 	public static final String ASTROJOE_AMMO_SPRITE = "file:assets/ammo/astro-joe-ammo.png";
 	
@@ -27,8 +31,11 @@ public class Ammo {
 	//TARS Ammo Image
 	public static final String TARS_AMMO_SPRITE = "file:assets/ammo/tars-ammo.png";
 	
-	
+	/**Constructor
+	 * */
 	public Ammo (DefenderTower dt, Image sprite) {
+		
+		//Grabs the stats that are held in each unique DefenderTower object
 		this.speed = dt.getAttackSpeed();
 		this.damage = dt.getDamage();
 		this.sprite = sprite;
