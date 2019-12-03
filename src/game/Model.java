@@ -80,8 +80,12 @@ public class Model extends Observable {
 		bank += DefenderTower.REFUND_MULTIPLIER * towerToRemove.getCost();
 		
 		board[row][col] = new Tile(null);
+		
+		// Creating message to send to view
+		MoveMessage message = new MoveMessage(MoveMessage.VALID_MOVE, towerToRemove, row, col, true);
+		
 		setChanged();
-		notifyObservers(towerToRemove);
+		notifyObservers(message);
 	}
 
 	public DefenderTower getDefenderAt(int row, int col) {
