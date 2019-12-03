@@ -6,6 +6,7 @@ import characters.Astronauts.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -442,8 +443,11 @@ public class View extends Application implements Observer{
 					} else {
 						indexToRemove = new int[]{row, col};
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
-						System.out.println("Removing " + towerToRemove.toString() + " from " + row + "," + col);
-						controller.removeTower(towerToRemove, row, col);
+						if (towerToRemove != null) {
+							controller.removeTower(towerToRemove, row, col);
+						} else {
+							removeToggled = false;
+						}
 					}
 				}
 				e.setDropCompleted(true);
@@ -495,8 +499,8 @@ public class View extends Application implements Observer{
 			// TODO Implement Fast Forward functionality
 			System.out.println("Fast forward button pressed");
 		});
-		
-		pauseBtn.setOnAction( e -> {
+
+		pauseBtn.setOnMouseClicked( e -> {
 			if (paused) {				// TODO: create pause menu modal
 				controller.resume();
 			} else {

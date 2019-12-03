@@ -21,7 +21,7 @@ public class Controller {
 	public static final int COLS = 12;
 	private Model model;
 	private Timer timer;
-	private static final long FRAME_TIME = 35l;
+	private static final long FRAME_TIME = 16l;
 	private static final int STAGE_ONE_ALIENS = 5;
 	private static final int STAGE_TWO_ALIENS = 10;
 	private static final int STAGE_THREE_ALIENS = 20;
@@ -70,7 +70,7 @@ public class Controller {
 				Platform.runLater(() -> animate(speedMultiplier));
 			}
 		};
-		timer.schedule(task, 0, FRAME_TIME);
+		timer.schedule(task, 1000, FRAME_TIME);
 	}
 	
 	public void pause() {
