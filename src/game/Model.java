@@ -1,20 +1,44 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import characters.*;
+import characters.Aliens.Enemy;
 import characters.Astronauts.DefenderTower;
-import javafx.scene.image.Image;
 import map.Tile;
 
 public class Model extends Observable {
 	// Class fields
 	private Tile[][] board;
+	// TODO: add list of defenders to be able to iterate while animating?? Maybe not necessary of checking with row, col from alien.
 	private int bank;
+	private int stage;
+	private List<Enemy> aliens;
+	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
+		stage = 1;
+		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public void addAlien(Enemy alien) {
+		aliens.add(alien);
+	}
+	
+	public List<Enemy> getAliens() {
+		return aliens;
+	}
+	
+	public boolean hasAliens() {
+		return !aliens.isEmpty();
+	}
+	
+	public int getStage() {
+		return stage;
 	}
 	
 	// Methods
@@ -25,6 +49,7 @@ public class Model extends Observable {
 			}
 		}
 	}
+	
 	
 	public boolean isEmpty(int row, int col) {
 		return board[row][col].isEmpty();
@@ -39,30 +64,43 @@ public class Model extends Observable {
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
+		MoveMessage message = null;
 		// Adjust bank amount
 		if (character instanceof DefenderTower) {
 			bank -= ((DefenderTower)character).getCost();
+			
+			// Place character
+			character.setRow(row);
+			character.setCol(col);
+			board[row][col].placeCharacter(character);
+			
+			// Creating message to send to view
+			message = new MoveMessage(MoveMessage.VALID_MOVE, (DefenderTower)character, row, col, false);
+		} else if (character instanceof Enemy) {
+			message = new MoveMessage(MoveMessage.VALID_MOVE, (Enemy)character, row, col, false);
 		}
-		
-		// Place character
-		character.setRow(row);
-		character.setCol(col);
-		board[row][col].placeCharacter(character);
 		
 		// Notify Observers
 		setChanged();
-		notifyObservers(character); // TODO: Handle successful placement
+		notifyObservers(message); // TODO: Handle successful placement
 	}
 	
 	public void depositSpacebucks(int amount) {
 		bank += amount;
 		setChanged();
-		notifyObservers();
+		notifyObservers(); // TODO: add new type of message to add money and implement in view
 	}
 	
-	public void notifyInvalidPlacement(String reason) {
+	public void notifyInvalidPlacement() {
+		MoveMessage message = new MoveMessage(MoveMessage.INVALID_MOVE);
 		setChanged();
-		notifyObservers(reason);
+		notifyObservers(message);
+	}
+	
+	public void notifyInsufficientFunds() {
+		MoveMessage message = new MoveMessage(MoveMessage.INSUFFICIENT_FUNDS);
+		setChanged();
+		notifyObservers(message);
 	}
 
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
@@ -70,8 +108,12 @@ public class Model extends Observable {
 		bank += DefenderTower.REFUND_MULTIPLIER * towerToRemove.getCost();
 		
 		board[row][col] = new Tile(null);
+		
+		// Creating message to send to view
+		MoveMessage message = new MoveMessage(MoveMessage.VALID_MOVE, towerToRemove, row, col, true);
+		
 		setChanged();
-		notifyObservers(towerToRemove);
+		notifyObservers(message);
 	}
 
 	public DefenderTower getDefenderAt(int row, int col) {

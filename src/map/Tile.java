@@ -1,6 +1,10 @@
 package map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import characters.BoardCharacter;
+import characters.Aliens.Enemy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,6 +20,7 @@ public class Tile {
 	}
 	
 	// Methods
+	
 	public boolean isEmpty() {
 		return characterAtTile == null;
 	}

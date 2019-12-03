@@ -1,13 +1,16 @@
 package characters.Aliens;
 
 import characters.BoardCharacter;
+import game.View;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
 public class Enemy extends BoardCharacter {
 	// Default values for characters
 
 	// File paths for the images of each DefenderTower
-	public static final String LITTLEGREENMEN_IMAGE = "file:assets/litte-green-men.png";
+	public static final String LITTLEGREENMEN_IMAGE = "file:assets/defenders/astro-joe.gif";
 	public static final String GRUNT_IMAGE 			= "file:assets/grunt.png";
 	public static final String SPRINTER_IMAGE 		= "file:assets/sprinter.png";
 	public static final String TANK_IMAGE 			= "file:assets/tank.png";
@@ -43,9 +46,27 @@ public class Enemy extends BoardCharacter {
 	protected static final int HEALTH_GARGANTUA = 100;
 	protected static final int ATTACK_SPEED_GARGANTUA = 100;
 	protected static final int DAMAGE_GARGANTUA = 100;
+	
+	//Class variables
+	private StackPane stackPane;
 
 	// Constructor
 	protected Enemy(int health, int attackSpeed, int damage, Image sprite) {
 		super(health, attackSpeed, damage, sprite);
+	}
+	
+	public void setStackPane() {
+		stackPane = new StackPane();
+		ImageView imageView = new ImageView(this.getImage());
+		stackPane.getChildren().add(imageView);
+	}
+	
+	public StackPane getStackPane() {
+		return stackPane;
+	}
+	
+	public void move() {
+		double xPos = stackPane.getTranslateX();
+		stackPane.setTranslateX(xPos - 0.07);
 	}
 }

@@ -1,11 +1,19 @@
 package game;
 
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import characters.BoardCharacter;
+import characters.Aliens.Enemy;
+import characters.Aliens.LittleGreenMen;
 import characters.Astronauts.DefenderTower;
 import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.util.Duration;
 
 public class Controller {
@@ -13,6 +21,13 @@ public class Controller {
 	public static final int ROWS = 6;
 	public static final int COLS = 12;
 	private Model model;
+	private Timer timer;
+	private static final long FRAME_TIME = 16l;
+	private static final int STAGE_ONE_ALIENS = 5;
+	private static final int STAGE_TWO_ALIENS = 10;
+	private static final int STAGE_THREE_ALIENS = 20;
+	private Group mainGroup;
+
 	
 	// Constructor
 	public Controller(Model model) {
@@ -20,6 +35,62 @@ public class Controller {
 	}
 	
 	// Methods
+	public void setMainGroup(Group mainGroup) {
+		this.mainGroup = mainGroup;
+	}
+	
+	public void initialize() {
+		generateAliens();
+		startTimer();
+	}
+	
+	private void generateAliens() {
+		Random rand = new Random();
+		int stage = model.getStage();
+		
+		if (stage == 1) {
+			for (int i = 0; i < STAGE_ONE_ALIENS; i++) {
+				LittleGreenMen alien = new LittleGreenMen();
+				int row = rand.nextInt(ROWS);
+				int col = COLS;
+				alien.setRow(row);
+				alien.setCol(col);
+				alien.setStackPane();
+				
+				model.addAlien(alien);
+				Platform.runLater(() -> model.placeCharacter(alien, row, col));
+			}
+		} else if (stage == 2) {
+			
+		} else if (stage == 3) {
+			
+		}
+	}
+	
+	private void startTimer() {
+		this.timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				Platform.runLater(() -> animate());
+			}
+		};
+		timer.schedule(task, 0, FRAME_TIME);
+	}
+	
+	private void animate() {
+		// TODO: Call another function to calculate hits or deaths
+		for (Enemy alien : model.getAliens()) {
+			alien.move();
+		}
+		// TODO: Call another method to move bullets
+		
+	}
+	
+	private void calculateHitsOrDeaths() {
+		
+	}
+	
+	
 	public void purchaseTower() {
 		
 	}
@@ -45,10 +116,10 @@ public class Controller {
 				}
 				model.placeCharacter(character, row, col);
 			} else {
-				model.notifyInvalidPlacement("cost"); // not enough funds
+				model.notifyInsufficientFunds(); // not enough funds
 			}
 		} else {
-			model.notifyInvalidPlacement("taken"); // tile is taken
+			model.notifyInvalidPlacement(); // tile is taken
 		}
 	}
 	
