@@ -10,13 +10,17 @@ public class Model extends Observable {
 	// Class fields
 	private Tile[][] board;
 	private int bank;
-	private int enemyWave;
+	private int stage;
 	
 	// Constructor
 	public Model () {
-		enemyWave = 5;
+		stage = 1;
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public int getStage() {
+		return stage;
 	}
 	
 	// Methods
