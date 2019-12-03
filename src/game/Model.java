@@ -2,6 +2,7 @@ package game;
 
 import java.util.Observable;
 import characters.*;
+import characters.Aliens.Enemy;
 import characters.Astronauts.DefenderTower;
 import javafx.scene.image.Image;
 import map.Tile;
@@ -30,6 +31,10 @@ public class Model extends Observable {
 				board[row][col] = new Tile(null); // Initialize empty tile
 			}
 		}
+	}
+	
+	public void placeAlien(Enemy alien, int row, int col) {
+		board[row][col].addAlien(alien);
 	}
 	
 	public boolean isEmpty(int row, int col) {
