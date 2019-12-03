@@ -11,7 +11,7 @@ public class Enemy extends BoardCharacter {
 	// Default values for characters
 
 	// File paths for the images of each DefenderTower
-	public static final String LITTLEGREENMEN_IMAGE = "file:assets/defenders/astro-joe.gif";
+	public static final String LITTLEGREENMEN_IMAGE = "file:assets/aliens/gargantua-walk/gargantua-0.png";
 	public static final String GRUNT_IMAGE 			= "file:assets/grunt.png";
 	public static final String SPRINTER_IMAGE 		= "file:assets/sprinter.png";
 	public static final String TANK_IMAGE 			= "file:assets/tank.png";
@@ -68,6 +68,14 @@ public class Enemy extends BoardCharacter {
 	
 	public void move(int speedMultiplier) {
 		double xPos = stackPane.getTranslateX();
-		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.07) * speedMultiplier));
+		this.setCol(calculateCol(xPos));
+		System.out.println(this.getCol());
+		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.7) * speedMultiplier));
+	}
+	
+	private int calculateCol(double xPos) {
+		double x = xPos - View.COLUMN_OFFSET;
+		return (int) x / View.GP_CELL_SIZE;
+//		characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
 	}
 }
