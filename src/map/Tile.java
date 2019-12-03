@@ -1,21 +1,39 @@
 package map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import characters.BoardCharacter;
+import characters.Aliens.Enemy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Tile {
 	// Class fields
 	private BoardCharacter characterAtTile;
+	private List<Enemy> aliens;
 	private Image image;
 	private ImageView view; // Required for Node of GridPane
 	
 	// Constructor
 	public Tile(BoardCharacter character) {
 		characterAtTile = character;
+		aliens = new ArrayList<Enemy>();
 	}
 	
 	// Methods
+	public void addAlien(Enemy alien) {
+		aliens.add(alien);
+	}
+	
+	public List<Enemy> getAliens() {
+		return aliens;
+	}
+	
+	public boolean hasAliens() {
+		return !aliens.isEmpty();
+	}
+	
 	public boolean isEmpty() {
 		return characterAtTile == null;
 	}
