@@ -292,6 +292,9 @@ public class View extends Application implements Observer{
 			infoPane.setContent(infoText);
 			VBox infoVBox = new VBox();
 			Button returntoMenu = new Button("Close");
+			infoVBox.getChildren().add(infoPane);
+			infoVBox.getChildren().add(returntoMenu);
+			infoVBox.setAlignment(Pos.CENTER);
 			Scene infoScene = new Scene(infoPane);
 			Stage infoStage = new Stage();
 			returntoMenu.setOnAction(ba->{
