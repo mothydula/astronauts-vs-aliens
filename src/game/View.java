@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -36,6 +37,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import characters.Aliens.Enemy;
 
@@ -111,6 +113,7 @@ public class View extends Application implements Observer{
 	private StackPane[][] defendersGrid;
 
 	public View() {
+		Platform.setImplicitExit(true);  // If all windows are closed, exit program.
 		paused = false;
 		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
 		model = new Model();
@@ -141,6 +144,13 @@ public class View extends Application implements Observer{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		    @Override
+		    public void handle(WindowEvent t) {
+		        Platform.exit();
+		        System.exit(0);
+		    }
+		});
 		
 		// Setup Start menu & show to begin the game
 		setupStartMenu();
