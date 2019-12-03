@@ -23,39 +23,52 @@ public class Controller {
 	public static final int COLS = 12;
 	private Model model;
 	private Timer timer;
-	private static final long FRAME_TIME = 16l;
+	private static final long FRAME_TIME = 100; // Milliseconds
 	private static final int STAGE_ONE_ALIENS = 5;
 	private static final int STAGE_TWO_ALIENS = 10;
 	private static final int STAGE_THREE_ALIENS = 20;
-	private double speedMultiplier;
 	private int currentIncome;
 	private final int CURRENCY_TIMELINE = 10; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
+	private Timeline moneyTimeline;
+	private Timeline alienTimeline;
 
 	
 	// Constructor
 	public Controller(Model model) {
 		this.model = model;
-		speedMultiplier = 1;
-		currentIncome = 0;
 	}
 	
 	// Methods
 	public void initialize() {
+		currentIncome = 0;
+		model.setSpeedMultiplier(1);
 		generateAliens();
-		Thread timerThread = new Thread(() -> startTimer());
-		timerThread.start();
+//		Thread timerThread = new Thread(() -> startTimer());
+//		timerThread.start();
+		new Thread(() -> startAlienTimeline()).start();
 		startMoneyTimeline();
 //		startTimer();
 	}
 	
 	private void startMoneyTimeline() {
 		// Currency generator - deposit 50 space bucks every 5 seconds
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
+		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
 			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
 		}));
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
+		moneyTimeline.setCycleCount(Timeline.INDEFINITE);
+		moneyTimeline.play();
+	}
+	
+	private void startAlienTimeline() {
+		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / model.getSpeedMultiplier()), e -> {
+			if (model.hasAliens()) {
+				animate();
+			}
+		}));
+
+		alienTimeline.setCycleCount(Timeline.INDEFINITE);
+		alienTimeline.play();
 	}
 	
 	private void generateAliens() {
@@ -82,36 +95,52 @@ public class Controller {
 	}
 	
 	public void increaseSpeed() {
-		speedMultiplier += 1;
+		int speed = model.getSpeedMultiplier();
+		switch (speed) {
+			case 1:
+				model.setSpeedMultiplier(2);
+				break;
+			case 2:
+				model.setSpeedMultiplier(4);
+				break;
+			case 4:
+				model.setSpeedMultiplier(1);
+				break;
+		}
+		alienTimeline.stop();
+		startAlienTimeline();
 	}
 	
 	private void startTimer() {
 		this.timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				Platform.runLater(() -> animate(speedMultiplier));
+				Platform.runLater(() -> animate());
 			}
 		};
 		timer.schedule(task, 1000, FRAME_TIME);
 	}
 	
 	public void pause() {
-		timer.cancel();
+		moneyTimeline.pause();
+		alienTimeline.pause();
 	}
 	
 	public void resume() {
-		TimerTask task = new TimerTask() {
-			public void run() {
-				animate(speedMultiplier);
-			}
-		};
-		timer.schedule(task, 0, FRAME_TIME);
+		moneyTimeline.play();
+		alienTimeline.play();
+//		TimerTask task = new TimerTask() {
+//			public void run() {
+//				animate(speedMultiplier);
+//			}
+//		};
+//		timer.schedule(task, 0, FRAME_TIME);
 	}
 	
-	private void animate(double speedMultiplier) {
+	private void animate() {
 		calculateHitsOrDeaths();
 		for (Enemy alien : model.getAliens()) {
-			alien.move(speedMultiplier);
+			alien.move();
 		}
 		// TODO: Call another method to move bullets
 		
@@ -144,11 +173,7 @@ public class Controller {
 				if (character instanceof IncomeTower) {
 					// Add a timeline for currency generation for this specific income tower
 					IncomeTower incomeTower = (IncomeTower)character;
-					Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(incomeTower.getTimeline()), e -> {
-						model.depositSpacebucks(incomeTower.getDepositAmount());
-					}));
-					timeline.setCycleCount(Timeline.INDEFINITE);
-					timeline.play();
+					currentIncome += incomeTower.getDepositAmount();
 				}
 				model.placeCharacter(character, row, col);
 			} else {

@@ -495,6 +495,8 @@ public class View extends Application implements Observer{
 	public HBox createUtilityBar() {
 		HBox utilityBar = new HBox(3);
 		utilityBar.setAlignment(Pos.TOP_RIGHT);
+		utilityBar.setTranslateX(COLUMN_OFFSET);
+		utilityBar.setTranslateY(ROW_OFFSET);
 		
 		// Buttons for utiliy bar with generated handlers
 		Button fastForwardBtn = new Button(">>");
@@ -506,12 +508,14 @@ public class View extends Application implements Observer{
 			// TODO Implement Fast Forward functionality
 			System.out.println("Fast forward button pressed");
 		});
-
-		pauseBtn.setOnMouseClicked( e -> {
+		
+		pauseBtn.setOnAction( e -> {
 			if (paused) {				// TODO: create pause menu modal
 				controller.resume();
+				paused = false;
 			} else {
 				controller.pause();
+				paused = true;
 			}
 			// TODO: Implement pause functionality
 			System.out.println("Pause button pressed");

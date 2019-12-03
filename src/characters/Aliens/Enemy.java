@@ -66,11 +66,11 @@ public class Enemy extends BoardCharacter {
 		return stackPane;
 	}
 	
-	public void move(double speedMultiplier) {
+	public void move() {
 		double xPos = stackPane.getTranslateX();
 		this.setCol(calculateCol(xPos));
-		System.out.println(this.getCol());
-		stackPane.setTranslateX((xPos - (0.3 * speedMultiplier)));
+//		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.8))); // Negative value will be alien speed
+		stackPane.setTranslateX((xPos - 0.8)); // Negative value will be alien speed
 	}
 	
 	private int calculateCol(double xPos) {

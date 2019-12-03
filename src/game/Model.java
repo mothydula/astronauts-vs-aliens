@@ -15,6 +15,7 @@ public class Model extends Observable {
 	private int bank;
 	private int wave;
 	private List<Enemy> aliens;
+	private int speedMultiplier;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
@@ -24,6 +25,14 @@ public class Model extends Observable {
 		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public void setSpeedMultiplier(int speedMultiplier) {
+		this.speedMultiplier = speedMultiplier;
+	}
+	
+	public int getSpeedMultiplier() {
+		return speedMultiplier;
 	}
 	
 	public void addAlien(Enemy alien) {
