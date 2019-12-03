@@ -4,6 +4,9 @@ import characters.Astronauts.DefenderTower;
 import characters.Astronauts.MoonZeus;
 import javafx.scene.image.Image;
 
+/**
+ * Moon Zeus' Ammo class
+ * */
 public class MoonZeusAmmo extends Ammo{
 
 	public MoonZeusAmmo(DefenderTower dt, Image sprite) {
