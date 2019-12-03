@@ -290,8 +290,13 @@ public class View extends Application implements Observer{
 			infoPane.setPadding(new Insets(12,12,12,12));
 			infoPane.setPrefHeight(350);
 			infoPane.setContent(infoText);
+			VBox infoVBox = new VBox();
+			Button returntoMenu = new Button("Close");
 			Scene infoScene = new Scene(infoPane);
 			Stage infoStage = new Stage();
+			returntoMenu.setOnAction(ba->{
+				infoStage.close();
+			});
 			infoStage.setScene(infoScene);
 			infoStage.setTitle("Info");
 			infoStage.show();
