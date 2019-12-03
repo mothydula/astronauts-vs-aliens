@@ -26,7 +26,6 @@ public class Controller {
 	private static final int STAGE_ONE_ALIENS = 5;
 	private static final int STAGE_TWO_ALIENS = 10;
 	private static final int STAGE_THREE_ALIENS = 20;
-	private Group mainGroup;
 
 	
 	// Constructor
@@ -35,10 +34,6 @@ public class Controller {
 	}
 	
 	// Methods
-	public void setMainGroup(Group mainGroup) {
-		this.mainGroup = mainGroup;
-	}
-	
 	public void initialize() {
 		generateAliens();
 		startTimer();
