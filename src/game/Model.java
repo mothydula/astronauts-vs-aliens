@@ -63,18 +63,21 @@ public class Model extends Observable {
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
+		MoveMessage message = null;
 		// Adjust bank amount
 		if (character instanceof DefenderTower) {
 			bank -= ((DefenderTower)character).getCost();
+			
+			// Place character
+			character.setRow(row);
+			character.setCol(col);
+			board[row][col].placeCharacter(character);
+			
+			// Creating message to send to view
+			message = new MoveMessage(MoveMessage.VALID_MOVE, (DefenderTower)character, row, col, false);
+		} else if (character instanceof Enemy) {
+			message = new MoveMessage(MoveMessage.VALID_MOVE, (Enemy)character, row, col, false);
 		}
-		
-		// Place character
-		character.setRow(row);
-		character.setCol(col);
-		board[row][col].placeCharacter(character);
-		
-		// Creating message to send to view
-		MoveMessage message = new MoveMessage(MoveMessage.VALID_MOVE, (DefenderTower)character, row, col, false);
 		
 		// Notify Observers
 		setChanged();
