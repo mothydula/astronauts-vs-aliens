@@ -48,7 +48,7 @@ public class Controller {
 				alien.setRow(row);
 				alien.setCol(col);
 				
-				model.placeAlien(alien, row, col);
+				model.addAlien(alien);
 			}
 		} else if (stage == 2) {
 			

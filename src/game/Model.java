@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import characters.*;
 import characters.Aliens.Enemy;
@@ -12,12 +14,26 @@ public class Model extends Observable {
 	private Tile[][] board;
 	private int bank;
 	private int stage;
+	private List<Enemy> aliens;
 	
 	// Constructor
 	public Model () {
 		stage = 1;
+		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public void addAlien(Enemy alien) {
+		aliens.add(alien);
+	}
+	
+	public List<Enemy> getAliens() {
+		return aliens;
+	}
+	
+	public boolean hasAliens() {
+		return !aliens.isEmpty();
 	}
 	
 	public int getStage() {
@@ -33,9 +49,6 @@ public class Model extends Observable {
 		}
 	}
 	
-	public void placeAlien(Enemy alien, int row, int col) {
-		board[row][col].addAlien(alien);
-	}
 	
 	public boolean isEmpty(int row, int col) {
 		return board[row][col].isEmpty();
