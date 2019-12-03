@@ -1,10 +1,12 @@
 package game;
 
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import characters.BoardCharacter;
+import characters.Aliens.LittleGreenMen;
 import characters.Astronauts.DefenderTower;
 import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
@@ -19,6 +21,9 @@ public class Controller {
 	private Model model;
 	private Timer timer;
 	private static final long FRAME_TIME = 16l;
+	private static final int STAGE_ONE_ALIENS = 5;
+	private static final int STAGE_TWO_ALIENS = 10;
+	private static final int STAGE_THREE_ALIENS = 20;
 	
 	// Constructor
 	public Controller(Model model) {
@@ -27,7 +32,29 @@ public class Controller {
 	
 	// Methods
 	public void initialize() {
+		generateAliens();
 		startTimer();
+	}
+	
+	private void generateAliens() {
+		Random rand = new Random();
+		int stage = model.getStage();
+		
+		if (stage == 1) {
+			for (int i = 0; i < STAGE_ONE_ALIENS; i++) {
+				LittleGreenMen alien = new LittleGreenMen();
+				int row = rand.nextInt(ROWS);
+				int col = COLS - 1;
+				alien.setRow(row);
+				alien.setCol(col);
+				
+				model.placeAlien(alien, row, col);
+			}
+		} else if (stage == 2) {
+			
+		} else if (stage == 3) {
+			
+		}
 	}
 	
 	private void startTimer() {
