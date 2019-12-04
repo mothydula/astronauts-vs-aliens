@@ -13,7 +13,7 @@ public class Model extends Observable {
 	private Tile[][] board;
 	// TODO: add list of defenders to be able to iterate while animating?? Maybe not necessary of checking with row, col from alien.
 	private int bank;
-	private int wave;
+	private int currentWave;
 	private List<Enemy> aliens;
 	private int speedMultiplier;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
@@ -21,10 +21,14 @@ public class Model extends Observable {
 	// Constructor
 	public Model () {
 		bank = 0;
-		wave = 1;
+		currentWave = 1;
 		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public void setWaveNumber(int waveNumber) {
+		this.currentWave = waveNumber;
 	}
 	
 	public void setSpeedMultiplier(int speedMultiplier) {
@@ -55,7 +59,7 @@ public class Model extends Observable {
 	}
 	
 	public int getWaveNumber() {
-		return wave;
+		return currentWave;
 	}
 	
 	// Methods
