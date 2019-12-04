@@ -3,6 +3,8 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import ammo.Ammo;
 import characters.*;
 import characters.Aliens.Enemy;
 import characters.Astronauts.DefenderTower;
@@ -16,15 +18,31 @@ public class Model extends Observable {
 	private int currentWave;
 	private List<Enemy> aliens;
 	private int speedMultiplier;
+	private List<Ammo> bullets;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
+		bullets = new ArrayList<Ammo>();
 		bank = 0;
 		currentWave = 1;
 		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public void addBullet(Ammo bullet) {
+		bullets.add(bullet);
+		
+		MoveMessage message = new MoveMessage(MoveMessage.BULLET_PLACEMENT);
+		message.setBullet(bullet);
+		
+		setChanged();
+		notifyObservers(message);
+	}
+	
+	public List<Ammo> getBullets() {
+		return this.bullets;
 	}
 	
 	public void setWaveNumber(int waveNumber) {
