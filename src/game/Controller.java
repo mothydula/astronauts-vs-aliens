@@ -24,9 +24,9 @@ public class Controller {
 	private Model model;
 	private Timer timer;
 	private static final long FRAME_TIME = 100; // Milliseconds
-	private static final int STAGE_ONE_ALIENS = 5;
-	private static final int STAGE_TWO_ALIENS = 10;
-	private static final int STAGE_THREE_ALIENS = 20;
+	private static final int STAGE_ONE_ALIENS = 15;
+	private static final int STAGE_TWO_ALIENS = 30;
+	private static final int STAGE_THREE_ALIENS = 40;
 	private int currentIncome;
 	private final int CURRENCY_TIMELINE = 10; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
@@ -55,7 +55,6 @@ public class Controller {
 			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
 		}));
 
-//		moneyTimeline.setDelay(Duration.seconds(CURRENCY_TIMELINE / model.getSpeedMultiplier()));
 		moneyTimeline.setCycleCount(Timeline.INDEFINITE);
 		moneyTimeline.play();
 	}
@@ -79,7 +78,7 @@ public class Controller {
 			for (int i = 0; i < STAGE_ONE_ALIENS; i++) { 
 				LittleGreenMen alien = new LittleGreenMen();
 				int row = rand.nextInt(ROWS);
-				int col = rand.nextInt(3) + COLS+2;
+				int col = rand.nextInt(6) + COLS + 2;
 				alien.setRow(row);
 				alien.setCol(col);
 				alien.setStackPane();
@@ -93,6 +92,22 @@ public class Controller {
 			
 		}
 	}
+	
+	private void generateWaveOne() {
+		Random rand = new Random();
+		for (int i = 0; i < 6; i++) {
+			LittleGreenMen alien = new LittleGreenMen();
+			int row = rand.nextInt(ROWS);
+			int col = rand.nextInt(3) + COLS+2;
+			alien.setRow(row);
+			alien.setCol(col);
+			alien.setStackPane();
+			
+			model.addAlien(alien);
+			Platform.runLater(() -> model.placeCharacter(alien, row, col));
+		}
+	}
+	
 	
 	public void increaseSpeed() {
 		int speed = model.getSpeedMultiplier();
