@@ -4,8 +4,6 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import characters.BoardCharacter;
 import characters.Aliens.Enemy;
@@ -22,7 +20,6 @@ public class Controller {
 	public static final int ROWS = 6;
 	public static final int COLS = 12;
 	private Model model;
-	private Timer timer;
 	private static final long FRAME_TIME = 100; // Milliseconds
 	private static final int STAGE_ONE_ALIENS = 15;
 	private static final int STAGE_TWO_ALIENS = 30;
