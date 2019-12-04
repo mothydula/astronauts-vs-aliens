@@ -2,6 +2,8 @@ package game;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
+
 import characters.Astronauts.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -82,6 +84,7 @@ public class View extends Application implements Observer{
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
+	private final int ALIEN_RANDOM_OFFSET = 50;
 	
 	// Class fields
 	private Model model;
@@ -177,10 +180,11 @@ public class View extends Application implements Observer{
 							mainGroup.getChildren().add(characterPane);
 							defendersGrid[message.getRow()][message.getCol()] = characterPane;
 						} else {
+							Random rand = new Random();
 							StackPane alienPane = ((Enemy) message.getCharacter()).getStackPane();
 							alienPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 							alienPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
-							alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
+							alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET + rand.nextInt(ALIEN_RANDOM_OFFSET));
 //							alienPane.setStyle("-fx-border-color: black");
 //							Platform.runLater(() -> mainGroup.getChildren().add(alienPane));
 							mainGroup.getChildren().add(alienPane);
