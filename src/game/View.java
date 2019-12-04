@@ -1,5 +1,7 @@
 package game;
 
+import java.io.*;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import characters.Astronauts.*;
@@ -32,6 +34,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -82,6 +86,8 @@ public class View extends Application implements Observer{
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
+	private final String INTRO_MUSIC			= "assets/general/introMusic.mp3";
+	private final String IN_GAME_MUSIC			= "assets/general/inGameMusic.mp3";
 	
 	// Class fields
 	private Model model;
@@ -108,6 +114,10 @@ public class View extends Application implements Observer{
 	private boolean removeToggled;
 	private int[] indexToRemove;
 	
+	// music player fields
+	private MediaPlayer musicPlayer;
+	private boolean isIntro; // is only true during the intro screen
+	
 	private StackPane[][] defendersGrid;
 
 	public View() {
@@ -128,7 +138,8 @@ public class View extends Application implements Observer{
 				new MoneyTree(),
 				new MillenniumFalcon()
 		};
-		
+
+		isIntro = true;
 		removeToggled = false;
 		indexToRemove = new int[]{0, 0};
 		
@@ -204,8 +215,6 @@ public class View extends Application implements Observer{
 					int fadeOutTime= 150; //0.5 seconds
 					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 					break;
-					
-				
 			}
 		}	
 //		
@@ -213,6 +222,29 @@ public class View extends Application implements Observer{
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
 //		
 //		// TODO: controller.isGameOver();
+	}
+	
+	public void music()
+	{
+		Media song;
+		String resource = null;
+	    if (isIntro) {
+			System.out.println("trying");
+			resource = new File(INTRO_MUSIC).toURI().toString();
+		} else {
+			resource = new File(IN_GAME_MUSIC).toURI().toString();
+		}
+
+		musicPlayer = new MediaPlayer(new Media(resource));
+		musicPlayer.setOnEndOfMedia(new Runnable() {
+	        @Override
+	        public void run() {
+	            musicPlayer.seek(Duration.ZERO);
+	            musicPlayer.play();
+	        }
+	    }); 
+		
+	    musicPlayer.play();
 	}
 	
 	public void setupStartMenu() {
@@ -259,9 +291,11 @@ public class View extends Application implements Observer{
 		
 		// Add border pane to scene and set the stage scene
 		Scene scene = new Scene(startBorderPane, SCENE_WIDTH, SCENE_HEIGHT);
+		music(); // starts intro music
 		primaryStage.setScene(scene);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public VBox createStartMenuButtonBox() {
 		VBox buttonBox = new VBox(3);
 		buttonBox.setAlignment(Pos.CENTER);
@@ -324,6 +358,9 @@ public class View extends Application implements Observer{
 		startBtn.setOnAction( e -> {
 			// Switch scene to Game Scene
 			setupGameScene();
+			isIntro = false;
+			musicPlayer.stop();
+			music(); // starts in game music
 			primaryStage.show();
 		});
 		
