@@ -1,6 +1,7 @@
 package ammo;
 
 import characters.Astronauts.DefenderTower;
+import game.View;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -14,6 +15,8 @@ public class Ammo {
 	private int speed;
 	private Image sprite;
 	private StackPane stackPane;
+	private int col;
+	private int row;
 	
 	//Image sizing
 	protected static final int SPRITE_WIDTH = 35;
@@ -39,9 +42,11 @@ public class Ammo {
 	public Ammo (DefenderTower dt, Image sprite) {
 		
 		//Grabs the stats that are held in each unique DefenderTower object
-		this.speed = dt.getAttackSpeed();
+		this.speed = dt.getAttackSpeed() * 2;
 		this.damage = dt.getDamage();
 		this.sprite = sprite;
+		this.col = dt.getCol();
+		this.row = dt.getRow();
 	}
 	public void setStackPane() {
 		stackPane = new StackPane();
@@ -55,6 +60,36 @@ public class Ammo {
 	
 	public Image getImage() {
 		return this.sprite;
+	}
+	
+	public void setCol(int col) {
+		this.col = col;
+	}
+	
+	public void setRow(int row) {
+		this.row = row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public void move() {
+		double xPos = stackPane.getTranslateX();
+		
+		double movement = xPos - ((double)this.speed / 100.0);
+		this.setCol(calculateCol(xPos));
+		stackPane.setTranslateX(movement); 
+	}
+	
+	private int calculateCol(double xPos) {
+		double x = xPos - View.COLUMN_OFFSET;
+		return (int) x / View.GP_CELL_SIZE;
+//		characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
 	}
 	
 	
