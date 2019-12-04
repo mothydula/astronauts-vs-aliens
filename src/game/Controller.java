@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import ammo.Ammo;
 import characters.BoardCharacter;
 import characters.Aliens.*;
 import characters.Astronauts.DefenderTower;
@@ -32,6 +33,7 @@ public class Controller {
 	private final int CURRENCY_DEPOSIT = 25;
 	private Timeline moneyTimeline;
 	private Timeline alienTimeline;
+	private Timeline bulletsTimeline;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
 	private final long WAVE_DELAY = 30000l;
@@ -55,6 +57,7 @@ public class Controller {
 		generateAliens();
 		new Thread(() -> startAlienTimeline()).start();
 		startMoneyTimeline();
+		startBulletsTimeline();
 	}
 	
 	private void startGameTimer() {
@@ -76,6 +79,7 @@ public class Controller {
 	}
 	
 	private void resumeGameTimer() {
+		gameTimer = new Timer();
 		TimerTask increaseTime = new TimerTask() {
 
 			@Override
@@ -86,6 +90,18 @@ public class Controller {
 			
 		};
 		gameTimer.schedule(increaseTime, 0, 1);
+	}
+	
+	private void startBulletsTimeline() {
+		bulletsTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+			for (DefenderTower tower : model.getTowers()) {
+				if(tower.canShoot()) {
+					model.addBullet(tower.shoot());
+				}
+			}
+		}));
+		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
+		bulletsTimeline.play();
 	}
 	
 	private void startMoneyTimeline() {
@@ -304,12 +320,14 @@ public class Controller {
 		pauseGameTimer();
 		moneyTimeline.pause();
 		alienTimeline.pause();
+		bulletsTimeline.pause();
 	}
 	
 	public void resume() {
 		resumeGameTimer();
 		moneyTimeline.play();
 		alienTimeline.play();
+		bulletsTimeline.play();
 	}
 	
 	private void animate() {
@@ -326,6 +344,9 @@ public class Controller {
 		}
 		for (Enemy alien : aliensToMove) {
 			alien.move();
+		}
+		for(Ammo bullet: model.getBullets()) {
+			bullet.move();
 		}
 		// TODO: Call another method to move bullets
 		

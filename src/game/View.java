@@ -213,7 +213,7 @@ public class View extends Application implements Observer{
 					StackPane bulletPane = bullet.getStackPane();
 					
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET));
+					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET);
 
 					mainGroup.getChildren().add(bulletPane);

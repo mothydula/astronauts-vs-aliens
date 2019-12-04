@@ -42,11 +42,12 @@ public class Ammo {
 	public Ammo (DefenderTower dt, Image sprite) {
 		
 		//Grabs the stats that are held in each unique DefenderTower object
-		this.speed = dt.getAttackSpeed() * 2;
+		this.speed = dt.getAttackSpeed() * 5;
 		this.damage = dt.getDamage();
 		this.sprite = sprite;
 		this.col = dt.getCol();
 		this.row = dt.getRow();
+		setStackPane();
 	}
 	public void setStackPane() {
 		stackPane = new StackPane();
@@ -81,7 +82,7 @@ public class Ammo {
 	public void move() {
 		double xPos = stackPane.getTranslateX();
 		
-		double movement = xPos - ((double)this.speed / 100.0);
+		double movement = xPos + ((double)this.speed / 100.0);
 		this.setCol(calculateCol(xPos));
 		stackPane.setTranslateX(movement); 
 	}

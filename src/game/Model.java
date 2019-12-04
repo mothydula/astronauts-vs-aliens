@@ -19,10 +19,12 @@ public class Model extends Observable {
 	private List<Enemy> aliens;
 	private int speedMultiplier;
 	private List<Ammo> bullets;
+	private List<DefenderTower> towers;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
+		towers = new ArrayList<DefenderTower>();
 		bullets = new ArrayList<Ammo>();
 		bank = 0;
 		currentWave = 1;
@@ -39,6 +41,10 @@ public class Model extends Observable {
 		
 		setChanged();
 		notifyObservers(message);
+	}
+	
+	public List<DefenderTower> getTowers() {
+		return towers;
 	}
 	
 	public List<Ammo> getBullets() {
@@ -106,6 +112,7 @@ public class Model extends Observable {
 		MoveMessage message = null;
 		// Adjust bank amount
 		if (character instanceof DefenderTower) {
+			towers.add((DefenderTower)character);
 			bank -= ((DefenderTower)character).getCost();
 			
 			// Place character
@@ -143,6 +150,7 @@ public class Model extends Observable {
 	}
 
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
+		towers.remove(towerToRemove);
 		// adjusts bank amount
 		bank += DefenderTower.REFUND_MULTIPLIER * towerToRemove.getCost();
 		
