@@ -335,8 +335,14 @@ public class Controller {
 		List<Enemy> aliensToMove = new ArrayList<Enemy>();
 		for (Enemy alien : model.getAliens()) {
 			try {
-				if (model.getDefenderAt(alien.getRow(), alien.getCol()) == null) {
+				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
+				if (tower == null) {
 					aliensToMove.add(alien);
+				} else {
+					tower.decreaseHealth(alien.getDamage());
+					if (tower.isDead()) {
+						model.removeTower(tower, tower.getRow(), tower.getCol());
+					}
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
 				aliensToMove.add(alien);

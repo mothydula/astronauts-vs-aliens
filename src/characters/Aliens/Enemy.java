@@ -20,32 +20,32 @@ public class Enemy extends BoardCharacter {
 	// LittleGreenMen
 	protected static final int HEALTH_LITTLE_GREEN_MEN = 100;
 	protected static final int ATTACK_SPEED_LITTLE_GREEN_MEN = 300;
-	protected static final int DAMAGE_LITTLE_GREEN_MEN = 100;
+	protected static final int DAMAGE_LITTLE_GREEN_MEN = 1;
 
 	// Grunt
 	protected static final int HEALTH_GRUNT = 100;
 	protected static final int ATTACK_SPEED_GRUNT = 400;
-	protected static final int DAMAGE_GRUNT = 100;
+	protected static final int DAMAGE_GRUNT = 2;
 
 	// Sprinter
 	protected static final int HEALTH_SPRINTER = 100;
 	protected static final int ATTACK_SPEED_SPRINTER = 600;
-	protected static final int DAMAGE_SPRINTER = 100;
+	protected static final int DAMAGE_SPRINTER = 4;
 
 	// Tank
 	protected static final int HEALTH_TANK = 100;
 	protected static final int ATTACK_SPEED_TANK = 200;
-	protected static final int DAMAGE_TANK = 100;
+	protected static final int DAMAGE_TANK = 6;
 
 	// ManHunter
 	protected static final int HEALTH_MAN_HUNTER = 100;
 	protected static final int ATTACK_SPEED_MAN_HUNTER = 450;
-	protected static final int DAMAGE_MAN_HUNTER = 100;
+	protected static final int DAMAGE_MAN_HUNTER = 7;
 
 	// Gargantua
 	protected static final int HEALTH_GARGANTUA = 100;
 	protected static final int ATTACK_SPEED_GARGANTUA = 500;
-	protected static final int DAMAGE_GARGANTUA = 100;
+	protected static final int DAMAGE_GARGANTUA = 10;
 	
 	//Class variables
 	private StackPane stackPane;

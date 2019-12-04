@@ -42,7 +42,7 @@ public class Ammo {
 	public Ammo (DefenderTower dt, Image sprite) {
 		
 		//Grabs the stats that are held in each unique DefenderTower object
-		this.speed = dt.getAttackSpeed() * 5;
+		this.speed = dt.getAttackSpeed() * 10;
 		this.damage = dt.getDamage();
 		this.sprite = sprite;
 		this.col = dt.getCol();
