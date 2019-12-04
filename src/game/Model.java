@@ -17,7 +17,6 @@ public class Model extends Observable {
 	private int bank;
 	private int currentWave;
 	private List<Enemy> aliens;
-	private int speedMultiplier;
 	private List<Ammo> bullets;
 	private List<DefenderTower> towers;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
@@ -53,14 +52,6 @@ public class Model extends Observable {
 	
 	public void setWaveNumber(int waveNumber) {
 		this.currentWave = waveNumber;
-	}
-	
-	public void setSpeedMultiplier(int speedMultiplier) {
-		this.speedMultiplier = speedMultiplier;
-	}
-	
-	public int getSpeedMultiplier() {
-		return speedMultiplier;
 	}
 	
 	public void addAlien(Enemy alien) {

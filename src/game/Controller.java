@@ -36,9 +36,13 @@ public class Controller {
 	private Timeline bulletsTimeline;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
-	private final long WAVE_DELAY = 30000l;
+	private final long WAVE_DELAY = 3000l;
 	private AtomicLong timeElapsed;
 	private Timer gameTimer;
+	private int speedMultiplier;
+	private boolean waveOneDone = false;
+	private boolean waveTwoDone = false;
+	private boolean waveThreeDone = false;
 
 	
 	// Constructor
@@ -51,13 +55,17 @@ public class Controller {
 		timeElapsed = new AtomicLong(0);
 		startGameTimer();
 		rand = new Random();
-		model.depositSpacebucks(50);
+		model.depositSpacebucks(500);
 		currentIncome = 0;
-		model.setSpeedMultiplier(1);
+		speedMultiplier = 1;
 		generateAliens();
 		new Thread(() -> startAlienTimeline()).start();
 		startMoneyTimeline();
 		startBulletsTimeline();
+	}
+	
+	public int getSpeedMultiplier() {
+		return speedMultiplier;
 	}
 	
 	private void startGameTimer() {
@@ -66,7 +74,7 @@ public class Controller {
 
 			@Override
 			public void run() {
-				long newValue = timeElapsed.get() + 1 * model.getSpeedMultiplier();
+				long newValue = timeElapsed.get() + 1 * speedMultiplier;
 				timeElapsed.set(newValue);
 			}
 			
@@ -84,7 +92,7 @@ public class Controller {
 
 			@Override
 			public void run() {
-				long newValue = timeElapsed.get() + 1 * model.getSpeedMultiplier();
+				long newValue = timeElapsed.get() + 1 * speedMultiplier;
 				timeElapsed.set(newValue);
 			}
 			
@@ -93,7 +101,7 @@ public class Controller {
 	}
 	
 	private void startBulletsTimeline() {
-		bulletsTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1000 / speedMultiplier), e -> {
 			for (DefenderTower tower : model.getTowers()) {
 				if(tower.canShoot()) {
 					model.addBullet(tower.shoot());
@@ -106,7 +114,7 @@ public class Controller {
 	
 	private void startMoneyTimeline() {
 		// Currency generator - deposit 50 space bucks every 5 seconds
-		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE / model.getSpeedMultiplier()), e -> {
+		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE / speedMultiplier), e -> {
 			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
 		}));
 
@@ -115,11 +123,13 @@ public class Controller {
 	}
 	
 	private void startAlienTimeline() {
-		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / model.getSpeedMultiplier()), e -> {
+		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / speedMultiplier), e -> {
 			if (model.hasAliens()) {
 				animate();
-			}else {
-				System.out.println("NO MORE ALIENS");
+			}else if (waveThreeDone) {						// GAME OVER
+				Platform.exit();
+				System.exit(0);
+			} else {
 				model.setWaveNumber(model.getWaveNumber()+1);
 				generateAliens();
 			}
@@ -152,12 +162,13 @@ public class Controller {
 					generateLittleGreenMan(3);
 					generateGrunt(3);
 					generateSprinter(3);
+					waveOneDone = true;
 				}
 				
 			};
 			timer.schedule(firstWave, 0);
 			timer.schedule(secondWave, WAVE_DELAY);
-		} else if (waveNumber == 2) {				// WAVE TWO
+		} else if (waveNumber == 2 && waveOneDone) {				// WAVE TWO
 			System.out.println("WAVE TWO");
 
 			TimerTask firstWave = new TimerTask() {
@@ -179,13 +190,14 @@ public class Controller {
 				public void run() {
 					generateTank(3);
 					generateManHunter(3);
+					waveTwoDone = true;
 				}
 				
 			};
 			timer.schedule(firstWave, WAVE_DELAY);
 			timer.schedule(secondWave, WAVE_DELAY/3);
 			
-		} else if (waveNumber == 3) {				// WAVE THREE
+		} else if (waveNumber == 3 && waveTwoDone) {				// WAVE THREE
 			System.out.println("WAVE THREE");
 			
 			TimerTask firstWave = new TimerTask() {
@@ -198,20 +210,11 @@ public class Controller {
 					generateManHunter(6);
 					generateTank(3);
 					generateGargantua(3);
-				}
-				
-			};
-			
-			TimerTask secondWave = new TimerTask() {
-
-				@Override
-				public void run() {
-					
+					waveThreeDone = true;
 				}
 				
 			};
 			timer.schedule(firstWave, WAVE_DELAY);
-			timer.schedule(secondWave, WAVE_DELAY);
 			
 		}
 	}
@@ -302,17 +305,19 @@ public class Controller {
 	
 	
 	public void increaseSpeed() {
-		int speed = model.getSpeedMultiplier();
-		if (speed == 8) {
-			model.setSpeedMultiplier(1);
+		if (speedMultiplier == 8) {
+			speedMultiplier = 1;
 		} else {
-			model.setSpeedMultiplier(speed * 2);
+			speedMultiplier *= 2;
 		}
 		alienTimeline.stop();
 		startAlienTimeline();
 		
 		moneyTimeline.stop();
 		startMoneyTimeline();
+		
+		bulletsTimeline.stop();
+		startBulletsTimeline();
 	}
 	
 	
