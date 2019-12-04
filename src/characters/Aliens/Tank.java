@@ -6,6 +6,6 @@ public class Tank extends Enemy{
 	
 	public Tank() {
 		super(HEALTH_TANK, ATTACK_SPEED_TANK, 
-				DAMAGE_TANK, new Image(TANK_IMAGE, 50, 50, false, false));
+				DAMAGE_TANK, new Image(TANK_IMAGE, 80, 80, false, false));
 	}
 }
