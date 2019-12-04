@@ -2,6 +2,8 @@ package ammo;
 
 import characters.Astronauts.DefenderTower;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 /**
  * Super class for all ammo
  * */
@@ -11,6 +13,7 @@ public class Ammo {
 	private int damage;
 	private int speed;
 	private Image sprite;
+	private StackPane stackPane;
 	
 	//Image sizing
 	protected static final int SPRITE_WIDTH = 35;
@@ -40,6 +43,20 @@ public class Ammo {
 		this.damage = dt.getDamage();
 		this.sprite = sprite;
 	}
+	public void setStackPane() {
+		stackPane = new StackPane();
+		ImageView imageView = new ImageView(this.getImage());
+		stackPane.getChildren().add(imageView);
+	}
+	
+	public StackPane getStackPane() {
+		return stackPane;
+	}
+	
+	public Image getImage() {
+		return this.sprite;
+	}
+	
 	
 	
 }
