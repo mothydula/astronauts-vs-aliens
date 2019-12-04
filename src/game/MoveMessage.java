@@ -1,5 +1,6 @@
 package game;
 
+import ammo.Ammo;
 import characters.BoardCharacter;
 
 public class MoveMessage {	
@@ -7,12 +8,14 @@ public class MoveMessage {
 	public static final int INSUFFICIENT_FUNDS = 0;
 	public static final int INVALID_MOVE = 1;
 	public static final int VALID_MOVE = 2;
+	public static final int BULLET_PLACEMENT = 3;
 	
 	private int type;
 	private BoardCharacter character;
 	private int row;
 	private int col;
 	private boolean remove;
+	private Ammo bullet;
 	
 	// Constructor
 	public MoveMessage(int type) {
@@ -27,6 +30,13 @@ public class MoveMessage {
 		this.remove = remove;
 	}
 	
+	public void setBullet(Ammo bullet) {
+		this.bullet = bullet;
+	}
+	
+	public Ammo getBullet() {
+		return this.bullet;
+	}
 	
 	public int getType() {
 		return type;
