@@ -2,7 +2,6 @@ package characters.Aliens;
 
 import characters.BoardCharacter;
 import game.View;
-import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -20,7 +19,7 @@ public class Enemy extends BoardCharacter {
 
 	// LittleGreenMen
 	protected static final int HEALTH_LITTLE_GREEN_MEN = 100;
-	protected static final int ATTACK_SPEED_LITTLE_GREEN_MEN = 100;
+	protected static final int ATTACK_SPEED_LITTLE_GREEN_MEN = 110;
 	protected static final int DAMAGE_LITTLE_GREEN_MEN = 100;
 
 	// Grunt
@@ -58,6 +57,7 @@ public class Enemy extends BoardCharacter {
 	
 	public void setStackPane() {
 		stackPane = new StackPane();
+		stackPane.setStyle("-fx-border-color: black");
 		ImageView imageView = new ImageView(this.getImage());
 		stackPane.getChildren().add(imageView);
 	}
@@ -68,9 +68,11 @@ public class Enemy extends BoardCharacter {
 	
 	public void move() {
 		double xPos = stackPane.getTranslateX();
+		
+		double movement = xPos - ((double)this.getAttackSpeed() / 100.0);
 		this.setCol(calculateCol(xPos));
 //		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.8))); // Negative value will be alien speed
-		stackPane.setTranslateX((xPos - 0.8)); // Negative value will be alien speed
+		stackPane.setTranslateX(movement); // Negative value will be alien speed
 	}
 	
 	private int calculateCol(double xPos) {
