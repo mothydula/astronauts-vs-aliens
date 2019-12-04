@@ -3,7 +3,7 @@ package game;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
-
+import ammo.Ammo;
 import characters.Astronauts.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -208,8 +208,15 @@ public class View extends Application implements Observer{
 					int fadeOutTime= 150; //0.5 seconds
 					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 					break;
+				case MoveMessage.BULLET_PLACEMENT:
+					Ammo bullet = message.getBullet();
+					StackPane bulletPane = bullet.getStackPane();
 					
-				
+					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET));
+					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET);
+
+					mainGroup.getChildren().add(bulletPane);
 			}
 		}	
 //		
