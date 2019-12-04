@@ -41,6 +41,7 @@ public class Controller {
 	
 	// Methods
 	public void initialize() {
+		model.depositSpacebucks(50);
 		currentIncome = 0;
 		model.setSpeedMultiplier(1);
 		generateAliens();
@@ -50,9 +51,11 @@ public class Controller {
 	
 	private void startMoneyTimeline() {
 		// Currency generator - deposit 50 space bucks every 5 seconds
-		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE), e -> {
+		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE / model.getSpeedMultiplier()), e -> {
 			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
 		}));
+
+//		moneyTimeline.setDelay(Duration.seconds(CURRENCY_TIMELINE / model.getSpeedMultiplier()));
 		moneyTimeline.setCycleCount(Timeline.INDEFINITE);
 		moneyTimeline.play();
 	}
@@ -63,7 +66,7 @@ public class Controller {
 				animate();
 			}
 		}));
-
+		
 		alienTimeline.setCycleCount(Timeline.INDEFINITE);
 		alienTimeline.play();
 	}
@@ -100,6 +103,9 @@ public class Controller {
 		}
 		alienTimeline.stop();
 		startAlienTimeline();
+		
+		moneyTimeline.stop();
+		startMoneyTimeline();
 	}
 	
 	

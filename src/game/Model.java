@@ -20,7 +20,7 @@ public class Model extends Observable {
 	
 	// Constructor
 	public Model () {
-		bank = 50;
+		bank = 0;
 		wave = 1;
 		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
