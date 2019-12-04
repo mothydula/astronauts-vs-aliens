@@ -214,7 +214,7 @@ public class View extends Application implements Observer{
 					
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
-					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET);
+					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE / 2));
 
 					mainGroup.getChildren().add(bulletPane);
 			}

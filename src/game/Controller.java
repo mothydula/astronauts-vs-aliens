@@ -126,7 +126,7 @@ public class Controller {
 		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / speedMultiplier), e -> {
 			if (model.hasAliens()) {
 				animate();
-			}else if (waveThreeDone) {						// GAME OVER
+			} else if (waveThreeDone) {						// GAME OVER
 				Platform.exit();
 				System.exit(0);
 			} else {
