@@ -42,6 +42,16 @@ public class Model extends Observable {
 		notifyObservers(message);
 	}
 	
+	public void removeBullet(Ammo bullet) {
+		bullets.remove(bullet);
+		
+		MoveMessage message = new MoveMessage(MoveMessage.BULLET_REMOVAL);
+		message.setBullet(bullet);
+		
+		setChanged();
+		notifyObservers(message);
+	}
+	
 	public List<DefenderTower> getTowers() {
 		return towers;
 	}

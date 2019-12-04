@@ -356,10 +356,19 @@ public class Controller {
 		for (Enemy alien : aliensToMove) {
 			alien.move();
 		}
+		
+		List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
+		
 		for(Ammo bullet: model.getBullets()) {
 			bullet.move();
+			if (bullet.getCol() >= COLS) {
+				bulletsToRemove.add(bullet);
+			}
 		}
-		// TODO: Call another method to move bullets
+		
+		for (Ammo bullet : bulletsToRemove) {
+			model.removeBullet(bullet);
+		}
 		
 	}
 	

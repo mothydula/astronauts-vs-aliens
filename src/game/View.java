@@ -217,6 +217,8 @@ public class View extends Application implements Observer{
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE / 2));
 
 					mainGroup.getChildren().add(bulletPane);
+				case MoveMessage.BULLET_REMOVAL:
+					mainGroup.getChildren().remove(message.getBullet().getStackPane());
 			}
 		}	
 //		
