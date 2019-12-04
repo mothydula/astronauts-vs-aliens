@@ -84,7 +84,7 @@ public class View extends Application implements Observer{
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
-	private final int ALIEN_RANDOM_OFFSET = 50;
+	private final int ALIEN_RANDOM_OFFSET = 200;
 	
 	// Class fields
 	private Model model;
@@ -399,7 +399,7 @@ public class View extends Application implements Observer{
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
 					StackPane gunStackPane = new StackPane();
-					gunStackPane.setStyle("-fx-border-color: black");
+//					gunStackPane.setStyle("-fx-border-color: black");
 					gunStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					gunStackPane.setTranslateX(COLUMN_OFFSET);
 					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -410,7 +410,7 @@ public class View extends Application implements Observer{
 					defendersGrid[row][col] = gunStackPane;
 				} else if (col <= Controller.COLS - 1) {
 					StackPane tempStackPane = new StackPane();
-					tempStackPane.setStyle("-fx-border-color: black");
+//					tempStackPane.setStyle("-fx-border-color: black");
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -510,8 +510,6 @@ public class View extends Application implements Observer{
 		fastForwardBtn.setOnAction( e -> {
 			controller.increaseSpeed();
 			fastForwardBtn.setText(model.getSpeedMultiplier() + "X");
-			// TODO Implement Fast Forward functionality
-			System.out.println("Fast forward button pressed");
 		});
 		
 		pauseBtn.setOnAction( e -> {
@@ -524,8 +522,6 @@ public class View extends Application implements Observer{
 				paused = true;
 				pauseBtn.setText("Resume");
 			}
-			// TODO: Implement pause functionality
-			System.out.println("Pause button pressed");
 		});
 		
 		utilityBar.getChildren().addAll(fastForwardBtn, pauseBtn);
