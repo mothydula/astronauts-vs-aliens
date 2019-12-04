@@ -1,5 +1,6 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
 import characters.BoardCharacter;
 import javafx.scene.image.Image;
 
@@ -76,6 +77,10 @@ public abstract class DefenderTower extends BoardCharacter{
 	
 	// Methods
 	public abstract int getCost();
+	
+	public abstract Ammo shoot();
+	
+	public abstract boolean canShoot();
 	
 	
 }

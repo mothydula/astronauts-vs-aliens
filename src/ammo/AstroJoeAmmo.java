@@ -10,7 +10,7 @@ public class AstroJoeAmmo extends Ammo{
 	
 	/**Constructor
 	 * */
-	public AstroJoeAmmo() {
-		super(new AstroJoe(), new Image(ASTROJOE_AMMO_SPRITE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
+	public AstroJoeAmmo(AstroJoe alien) {
+		super(alien, new Image(ASTROJOE_AMMO_SPRITE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 	}
 }

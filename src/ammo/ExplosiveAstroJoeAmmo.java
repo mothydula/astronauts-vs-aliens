@@ -10,8 +10,8 @@ public class ExplosiveAstroJoeAmmo extends Ammo{
 	
 	/**Constructor
 	 * */
-	public ExplosiveAstroJoeAmmo(DefenderTower dt, Image sprite) {
-		super(new ExplosiveAstroJoe(), new Image(EXPLOSIVE_ASTROJOE_AMMO_SPRITE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
+	public ExplosiveAstroJoeAmmo(DefenderTower dt) {
+		super(dt, new Image(EXPLOSIVE_ASTROJOE_AMMO_SPRITE, SPRITE_WIDTH, SPRITE_HEIGHT, false, false));
 		// TODO Auto-generated constructor stub
 	}
 

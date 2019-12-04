@@ -1,5 +1,7 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
+import ammo.TarsAmmo;
 import javafx.scene.image.Image;
 
 public class Tars extends DefenderTower{
@@ -15,5 +17,17 @@ public class Tars extends DefenderTower{
 	
 	public String toString() {
 		return "Tars\n" + super.infoCard();
+	}
+
+	@Override
+	public Ammo shoot() {
+		// TODO Auto-generated method stub
+		return new TarsAmmo(this);
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

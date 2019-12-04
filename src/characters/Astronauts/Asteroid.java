@@ -1,5 +1,6 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
 import javafx.scene.image.Image;
 
 public class Asteroid extends DefenderTower{
@@ -15,5 +16,16 @@ public class Asteroid extends DefenderTower{
 	
 	public String toString() {
 		return "Asteroid\n" + super.infoCard();
+	}
+
+	@Override
+	public Ammo shoot() {
+		return null;
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
