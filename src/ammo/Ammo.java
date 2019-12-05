@@ -85,7 +85,8 @@ public class Ammo {
 		
 		double movement = xPos + ((double)this.speed / 100.0);
 		this.setCol(calculateCol(xPos));
-		Platform.runLater(() -> stackPane.setTranslateX(movement)); 
+		stackPane.setTranslateX(movement);
+//		Platform.runLater(() -> stackPane.setTranslateX(movement)); 
 	}
 	
 	private int calculateCol(double xPos) {

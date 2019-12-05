@@ -42,7 +42,7 @@ public class Controller {
 	private boolean waveOneDone = false;
 	private boolean waveTwoDone = false;
 	private boolean waveThreeDone = false;
-	private Timer bulletsTimer;
+	private Timer gamePlayTimer;
 
 	
 	// Constructor
@@ -59,9 +59,75 @@ public class Controller {
 		currentIncome = 0;
 		speedMultiplier = 1;
 		generateAliens();
-		new Thread(() -> startAlienTimeline()).start();
-		startMoneyTimeline();
-		startBulletsTimeline();
+		startTimeLine();
+//		new Thread(() -> startAlienTimeline()).start();
+//		startMoneyTimeline();
+//		startBulletsTimeline();
+	}
+	
+	public void startTimeLine() {
+		gamePlayTimer = new Timer();
+		TimerTask turnTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				calculateHitsOrDeaths();
+				Platform.runLater(() -> animate());
+			}
+			
+		};
+		
+		TimerTask bullets = new TimerTask() {
+
+			@Override
+			public void run() {
+				for(DefenderTower tower : model.getTowers()) {
+					if (tower.canShoot()) {
+						Platform.runLater(() -> model.addBullet(tower.shoot()));
+					}
+				}
+			}
+			
+		};
+		
+		gamePlayTimer.schedule(turnTask, 0, 16);
+		gamePlayTimer.schedule(bullets, 0, 2000);
+	}
+	
+	private void animate() {
+		List<Enemy> aliensToMove = new ArrayList<Enemy>();
+		for (Enemy alien : model.getAliens()) {
+			try {
+				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
+				if (tower == null) {
+					aliensToMove.add(alien);
+				} else {
+					tower.decreaseHealth(alien.getDamage());
+					if (tower.isDead()) {
+						model.removeTower(tower, tower.getRow(), tower.getCol());
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				aliensToMove.add(alien);
+			}
+		}
+		for (Enemy alien : aliensToMove) {
+			alien.move();
+		}
+				
+		for(Ammo bullet: model.getBullets()) {
+			bullet.move();
+		}
+	}
+	
+	
+	private void calculateHitsOrDeaths() {
+		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
+		for (Enemy alien : aliens) {
+			if (alien.getCol() == -1) {
+				Platform.runLater(() -> model.removeAlien(alien));
+			}
+		}
 	}
 	
 	public int getSpeedMultiplier() {
@@ -100,39 +166,41 @@ public class Controller {
 		gameTimer.schedule(increaseTime, 0, 1);
 	}
 	
-	private void startBulletsTimeline() {
-		Thread bullets = new Thread();
-		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1500 / speedMultiplier), e -> {
-			for (DefenderTower tower : model.getTowers()) {
-				if(tower.canShoot()) {
-					model.addBullet(tower.shoot());
-				}
-			}
-		}));
-		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
-		bulletsTimeline.play();
-		
+//	private void startBulletsTimeline() {
+////		Thread bullets = new Thread();
+////		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1500 / speedMultiplier), e -> {
+////			for (DefenderTower tower : model.getTowers()) {
+////				if(tower.canShoot()) {
+////					model.addBullet(tower.shoot());
+////				}
+////			}
+////		}));
+////		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
+////		bulletsTimeline.play();
+//		
 //		bulletsTimer = new Timer();
 //		TimerTask removeBullets = new TimerTask() {
 //
 //			@Override
 //			public void run() {
-//				List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
-//				for (Ammo bullet : model.getBullets()) {
-//					if (bullet.getCol() >= COLS) {
-//						bulletsToRemove.add(bullet);
+//				new Thread(()-> {
+//					List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
+//					for (Ammo bullet : model.getBullets()) {
+//						if (bullet.getCol() >= COLS) {
+//							bulletsToRemove.add(bullet);
+//						}
 //					}
-//				}
-//				for(Ammo bullet : bulletsToRemove) {
-//					model.removeBullet(bullet);
-//				}
-//				
+//					System.out.println(model.getBullets());
+//					for(Ammo bullet : bulletsToRemove) {
+//						model.removeBullet(bullet);
+//					}
+//				}).start();				
 //			}
 //			
 //		};
 //		bulletsTimer.schedule(removeBullets, 0, 2000);
-		
-	}
+//		
+//	}
 	
 	private void startMoneyTimeline() {
 		// Currency generator - deposit 50 space bucks every 5 seconds
@@ -345,52 +413,20 @@ public class Controller {
 	
 	public void pause() {
 		pauseGameTimer();
-		moneyTimeline.pause();
-		alienTimeline.pause();
-		bulletsTimeline.pause();
+		gamePlayTimer.cancel();
+//		moneyTimeline.pause();
+//		alienTimeline.pause();
+////		bulletsTimeline.pause();
+//		bulletsTimer.cancel();
 	}
 	
 	public void resume() {
 		resumeGameTimer();
-		moneyTimeline.play();
-		alienTimeline.play();
-		bulletsTimeline.play();
-	}
-	
-	private void animate() {
-		calculateHitsOrDeaths();
-		List<Enemy> aliensToMove = new ArrayList<Enemy>();
-		for (Enemy alien : model.getAliens()) {
-			try {
-				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
-				if (tower == null) {
-					aliensToMove.add(alien);
-				} else {
-					tower.decreaseHealth(alien.getDamage());
-					if (tower.isDead()) {
-						model.removeTower(tower, tower.getRow(), tower.getCol());
-					}
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				aliensToMove.add(alien);
-			}
-		}
-		for (Enemy alien : aliensToMove) {
-			alien.move();
-		}
-				
-		for(Ammo bullet: model.getBullets()) {
-			bullet.move();
-		}
-	}
-	
-	private void calculateHitsOrDeaths() {
-		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
-		for (Enemy alien : aliens) {
-			if (alien.getCol() == -1) {
-				model.removeAlien(alien);
-			}
-		}
+		startGameTimer();
+//		moneyTimeline.play();
+//		alienTimeline.play();
+////		bulletsTimeline.play();
+//		startBulletsTimeline();
 	}
 	
 	
