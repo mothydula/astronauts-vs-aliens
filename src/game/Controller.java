@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import ammo.Ammo;
+import ammo.ExplosiveAstroJoeAmmo;
 import characters.BoardCharacter;
 import characters.Aliens.*;
 import characters.Astronauts.DefenderTower;
+import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -31,19 +32,15 @@ public class Controller {
 	private int currentIncome;
 	private final int CURRENCY_TIMELINE = 10; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
-	private Timeline moneyTimeline;
-	private Timeline alienTimeline;
-	private Timeline bulletsTimeline;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
 	private final long WAVE_DELAY = 3000l;
 	private AtomicLong timeElapsed;
-	private Timer gameTimer;
 	private int speedMultiplier;
 	private boolean waveOneDone = false;
 	private boolean waveTwoDone = false;
 	private boolean waveThreeDone = false;
-	private Timer bulletsTimer;
+	private Timer gamePlayTimer;
 
 	
 	// Constructor
@@ -54,118 +51,139 @@ public class Controller {
 	// Methods
 	public void initialize() {
 		timeElapsed = new AtomicLong(0);
-		startGameTimer();
 		rand = new Random();
 		model.depositSpacebucks(500);
 		currentIncome = 0;
 		speedMultiplier = 1;
 		generateAliens();
-		new Thread(() -> startAlienTimeline()).start();
-		startMoneyTimeline();
-		startBulletsTimeline();
+		startTimeLine();
+	}
+	
+	public void startTimeLine() {
+		gamePlayTimer = new Timer();
+		TimerTask turnTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				Platform.runLater(() -> calculateHitsOrDeaths());
+				Platform.runLater(() -> animate());
+			}
+			
+		};
+		
+		TimerTask bullets = new TimerTask() {
+
+			@Override
+			public void run() {
+				for(DefenderTower tower : model.getTowers()) {
+					if (tower instanceof MillenniumFalcon) {
+						Platform.runLater(() -> model.addBullet(((MillenniumFalcon) tower).shotOne()));
+						Platform.runLater(() -> model.addBullet(((MillenniumFalcon) tower).shotTwo()));
+						Platform.runLater(() -> model.addBullet(new ExplosiveAstroJoeAmmo(tower)));
+
+					}
+					else if (tower.canShoot()) {
+						Platform.runLater(() -> model.addBullet(tower.shoot()));
+					}
+				}
+			}
+			
+		};
+		
+		TimerTask money = new TimerTask() {
+
+			@Override
+			public void run() {
+				Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
+			}
+			
+		};
+		
+		TimerTask increaseTime = new TimerTask() {
+
+			@Override
+			public void run() {
+				long newValue = timeElapsed.get() + 1 * speedMultiplier;
+				timeElapsed.set(newValue);
+			}
+			
+		};
+		
+		gamePlayTimer.schedule(turnTask, 0, 100 / speedMultiplier);
+		gamePlayTimer.schedule(bullets, 0, 1000 / speedMultiplier);
+		gamePlayTimer.schedule(money, 0, 5000 / speedMultiplier);
+		gamePlayTimer.schedule(increaseTime, 0, 1);
+	}
+	
+	private void animate() {
+		for (Enemy alien : model.getAliens()) {
+			try {
+				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
+				if (tower == null) {
+					alien.move();
+				} else {
+					tower.decreaseHealth(alien.getDamage());
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				alien.move();
+			}
+		}
+		
+		List<Ammo> bullets = new ArrayList<>(model.getBullets());
+		for(Ammo bullet: bullets) {
+			if (bullet.getCol() < COLS+2) {
+				bullet.move();
+			} else {
+				model.removeBullet(bullet);
+			}
+		}
+	}
+	
+	
+	private void calculateHitsOrDeaths() {
+		if (!model.hasAliens()) {
+			if (waveOneDone && !waveTwoDone && !waveThreeDone) {
+				model.setWaveNumber(2);
+				generateAliens();
+			} else if (waveTwoDone && !waveThreeDone) {
+				model.setWaveNumber(3);
+				generateAliens();
+			} else if (waveThreeDone){
+				System.out.println("YOU WON!!!");
+				System.exit(0);
+			}
+		}
+		List<Ammo> bullets = new ArrayList<Ammo>(model.getBullets());
+		for (Ammo bullet : bullets) {
+			boolean hit = false;
+			for (Enemy alien : model.getAliens()) {
+				if (bullet.getCol() == alien.getCol() && bullet.getRow() == alien.getRow()) {
+					alien.decreaseHealth(bullet.getDamage());
+					hit = true;
+					continue;
+				}
+			}
+			if (hit) {
+				model.removeBullet(bullet);
+			}
+		}
+		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
+		for (Enemy alien : aliens) {
+			if (alien.getCol() == -1 || alien.getHealth() <= 0) {
+				Platform.runLater(() -> model.removeAlien(alien));
+			}
+		}
 	}
 	
 	public int getSpeedMultiplier() {
 		return speedMultiplier;
 	}
 	
-	private void startGameTimer() {
-		gameTimer = new Timer();
-		TimerTask increaseTime = new TimerTask() {
-
-			@Override
-			public void run() {
-				long newValue = timeElapsed.get() + 1 * speedMultiplier;
-				timeElapsed.set(newValue);
-			}
-			
-		};
-		gameTimer.schedule(increaseTime, 0, 1);
-	}
-	
-	private void pauseGameTimer() {
-		gameTimer.cancel();
-	}
-	
-	private void resumeGameTimer() {
-		gameTimer = new Timer();
-		TimerTask increaseTime = new TimerTask() {
-
-			@Override
-			public void run() {
-				long newValue = timeElapsed.get() + 1 * speedMultiplier;
-				timeElapsed.set(newValue);
-			}
-			
-		};
-		gameTimer.schedule(increaseTime, 0, 1);
-	}
-	
-	private void startBulletsTimeline() {
-		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1000 / speedMultiplier), e -> {
-			for (DefenderTower tower : model.getTowers()) {
-				if(tower.canShoot()) {
-					model.addBullet(tower.shoot());
-				}
-			}
-		}));
-		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
-		bulletsTimeline.play();
-		
-		bulletsTimer = new Timer();
-		TimerTask removeBullets = new TimerTask() {
-
-			@Override
-			public void run() {
-				List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
-				for (Ammo bullet : model.getBullets()) {
-					if (bullet.getCol() >= COLS) {
-						bulletsToRemove.add(bullet);
-					}
-				}
-				for(Ammo bullet : bulletsToRemove) {
-					model.removeBullet(bullet);
-				}
-				
-			}
-			
-		};
-		bulletsTimer.schedule(removeBullets, 0, 2000);
-		
-	}
-	
-	private void startMoneyTimeline() {
-		// Currency generator - deposit 50 space bucks every 5 seconds
-		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE / speedMultiplier), e -> {
-			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
-		}));
-
-		moneyTimeline.setCycleCount(Timeline.INDEFINITE);
-		moneyTimeline.play();
-	}
-	
-	private void startAlienTimeline() {
-		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / speedMultiplier), e -> {
-			if (model.hasAliens()) {
-				animate();
-			} else if (waveThreeDone) {						// GAME OVER
-				Platform.exit();
-				System.exit(0);
-			} else {
-				model.setWaveNumber(model.getWaveNumber()+1);
-				generateAliens();
-			}
-		}));
-		
-		alienTimeline.setCycleCount(Timeline.INDEFINITE);
-		alienTimeline.play();
-	}
-	
 	private void generateAliens() {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
 		
-		if (waveNumber == 1) {						// WAVE ONE
+		if (waveNumber == 1 && !waveOneDone) {						// WAVE ONE
 			System.out.println("WAVE ONE");
 			TimerTask firstWave = new TimerTask() {
 
@@ -190,8 +208,7 @@ public class Controller {
 			};
 			timer.schedule(firstWave, 0);
 			timer.schedule(secondWave, WAVE_DELAY);
-		} else if (waveNumber == 2 && waveOneDone) {				// WAVE TWO
-			System.out.println("WAVE TWO");
+		} else if (waveNumber == 2 && waveOneDone && !waveTwoDone) {				// WAVE TWO
 
 			TimerTask firstWave = new TimerTask() {
 
@@ -213,14 +230,14 @@ public class Controller {
 					generateTank(3);
 					generateManHunter(3);
 					waveTwoDone = true;
+					System.out.println("WAVE TWO");
 				}
 				
 			};
 			timer.schedule(firstWave, WAVE_DELAY);
-			timer.schedule(secondWave, WAVE_DELAY/3);
+			timer.schedule(secondWave, WAVE_DELAY);
 			
 		} else if (waveNumber == 3 && waveTwoDone) {				// WAVE THREE
-			System.out.println("WAVE THREE");
 			
 			TimerTask firstWave = new TimerTask() {
 
@@ -233,6 +250,7 @@ public class Controller {
 					generateTank(3);
 					generateGargantua(3);
 					waveThreeDone = true;
+					System.out.println("WAVE THREE");
 				}
 				
 			};
@@ -332,70 +350,17 @@ public class Controller {
 		} else {
 			speedMultiplier *= 2;
 		}
-		alienTimeline.stop();
-		startAlienTimeline();
-		
-		moneyTimeline.stop();
-		startMoneyTimeline();
-		
-		bulletsTimeline.stop();
-		startBulletsTimeline();
+		pause();
+		resume();
 	}
 	
 	
 	public void pause() {
-		pauseGameTimer();
-		moneyTimeline.pause();
-		alienTimeline.pause();
-		bulletsTimeline.pause();
+		gamePlayTimer.cancel();
 	}
 	
 	public void resume() {
-		resumeGameTimer();
-		moneyTimeline.play();
-		alienTimeline.play();
-		bulletsTimeline.play();
-	}
-	
-	private void animate() {
-		calculateHitsOrDeaths();
-		List<Enemy> aliensToMove = new ArrayList<Enemy>();
-		for (Enemy alien : model.getAliens()) {
-			try {
-				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
-				if (tower == null) {
-					aliensToMove.add(alien);
-				} else {
-					tower.decreaseHealth(alien.getDamage());
-					if (tower.isDead()) {
-						model.removeTower(tower, tower.getRow(), tower.getCol());
-					}
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				aliensToMove.add(alien);
-			}
-		}
-		for (Enemy alien : aliensToMove) {
-			alien.move();
-		}
-				
-		for(Ammo bullet: model.getBullets()) {
-			bullet.move();
-		}
-	}
-	
-	private void calculateHitsOrDeaths() {
-		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
-		for (Enemy alien : aliens) {
-			if (alien.getCol() == -1) {
-				model.removeAlien(alien);
-			}
-		}
-	}
-	
-	
-	public void purchaseTower() {
-		
+		startTimeLine();
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
@@ -432,9 +397,5 @@ public class Controller {
 		} else {
 			model.removeTower(towerToRemove, row, col);
 		}
-	}
-	
-	public void collectSpaceBucks() {
-		// TODO: implement
 	}
 }

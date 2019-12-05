@@ -1,13 +1,11 @@
 package game;
 
 import java.io.*;
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 import ammo.Ammo;
 import characters.Astronauts.*;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -228,13 +226,17 @@ public class View extends Application implements Observer{
 					Ammo bullet = message.getBullet();
 					StackPane bulletPane = bullet.getStackPane();
 					
+//					bulletPane.setStyle("-fx-border-color: black");
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
-					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE / 2));
+					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
+
 
 					mainGroup.getChildren().add(bulletPane);
+					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
+					break;
 			}
 		}	
 //		
@@ -561,8 +563,10 @@ public class View extends Application implements Observer{
 		
 		// Handlers
 		fastForwardBtn.setOnAction( e -> {
-			controller.increaseSpeed();
-			fastForwardBtn.setText(controller.getSpeedMultiplier() + "X");
+			if (!paused) {
+				controller.increaseSpeed();
+				fastForwardBtn.setText(controller.getSpeedMultiplier() + "X");
+			}
 		});
 		
 		pauseBtn.setOnAction( e -> {

@@ -59,6 +59,10 @@ public class Ammo {
 		stackPane.getChildren().add(imageView);
 	}
 	
+	public int getDamage() {
+		return damage;
+	}
+	
 	public StackPane getStackPane() {
 		return stackPane;
 	}
@@ -97,7 +101,8 @@ public class Ammo {
 		
 		double movement = xPos + ((double)this.speed / 100.0);
 		this.setCol(calculateCol(xPos));
-		stackPane.setTranslateX(movement); 
+		stackPane.setTranslateX(movement);
+//		Platform.runLater(() -> stackPane.setTranslateX(movement)); 
 	}
 	
 	private int calculateCol(double xPos) {
