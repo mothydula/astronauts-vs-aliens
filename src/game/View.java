@@ -251,7 +251,6 @@ public class View extends Application implements Observer{
 		Media song;
 		String resource = null;
 	    if (isIntro) {
-			System.out.println("trying");
 			resource = new File(INTRO_MUSIC).toURI().toString();
 		} else {
 			resource = new File(IN_GAME_MUSIC).toURI().toString();
