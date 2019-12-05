@@ -1,5 +1,7 @@
 package ammo;
 
+import java.io.File;
+
 import characters.Astronauts.DefenderTower;
 import game.View;
 import javafx.scene.image.Image;
@@ -8,6 +10,8 @@ import javafx.scene.layout.StackPane;
 /**
  * Super class for all ammo
  * */
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 public class Ammo {
 	
 	//The basic stats of the ammo
@@ -81,6 +85,15 @@ public class Ammo {
 	
 	public int getRow() {
 		return row;
+	}
+	
+	public void playBulletNoise() {
+		// TODO: for Trey, have a bullet noise for each defender's ammo,
+		// each time a piece of ammo is fired
+		/*MediaPlayer ammoNoise;
+		String resource = new File(ammoNoiseFile.mp3).toURI().toString();
+		ammoNoise = new MediaPlayer(new Media(resource));
+		ammoNoise.play();*/
 	}
 	
 	public void move() {

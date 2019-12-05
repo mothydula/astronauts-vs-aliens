@@ -88,8 +88,8 @@ public class View extends Application implements Observer{
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
 
 	// fields for the music files
-	private final String INTRO_MUSIC			= "assets/general/introMusic.mp3";
-	private final String IN_GAME_MUSIC			= "assets/general/inGameMusic.mp3";
+	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
+	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
 
 	private final int ALIEN_RANDOM_OFFSET = 200;
 
