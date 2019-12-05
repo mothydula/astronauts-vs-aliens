@@ -101,7 +101,8 @@ public class Controller {
 	}
 	
 	private void startBulletsTimeline() {
-		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1000 / speedMultiplier), e -> {
+		Thread bullets = new Thread();
+		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1500 / speedMultiplier), e -> {
 			for (DefenderTower tower : model.getTowers()) {
 				if(tower.canShoot()) {
 					model.addBullet(tower.shoot());
@@ -111,25 +112,25 @@ public class Controller {
 		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
 		bulletsTimeline.play();
 		
-		bulletsTimer = new Timer();
-		TimerTask removeBullets = new TimerTask() {
-
-			@Override
-			public void run() {
-				List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
-				for (Ammo bullet : model.getBullets()) {
-					if (bullet.getCol() >= COLS) {
-						bulletsToRemove.add(bullet);
-					}
-				}
-				for(Ammo bullet : bulletsToRemove) {
-					model.removeBullet(bullet);
-				}
-				
-			}
-			
-		};
-		bulletsTimer.schedule(removeBullets, 0, 2000);
+//		bulletsTimer = new Timer();
+//		TimerTask removeBullets = new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
+//				for (Ammo bullet : model.getBullets()) {
+//					if (bullet.getCol() >= COLS) {
+//						bulletsToRemove.add(bullet);
+//					}
+//				}
+//				for(Ammo bullet : bulletsToRemove) {
+//					model.removeBullet(bullet);
+//				}
+//				
+//			}
+//			
+//		};
+//		bulletsTimer.schedule(removeBullets, 0, 2000);
 		
 	}
 	

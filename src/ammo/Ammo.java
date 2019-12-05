@@ -2,6 +2,7 @@ package ammo;
 
 import characters.Astronauts.DefenderTower;
 import game.View;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -84,7 +85,7 @@ public class Ammo {
 		
 		double movement = xPos + ((double)this.speed / 100.0);
 		this.setCol(calculateCol(xPos));
-		stackPane.setTranslateX(movement); 
+		Platform.runLater(() -> stackPane.setTranslateX(movement)); 
 	}
 	
 	private int calculateCol(double xPos) {

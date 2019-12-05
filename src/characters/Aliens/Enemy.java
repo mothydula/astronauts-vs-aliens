@@ -2,6 +2,7 @@ package characters.Aliens;
 
 import characters.BoardCharacter;
 import game.View;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -71,8 +72,8 @@ public class Enemy extends BoardCharacter {
 		
 		double movement = xPos - ((double)this.getAttackSpeed() / 100.0);
 		this.setCol(calculateCol(xPos));
-//		Platform.runLater(() -> stackPane.setTranslateX((xPos - 0.8))); // Negative value will be alien speed
-		stackPane.setTranslateX(movement); // Negative value will be alien speed
+		Platform.runLater(() -> stackPane.setTranslateX((movement))); // Negative value will be alien speed
+//		stackPane.setTranslateX(movement); // Negative value will be alien speed
 	}
 	
 	private int calculateCol(double xPos) {
