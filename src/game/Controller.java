@@ -65,8 +65,8 @@ public class Controller {
 
 			@Override
 			public void run() {
-				Platform.runLater(() -> calculateHitsOrDeaths());
-				Platform.runLater(() -> animate());
+				calculateHitsOrDeaths();
+				animate();
 			}
 			
 		};
@@ -120,21 +120,21 @@ public class Controller {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
 				if (tower == null) {
-					alien.move();
+					Platform.runLater(() -> alien.move());
 				} else {
 					tower.decreaseHealth(alien.getDamage());
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
-				alien.move();
+				Platform.runLater(() ->alien.move());
 			}
 		}
 		
 		List<Ammo> bullets = new ArrayList<>(model.getBullets());
 		for(Ammo bullet: bullets) {
 			if (bullet.getCol() < COLS+2) {
-				bullet.move();
+				Platform.runLater(() -> bullet.move());
 			} else {
-				model.removeBullet(bullet);
+				Platform.runLater(() -> model.removeBullet(bullet));
 			}
 		}
 	}
@@ -164,7 +164,7 @@ public class Controller {
 				}
 			}
 			if (hit) {
-				model.removeBullet(bullet);
+				Platform.runLater(() -> model.removeBullet(bullet));
 			}
 		}
 		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
