@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
+import ammo.Ammo;
 import characters.Astronauts.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -86,8 +88,13 @@ public class View extends Application implements Observer{
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
+
+	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/general/introMusic.mp3";
 	private final String IN_GAME_MUSIC			= "assets/general/inGameMusic.mp3";
+
+	private final int ALIEN_RANDOM_OFFSET = 200;
+
 	
 	// Class fields
 	private Model model;
@@ -188,10 +195,11 @@ public class View extends Application implements Observer{
 							mainGroup.getChildren().add(characterPane);
 							defendersGrid[message.getRow()][message.getCol()] = characterPane;
 						} else {
+							Random rand = new Random();
 							StackPane alienPane = ((Enemy) message.getCharacter()).getStackPane();
 							alienPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 							alienPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
-							alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
+							alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET + rand.nextInt(ALIEN_RANDOM_OFFSET));
 //							alienPane.setStyle("-fx-border-color: black");
 //							Platform.runLater(() -> mainGroup.getChildren().add(alienPane));
 							mainGroup.getChildren().add(alienPane);
@@ -215,6 +223,18 @@ public class View extends Application implements Observer{
 					int fadeOutTime= 150; //0.5 seconds
 					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 					break;
+
+				case MoveMessage.BULLET_PLACEMENT:
+					Ammo bullet = message.getBullet();
+					StackPane bulletPane = bullet.getStackPane();
+					
+					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
+					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE / 2));
+
+					mainGroup.getChildren().add(bulletPane);
+				case MoveMessage.BULLET_REMOVAL:
+					mainGroup.getChildren().remove(message.getBullet().getStackPane());
 			}
 		}	
 //		
@@ -432,7 +452,7 @@ public class View extends Application implements Observer{
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (col == 0) {
 					StackPane gunStackPane = new StackPane();
-					gunStackPane.setStyle("-fx-border-color: black");
+//					gunStackPane.setStyle("-fx-border-color: black");
 					gunStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					gunStackPane.setTranslateX(COLUMN_OFFSET);
 					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -443,7 +463,7 @@ public class View extends Application implements Observer{
 					defendersGrid[row][col] = gunStackPane;
 				} else if (col <= Controller.COLS - 1) {
 					StackPane tempStackPane = new StackPane();
-					tempStackPane.setStyle("-fx-border-color: black");
+//					tempStackPane.setStyle("-fx-border-color: black");
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -532,6 +552,8 @@ public class View extends Application implements Observer{
 	public HBox createUtilityBar() {
 		HBox utilityBar = new HBox(3);
 		utilityBar.setAlignment(Pos.TOP_RIGHT);
+		utilityBar.setTranslateX(COLUMN_OFFSET);
+		utilityBar.setTranslateY(ROW_OFFSET);
 		
 		// Buttons for utiliy bar with generated handlers
 		Button fastForwardBtn = new Button(">>");
@@ -540,18 +562,19 @@ public class View extends Application implements Observer{
 		// Handlers
 		fastForwardBtn.setOnAction( e -> {
 			controller.increaseSpeed();
-			// TODO Implement Fast Forward functionality
-			System.out.println("Fast forward button pressed");
+			fastForwardBtn.setText(controller.getSpeedMultiplier() + "X");
 		});
-
-		pauseBtn.setOnMouseClicked( e -> {
+		
+		pauseBtn.setOnAction( e -> {
 			if (paused) {				// TODO: create pause menu modal
 				controller.resume();
+				pauseBtn.setText("Pause");
+				paused = false;
 			} else {
 				controller.pause();
+				paused = true;
+				pauseBtn.setText("Resume");
 			}
-			// TODO: Implement pause functionality
-			System.out.println("Pause button pressed");
 		});
 		
 		utilityBar.getChildren().addAll(fastForwardBtn, pauseBtn);

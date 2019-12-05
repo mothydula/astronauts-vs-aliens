@@ -1,5 +1,7 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
+import ammo.StartrellClugginsAmmo;
 import javafx.scene.image.Image;
 
 public class StartrellCluggins extends DefenderTower{
@@ -15,5 +17,17 @@ public class StartrellCluggins extends DefenderTower{
 	
 	public String toString() {
 		return "Startrell Cluggins\n" + super.infoCard();
+	}
+
+	@Override
+	public Ammo shoot() {
+		// TODO Auto-generated method stub
+		return new StartrellClugginsAmmo(this);
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

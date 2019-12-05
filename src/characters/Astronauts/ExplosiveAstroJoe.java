@@ -1,5 +1,7 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
+import ammo.ExplosiveAstroJoeAmmo;
 import javafx.scene.image.Image;
 
 public class ExplosiveAstroJoe extends DefenderTower{
@@ -15,5 +17,17 @@ public class ExplosiveAstroJoe extends DefenderTower{
 	
 	public String toString() {
 		return "ExplosiveAstroJoe\n" + super.infoCard();
+	}
+
+	@Override
+	public Ammo shoot() {
+		// TODO Auto-generated method stub
+		return new ExplosiveAstroJoeAmmo(this);
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

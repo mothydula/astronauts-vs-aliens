@@ -27,6 +27,14 @@ public class BoardCharacter {
 	}
 	
 	// Methods
+	public boolean isDead() {
+		return this.health <= 0;
+	}
+	
+	public void decreaseHealth(int amount) {
+		this.health -= amount;
+	}
+	
 	public int getHealth() {
 		return health;
 	}

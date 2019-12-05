@@ -1,5 +1,6 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
 import characters.IncomeTowers.IncomeTower;
 import javafx.scene.image.Image;
 
@@ -24,5 +25,17 @@ public class MoneyBush extends IncomeTower {
 	
 	public String toString() {
 		return "SpaceBucksPrinter\n" + super.infoCard();
+	}
+
+	@Override
+	public Ammo shoot() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

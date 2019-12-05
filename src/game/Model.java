@@ -3,6 +3,8 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import ammo.Ammo;
 import characters.*;
 import characters.Aliens.Enemy;
 import characters.Astronauts.DefenderTower;
@@ -13,17 +15,53 @@ public class Model extends Observable {
 	private Tile[][] board;
 	// TODO: add list of defenders to be able to iterate while animating?? Maybe not necessary of checking with row, col from alien.
 	private int bank;
-	private int wave;
+	private int currentWave;
 	private List<Enemy> aliens;
+	private List<Ammo> bullets;
+	private List<DefenderTower> towers;
 	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
-		bank = 50;
-		wave = 1;
+		towers = new ArrayList<DefenderTower>();
+		bullets = new ArrayList<Ammo>();
+		bank = 0;
+		currentWave = 1;
 		aliens = new ArrayList<Enemy>();
 		board = new Tile[Controller.ROWS][Controller.COLS];
 		initializeBoard();
+	}
+	
+	public void addBullet(Ammo bullet) {
+		bullets.add(bullet);
+		
+		MoveMessage message = new MoveMessage(MoveMessage.BULLET_PLACEMENT);
+		message.setBullet(bullet);
+		
+		setChanged();
+		notifyObservers(message);
+	}
+	
+	public void removeBullet(Ammo bullet) {
+		bullets.remove(bullet);
+		
+		MoveMessage message = new MoveMessage(MoveMessage.BULLET_REMOVAL);
+		message.setBullet(bullet);
+		
+		setChanged();
+		notifyObservers(message);
+	}
+	
+	public List<DefenderTower> getTowers() {
+		return towers;
+	}
+	
+	public List<Ammo> getBullets() {
+		return this.bullets;
+	}
+	
+	public void setWaveNumber(int waveNumber) {
+		this.currentWave = waveNumber;
 	}
 	
 	public void addAlien(Enemy alien) {
@@ -46,7 +84,7 @@ public class Model extends Observable {
 	}
 	
 	public int getWaveNumber() {
-		return wave;
+		return currentWave;
 	}
 	
 	// Methods
@@ -75,6 +113,7 @@ public class Model extends Observable {
 		MoveMessage message = null;
 		// Adjust bank amount
 		if (character instanceof DefenderTower) {
+			towers.add((DefenderTower)character);
 			bank -= ((DefenderTower)character).getCost();
 			
 			// Place character
@@ -112,6 +151,7 @@ public class Model extends Observable {
 	}
 
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
+		towers.remove(towerToRemove);
 		// adjusts bank amount
 		bank += DefenderTower.REFUND_MULTIPLIER * towerToRemove.getCost();
 		

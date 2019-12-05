@@ -1,5 +1,7 @@
 package characters.Astronauts;
 
+import ammo.Ammo;
+import ammo.MoonZeusAmmo;
 import javafx.scene.image.Image;
 
 public class MoonZeus extends DefenderTower{
@@ -15,5 +17,17 @@ public class MoonZeus extends DefenderTower{
 	
 	public String toString() {
 		return "Moon Zeus\n" + super.infoCard();
+	}
+
+	@Override
+	public Ammo shoot() {
+		// TODO Auto-generated method stub
+		return new MoonZeusAmmo(this);
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }
