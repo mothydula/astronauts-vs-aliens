@@ -400,14 +400,14 @@ public class Controller {
 		} else {
 			speedMultiplier *= 2;
 		}
-		alienTimeline.stop();
-		startAlienTimeline();
-		
-		moneyTimeline.stop();
-		startMoneyTimeline();
-		
-		bulletsTimeline.stop();
-		startBulletsTimeline();
+//		alienTimeline.stop();
+//		startAlienTimeline();
+//		
+//		moneyTimeline.stop();
+//		startMoneyTimeline();
+//		
+//		bulletsTimeline.stop();
+//		startBulletsTimeline();
 	}
 	
 	

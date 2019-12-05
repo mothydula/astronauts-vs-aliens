@@ -223,17 +223,20 @@ public class View extends Application implements Observer{
 					break;
 
 				case MoveMessage.BULLET_PLACEMENT:
-					System.out.println("HERE");
 					Ammo bullet = message.getBullet();
 					StackPane bulletPane = bullet.getStackPane();
 					
+//					bulletPane.setStyle("-fx-border-color: black");
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.8));
 
+
 					mainGroup.getChildren().add(bulletPane);
+					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
+					break;
 			}
 		}	
 //		
