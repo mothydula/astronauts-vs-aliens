@@ -66,6 +66,15 @@ public class Enemy extends BoardCharacter {
 		return stackPane;
 	}
 	
+	public void playAlienMunchNoise() {
+		// TODO: for Trey, have a bullet noise for each defender's ammo,
+		// each time a piece of ammo is fired
+		/*MediaPlayer munchNoise;
+		String resource = new File(munchNoiseFile.mp3).toURI().toString();
+		munchNoise = new MediaPlayer(new Media(resource));
+		munchNoise.play();*/
+	}
+	
 	public void move() {
 		double xPos = stackPane.getTranslateX();
 		
