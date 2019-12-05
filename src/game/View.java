@@ -229,7 +229,7 @@ public class View extends Application implements Observer{
 //					bulletPane.setStyle("-fx-border-color: black");
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
-					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.8));
+					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
 
 
 					mainGroup.getChildren().add(bulletPane);

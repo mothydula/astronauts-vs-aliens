@@ -90,29 +90,38 @@ public class Controller {
 			
 		};
 		
-		gamePlayTimer.schedule(turnTask, 0, 16);
+		gamePlayTimer.schedule(turnTask, 0, 100);
 		gamePlayTimer.schedule(bullets, 0, 2000);
 	}
 	
 	private void animate() {
-		List<Enemy> aliensToMove = new ArrayList<Enemy>();
+//		List<Enemy> aliensToMove = new ArrayList<Enemy>();
+//		for (Enemy alien : model.getAliens()) {
+//			try {
+//				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
+//				if (tower == null) {
+//					aliensToMove.add(alien);
+//				} else {
+//					tower.decreaseHealth(alien.getDamage());
+//					if (tower.isDead()) {
+//						model.removeTower(tower, tower.getRow(), tower.getCol());
+//					}
+//				}
+//			} catch (ArrayIndexOutOfBoundsException e) {
+//				aliensToMove.add(alien);
+//			}
+//		}
 		for (Enemy alien : model.getAliens()) {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
 				if (tower == null) {
-					aliensToMove.add(alien);
+					alien.move();
 				} else {
 					tower.decreaseHealth(alien.getDamage());
-					if (tower.isDead()) {
-						model.removeTower(tower, tower.getRow(), tower.getCol());
-					}
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
-				aliensToMove.add(alien);
+				alien.move();
 			}
-		}
-		for (Enemy alien : aliensToMove) {
-			alien.move();
 		}
 				
 		for(Ammo bullet: model.getBullets()) {
