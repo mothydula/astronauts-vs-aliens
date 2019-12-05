@@ -42,6 +42,7 @@ public class Controller {
 	private boolean waveOneDone = false;
 	private boolean waveTwoDone = false;
 	private boolean waveThreeDone = false;
+	private Timer bulletsTimer;
 
 	
 	// Constructor
@@ -109,6 +110,27 @@ public class Controller {
 		}));
 		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
 		bulletsTimeline.play();
+		
+		bulletsTimer = new Timer();
+		TimerTask removeBullets = new TimerTask() {
+
+			@Override
+			public void run() {
+				List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
+				for (Ammo bullet : model.getBullets()) {
+					if (bullet.getCol() >= COLS) {
+						bulletsToRemove.add(bullet);
+					}
+				}
+				for(Ammo bullet : bulletsToRemove) {
+					model.removeBullet(bullet);
+				}
+				
+			}
+			
+		};
+		bulletsTimer.schedule(removeBullets, 0, 2000);
+		
 	}
 	
 	private void startMoneyTimeline() {
@@ -125,7 +147,7 @@ public class Controller {
 		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / speedMultiplier), e -> {
 			if (model.hasAliens()) {
 				animate();
-			}else if (waveThreeDone) {						// GAME OVER
+			} else if (waveThreeDone) {						// GAME OVER
 				Platform.exit();
 				System.exit(0);
 			} else {
@@ -355,11 +377,10 @@ public class Controller {
 		for (Enemy alien : aliensToMove) {
 			alien.move();
 		}
+				
 		for(Ammo bullet: model.getBullets()) {
 			bullet.move();
 		}
-		// TODO: Call another method to move bullets
-		
 	}
 	
 	private void calculateHitsOrDeaths() {

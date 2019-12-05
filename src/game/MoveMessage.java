@@ -9,6 +9,7 @@ public class MoveMessage {
 	public static final int INVALID_MOVE = 1;
 	public static final int VALID_MOVE = 2;
 	public static final int BULLET_PLACEMENT = 3;
+	public static final int BULLET_REMOVAL = 4;
 	
 	private int type;
 	private BoardCharacter character;
