@@ -9,9 +9,11 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import ammo.Ammo;
+import ammo.ExplosiveAstroJoeAmmo;
 import characters.BoardCharacter;
 import characters.Aliens.*;
 import characters.Astronauts.DefenderTower;
+import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -63,7 +65,7 @@ public class Controller {
 
 			@Override
 			public void run() {
-				calculateHitsOrDeaths();
+				Platform.runLater(() -> calculateHitsOrDeaths());
 				Platform.runLater(() -> animate());
 			}
 			
@@ -74,7 +76,13 @@ public class Controller {
 			@Override
 			public void run() {
 				for(DefenderTower tower : model.getTowers()) {
-					if (tower.canShoot()) {
+					if (tower instanceof MillenniumFalcon) {
+						Platform.runLater(() -> model.addBullet(((MillenniumFalcon) tower).shotOne()));
+						Platform.runLater(() -> model.addBullet(((MillenniumFalcon) tower).shotTwo()));
+						Platform.runLater(() -> model.addBullet(new ExplosiveAstroJoeAmmo(tower)));
+
+					}
+					else if (tower.canShoot()) {
 						Platform.runLater(() -> model.addBullet(tower.shoot()));
 					}
 				}
@@ -102,7 +110,7 @@ public class Controller {
 		};
 		
 		gamePlayTimer.schedule(turnTask, 0, 100 / speedMultiplier);
-		gamePlayTimer.schedule(bullets, 0, 2000 / speedMultiplier);
+		gamePlayTimer.schedule(bullets, 0, 1000 / speedMultiplier);
 		gamePlayTimer.schedule(money, 0, 5000 / speedMultiplier);
 		gamePlayTimer.schedule(increaseTime, 0, 1);
 	}
@@ -120,17 +128,48 @@ public class Controller {
 				alien.move();
 			}
 		}
-				
-		for(Ammo bullet: model.getBullets()) {
-			bullet.move();
+		
+		List<Ammo> bullets = new ArrayList<>(model.getBullets());
+		for(Ammo bullet: bullets) {
+			if (bullet.getCol() < COLS+2) {
+				bullet.move();
+			} else {
+				model.removeBullet(bullet);
+			}
 		}
 	}
 	
 	
 	private void calculateHitsOrDeaths() {
+		if (!model.hasAliens()) {
+			if (waveOneDone && !waveTwoDone && !waveThreeDone) {
+				model.setWaveNumber(2);
+				generateAliens();
+			} else if (waveTwoDone && !waveThreeDone) {
+				model.setWaveNumber(3);
+				generateAliens();
+			} else if (waveThreeDone){
+				System.out.println("YOU WON!!!");
+				System.exit(0);
+			}
+		}
+		List<Ammo> bullets = new ArrayList<Ammo>(model.getBullets());
+		for (Ammo bullet : bullets) {
+			boolean hit = false;
+			for (Enemy alien : model.getAliens()) {
+				if (bullet.getCol() == alien.getCol() && bullet.getRow() == alien.getRow()) {
+					alien.decreaseHealth(bullet.getDamage());
+					hit = true;
+					continue;
+				}
+			}
+			if (hit) {
+				model.removeBullet(bullet);
+			}
+		}
 		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
 		for (Enemy alien : aliens) {
-			if (alien.getCol() == -1) {
+			if (alien.getCol() == -1 || alien.getHealth() <= 0) {
 				Platform.runLater(() -> model.removeAlien(alien));
 			}
 		}
@@ -144,7 +183,7 @@ public class Controller {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
 		
-		if (waveNumber == 1) {						// WAVE ONE
+		if (waveNumber == 1 && !waveOneDone) {						// WAVE ONE
 			System.out.println("WAVE ONE");
 			TimerTask firstWave = new TimerTask() {
 
@@ -169,8 +208,7 @@ public class Controller {
 			};
 			timer.schedule(firstWave, 0);
 			timer.schedule(secondWave, WAVE_DELAY);
-		} else if (waveNumber == 2 && waveOneDone) {				// WAVE TWO
-			System.out.println("WAVE TWO");
+		} else if (waveNumber == 2 && waveOneDone && !waveTwoDone) {				// WAVE TWO
 
 			TimerTask firstWave = new TimerTask() {
 
@@ -192,14 +230,14 @@ public class Controller {
 					generateTank(3);
 					generateManHunter(3);
 					waveTwoDone = true;
+					System.out.println("WAVE TWO");
 				}
 				
 			};
 			timer.schedule(firstWave, WAVE_DELAY);
-			timer.schedule(secondWave, WAVE_DELAY/3);
+			timer.schedule(secondWave, WAVE_DELAY);
 			
 		} else if (waveNumber == 3 && waveTwoDone) {				// WAVE THREE
-			System.out.println("WAVE THREE");
 			
 			TimerTask firstWave = new TimerTask() {
 
@@ -212,6 +250,7 @@ public class Controller {
 					generateTank(3);
 					generateGargantua(3);
 					waveThreeDone = true;
+					System.out.println("WAVE THREE");
 				}
 				
 			};

@@ -1,6 +1,9 @@
 package characters.Astronauts;
 
 import ammo.Ammo;
+import ammo.MoonZeusAmmo;
+import ammo.StartrellClugginsAmmo;
+import ammo.TarsAmmo;
 import javafx.scene.image.Image;
 
 public class MillenniumFalcon extends DefenderTower{
@@ -22,6 +25,14 @@ public class MillenniumFalcon extends DefenderTower{
 	public Ammo shoot() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Ammo shotOne() {
+		return new MoonZeusAmmo(this);
+	}
+	
+	public Ammo shotTwo() {
+		return new TarsAmmo(this);
 	}
 
 	@Override

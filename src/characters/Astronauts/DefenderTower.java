@@ -12,7 +12,7 @@ public abstract class DefenderTower extends BoardCharacter{
 	// AstroJoe
 	protected static final int HEALTH_ASTROJOE = 1000;
 	protected static final int ATTACK_SPEED_ASTROJOE = 100;	
-	protected static final int DAMAGE_ASTROJOE = 100;
+	protected static final int DAMAGE_ASTROJOE = 10;
 	protected static final int COST_ASTROJOE = 25;
 	public static final String ASTRO_JOE_IMAGE 			= "file:assets/defenders/astro-joe.png";
 	public static final String ASTRO_JOE_GIF			= "file:assets/defenders/astro-joe.gif";
@@ -20,16 +20,16 @@ public abstract class DefenderTower extends BoardCharacter{
 	
 	// ExplosiveAstroJoe
 	protected static final int HEALTH_EXPLOSIVE_ASTROJOE = 2000;
-	protected static final int ATTACK_SPEED_EXPLOSIVE_ASTROJOE = 100;
-	protected static final int DAMAGE_EXPLOSIVE_ASTROJOE = 100;
+	protected static final int ATTACK_SPEED_EXPLOSIVE_ASTROJOE = 150;
+	protected static final int DAMAGE_EXPLOSIVE_ASTROJOE = 15;
 	protected static final int COST_EXPLOSIVE_ASTROJOE = 50;
 	public static final String EXPLOSIVE_ASTRO_JOE_IMAGE 	= "file:assets/defenders/explosive-astro-joe.png";
 	public static final String EXPLOSIVE_ASTRO_JOE_GIF		= "file:assets/defenders/explosive-astro-joe.gif";
 	
 	// StartrellCluggins
 	protected static final int HEALTH_STARTRELL_CLUGGINS = 3000;
-	protected static final int ATTACK_SPEED_STARTRELL_CLUGGINS = 100;
-	protected static final int DAMAGE_STARTRELL_CLUGGINS = 100;
+	protected static final int ATTACK_SPEED_STARTRELL_CLUGGINS = 200;
+	protected static final int DAMAGE_STARTRELL_CLUGGINS = 20;
 	protected static final int COST_STARTRELL_CLUGGINS = 50;
 	public static final String STARTRELL_CLUGGINS_IMAGE 		= "file:assets/defenders/startrell-cluggins.png";
 	public static final String STARTRELL_CLUGGINS_GIF   		= "file:assets/defenders/startrell-cluggins.gif";
@@ -38,15 +38,15 @@ public abstract class DefenderTower extends BoardCharacter{
 	// Asteroid
 	protected static final int HEALTH_ASTEROID = 5000;
 	protected static final int ATTACK_SPEED_ASTEROID = 100;
-	protected static final int DAMAGE_ASTEROID = 100;
+	protected static final int DAMAGE_ASTEROID = 0;
 	protected static final int COST_ASTEROID = 25;
 	public static final String ASTEROID_IMAGE 			= "file:assets/defenders/asteroid.png";
 	public static final String ASTEROID_GIF				= "file:assets/defenders/asteroid.gif";
 	
 	// Tars
 	protected static final int HEALTH_TARS = 7500;
-	protected static final int ATTACK_SPEED_TARS = 100;
-	protected static final int DAMAGE_TARS = 100;
+	protected static final int ATTACK_SPEED_TARS = 150;
+	protected static final int DAMAGE_TARS = 30;
 	protected static final int COST_TARS = 75;
 	public static final String TARS_IMAGE 				= "file:assets/defenders/tars.png";
 	public static final String TARS_GIF					= "file:assets/defenders/tars.gif";
@@ -54,8 +54,8 @@ public abstract class DefenderTower extends BoardCharacter{
 	
 	// MoonZeus
 	protected static final int HEALTH_MOON_ZEUS = 10000;
-	protected static final int ATTACK_SPEED_MOON_ZEUS = 100;
-	protected static final int DAMAGE_MOON_ZEUS = 100;
+	protected static final int ATTACK_SPEED_MOON_ZEUS = 200;
+	protected static final int DAMAGE_MOON_ZEUS = 25;
 	protected static final int COST_MOON_ZEUS = 125;
 	public static final String MOON_ZEUS_IMAGE 			= "file:assets/defenders/moon-zeus.png";
 	public static final String MOON_ZEUS_GIF 			= "file:assets/defenders/moon-zeus.gif";
@@ -64,7 +64,7 @@ public abstract class DefenderTower extends BoardCharacter{
 	//MillenniumFalcon
 	protected static final int HEALTH_MILLENNIUM_FALCON = 30000;
 	protected static final int ATTACK_SPEED_MILLENNIUM_FALCON = 100;
-	protected static final int DAMAGE_MILLENNIUM_FALCON = 100;
+	protected static final int DAMAGE_MILLENNIUM_FALCON = 35;
 	protected static final int COST_MILLENNIUM_FALCON = 250;
 	public static final String MILLENNIUM_FALCON_IMAGE		= "file:assets/defenders/spaceship.png";
 	public static final String MILLENNIUM_FALCON_GIF		= "file:assets/defenders/spaceship.gif";

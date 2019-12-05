@@ -55,6 +55,10 @@ public class Ammo {
 		stackPane.getChildren().add(imageView);
 	}
 	
+	public int getDamage() {
+		return damage;
+	}
+	
 	public StackPane getStackPane() {
 		return stackPane;
 	}

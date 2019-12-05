@@ -563,8 +563,10 @@ public class View extends Application implements Observer{
 		
 		// Handlers
 		fastForwardBtn.setOnAction( e -> {
-			controller.increaseSpeed();
-			fastForwardBtn.setText(controller.getSpeedMultiplier() + "X");
+			if (!paused) {
+				controller.increaseSpeed();
+				fastForwardBtn.setText(controller.getSpeedMultiplier() + "X");
+			}
 		});
 		
 		pauseBtn.setOnAction( e -> {
