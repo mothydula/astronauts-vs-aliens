@@ -30,14 +30,10 @@ public class Controller {
 	private int currentIncome;
 	private final int CURRENCY_TIMELINE = 10; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
-	private Timeline moneyTimeline;
-	private Timeline alienTimeline;
-	private Timeline bulletsTimeline;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
 	private final long WAVE_DELAY = 3000l;
 	private AtomicLong timeElapsed;
-	private Timer gameTimer;
 	private int speedMultiplier;
 	private boolean waveOneDone = false;
 	private boolean waveTwoDone = false;
@@ -53,16 +49,12 @@ public class Controller {
 	// Methods
 	public void initialize() {
 		timeElapsed = new AtomicLong(0);
-		startGameTimer();
 		rand = new Random();
 		model.depositSpacebucks(500);
 		currentIncome = 0;
 		speedMultiplier = 1;
 		generateAliens();
 		startTimeLine();
-//		new Thread(() -> startAlienTimeline()).start();
-//		startMoneyTimeline();
-//		startBulletsTimeline();
 	}
 	
 	public void startTimeLine() {
@@ -90,27 +82,32 @@ public class Controller {
 			
 		};
 		
-		gamePlayTimer.schedule(turnTask, 0, 100);
-		gamePlayTimer.schedule(bullets, 0, 2000);
+		TimerTask money = new TimerTask() {
+
+			@Override
+			public void run() {
+				Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
+			}
+			
+		};
+		
+		TimerTask increaseTime = new TimerTask() {
+
+			@Override
+			public void run() {
+				long newValue = timeElapsed.get() + 1 * speedMultiplier;
+				timeElapsed.set(newValue);
+			}
+			
+		};
+		
+		gamePlayTimer.schedule(turnTask, 0, 100 / speedMultiplier);
+		gamePlayTimer.schedule(bullets, 0, 2000 / speedMultiplier);
+		gamePlayTimer.schedule(money, 0, 5000 / speedMultiplier);
+		gamePlayTimer.schedule(increaseTime, 0, 1);
 	}
 	
 	private void animate() {
-//		List<Enemy> aliensToMove = new ArrayList<Enemy>();
-//		for (Enemy alien : model.getAliens()) {
-//			try {
-//				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
-//				if (tower == null) {
-//					aliensToMove.add(alien);
-//				} else {
-//					tower.decreaseHealth(alien.getDamage());
-//					if (tower.isDead()) {
-//						model.removeTower(tower, tower.getRow(), tower.getCol());
-//					}
-//				}
-//			} catch (ArrayIndexOutOfBoundsException e) {
-//				aliensToMove.add(alien);
-//			}
-//		}
 		for (Enemy alien : model.getAliens()) {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
@@ -141,101 +138,6 @@ public class Controller {
 	
 	public int getSpeedMultiplier() {
 		return speedMultiplier;
-	}
-	
-	private void startGameTimer() {
-		gameTimer = new Timer();
-		TimerTask increaseTime = new TimerTask() {
-
-			@Override
-			public void run() {
-				long newValue = timeElapsed.get() + 1 * speedMultiplier;
-				timeElapsed.set(newValue);
-			}
-			
-		};
-		gameTimer.schedule(increaseTime, 0, 1);
-	}
-	
-	private void pauseGameTimer() {
-		gameTimer.cancel();
-	}
-	
-	private void resumeGameTimer() {
-		gameTimer = new Timer();
-		TimerTask increaseTime = new TimerTask() {
-
-			@Override
-			public void run() {
-				long newValue = timeElapsed.get() + 1 * speedMultiplier;
-				timeElapsed.set(newValue);
-			}
-			
-		};
-		gameTimer.schedule(increaseTime, 0, 1);
-	}
-	
-//	private void startBulletsTimeline() {
-////		Thread bullets = new Thread();
-////		bulletsTimeline = new Timeline(new KeyFrame(Duration.millis(1500 / speedMultiplier), e -> {
-////			for (DefenderTower tower : model.getTowers()) {
-////				if(tower.canShoot()) {
-////					model.addBullet(tower.shoot());
-////				}
-////			}
-////		}));
-////		bulletsTimeline.setCycleCount(Timeline.INDEFINITE);
-////		bulletsTimeline.play();
-//		
-//		bulletsTimer = new Timer();
-//		TimerTask removeBullets = new TimerTask() {
-//
-//			@Override
-//			public void run() {
-//				new Thread(()-> {
-//					List<Ammo> bulletsToRemove = new ArrayList<Ammo>();
-//					for (Ammo bullet : model.getBullets()) {
-//						if (bullet.getCol() >= COLS) {
-//							bulletsToRemove.add(bullet);
-//						}
-//					}
-//					System.out.println(model.getBullets());
-//					for(Ammo bullet : bulletsToRemove) {
-//						model.removeBullet(bullet);
-//					}
-//				}).start();				
-//			}
-//			
-//		};
-//		bulletsTimer.schedule(removeBullets, 0, 2000);
-//		
-//	}
-	
-	private void startMoneyTimeline() {
-		// Currency generator - deposit 50 space bucks every 5 seconds
-		moneyTimeline = new Timeline(new KeyFrame(Duration.seconds(CURRENCY_TIMELINE / speedMultiplier), e -> {
-			Platform.runLater(() -> depositSpacebucks(CURRENCY_DEPOSIT + currentIncome));
-		}));
-
-		moneyTimeline.setCycleCount(Timeline.INDEFINITE);
-		moneyTimeline.play();
-	}
-	
-	private void startAlienTimeline() {
-		alienTimeline = new Timeline(new KeyFrame(Duration.millis(FRAME_TIME / speedMultiplier), e -> {
-			if (model.hasAliens()) {
-				animate();
-			} else if (waveThreeDone) {						// GAME OVER
-				Platform.exit();
-				System.exit(0);
-			} else {
-				model.setWaveNumber(model.getWaveNumber()+1);
-				generateAliens();
-			}
-		}));
-		
-		alienTimeline.setCycleCount(Timeline.INDEFINITE);
-		alienTimeline.play();
 	}
 	
 	private void generateAliens() {
@@ -409,38 +311,17 @@ public class Controller {
 		} else {
 			speedMultiplier *= 2;
 		}
-//		alienTimeline.stop();
-//		startAlienTimeline();
-//		
-//		moneyTimeline.stop();
-//		startMoneyTimeline();
-//		
-//		bulletsTimeline.stop();
-//		startBulletsTimeline();
+		pause();
+		resume();
 	}
 	
 	
 	public void pause() {
-		pauseGameTimer();
 		gamePlayTimer.cancel();
-//		moneyTimeline.pause();
-//		alienTimeline.pause();
-////		bulletsTimeline.pause();
-//		bulletsTimer.cancel();
 	}
 	
 	public void resume() {
-		resumeGameTimer();
-		startGameTimer();
-//		moneyTimeline.play();
-//		alienTimeline.play();
-////		bulletsTimeline.play();
-//		startBulletsTimeline();
-	}
-	
-	
-	public void purchaseTower() {
-		
+		startTimeLine();
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {
@@ -477,9 +358,5 @@ public class Controller {
 		} else {
 			model.removeTower(towerToRemove, row, col);
 		}
-	}
-	
-	public void collectSpaceBucks() {
-		// TODO: implement
 	}
 }
