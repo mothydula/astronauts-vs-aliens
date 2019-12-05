@@ -72,7 +72,7 @@ public class Enemy extends BoardCharacter {
 	public void setStackPane() {
 		stackPane = new StackPane();
 //		imageView = new ImageView(this.getImage());
-		stackPane.setStyle("-fx-border-color: black");
+//		stackPane.setStyle("-fx-border-color: black");
 		stackPane.getChildren().add(imageView);
 	}
 	
