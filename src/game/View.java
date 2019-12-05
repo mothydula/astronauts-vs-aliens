@@ -1,13 +1,11 @@
 package game;
 
 import java.io.*;
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 import ammo.Ammo;
 import characters.Astronauts.*;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
