@@ -2,6 +2,7 @@ package game;
 
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -66,7 +67,11 @@ public class Controller {
 			@Override
 			public void run() {
 				calculateHitsOrDeaths();
-				animate();
+				try {
+					animate();
+				} catch(ConcurrentModificationException e) {
+					
+				}
 			}
 			
 		};
