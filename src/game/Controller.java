@@ -17,22 +17,15 @@ import characters.Aliens.*;
 import characters.Astronauts.DefenderTower;
 import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.util.Duration;
 
 public class Controller {
 	// Class fields
 	public static final int ROWS = 6;
 	public static final int COLS = 12;
 	private Model model;
-	private static final long FRAME_TIME = 100; // Milliseconds
-	private static final int WAVE_ONE_ALIENS = 15;
-	private static final int WAVE_TWO_ALIENS = 30;
-	private static final int WAVE_THREE_ALIENS = 40;
 	private int currentIncome;
-	private final int CURRENCY_TIMELINE = 10; // seconds
+	private final int CURRENCY_TIMELINE = 5000; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
@@ -118,7 +111,7 @@ public class Controller {
 		
 		gamePlayTimer.schedule(turnTask, 0, 100 / speedMultiplier);
 		gamePlayTimer.schedule(bullets, 0, 1000 / speedMultiplier);
-		gamePlayTimer.schedule(money, 0, 5000 / speedMultiplier);
+		gamePlayTimer.schedule(money, 0, CURRENCY_TIMELINE / speedMultiplier);
 		gamePlayTimer.schedule(increaseTime, 0, 1);
 	}
 	
