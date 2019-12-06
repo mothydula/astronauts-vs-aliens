@@ -420,7 +420,7 @@ public class View extends Application implements Observer{
 	
 	/**
 	 * Sets up Progress Bar for Game Stage
-	 * 
+	 *
 	 * This progress bar element will maintain the status of the current
 	 * stages, updating accordingly as the game progresses.
 	 */
@@ -509,9 +509,8 @@ public class View extends Application implements Observer{
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						if (towerToRemove != null) {
 							controller.removeTower(towerToRemove, row, col);
-						} else {
-							removeToggled = false;
 						}
+						removeToggled = false;
 					}
 				}
 				e.setDropCompleted(true);
