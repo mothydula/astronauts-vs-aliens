@@ -1,7 +1,11 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ammo.Ammo;
 import characters.BoardCharacter;
+import characters.Aliens.Enemy;
 
 public class MoveMessage {	
 	// Class constants
@@ -10,6 +14,7 @@ public class MoveMessage {
 	public static final int VALID_MOVE = 2;
 	public static final int BULLET_PLACEMENT = 3;
 	public static final int BULLET_REMOVAL = 4;
+	public static final int ACTIVATE_RAILGUN = 5;
 	
 	private int type;
 	private BoardCharacter character;
@@ -17,6 +22,7 @@ public class MoveMessage {
 	private int col;
 	private boolean remove;
 	private Ammo bullet;
+	private List<Enemy> aliens;
 	
 	// Constructor
 	public MoveMessage(int type) {
@@ -29,6 +35,7 @@ public class MoveMessage {
 		this.row = row;
 		this.col = col;
 		this.remove = remove;
+		this.aliens = new ArrayList<Enemy>();
 	}
 	
 	public void setBullet(Ammo bullet) {
@@ -57,5 +64,13 @@ public class MoveMessage {
 	
 	public boolean isRemove() {
 		return remove;
+	}
+	
+	public void setAliens(List<Enemy> aliens) {
+		this.aliens = aliens;
+	}
+	
+	public List<Enemy> getAliens() {
+		return aliens;
 	}
 }

@@ -6,14 +6,17 @@ import java.util.Observer;
 import java.util.Random;
 import ammo.Ammo;
 import characters.Astronauts.*;
+import javafx.animation.Animation;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -79,8 +82,6 @@ public class View extends Application implements Observer{
 	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/general/stage-one-background.png";
 	private final String TITLE_GRAPHIC 			= "file:assets/general/game-title.png";
 	private final String SPACEBUCKS_IMAGE	 	= "file:assets/general/spacebucks-image.png";
-	private final String RAIL_GUN_IMAGE 		= "file:assets/general/rail-gun.png";
-	private final String RAIL_GUN_GIF 			= "file:assets/general/rail-gun.gif";
 	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
 	private final String ALIEN_STARTER_IMAGE 	= "file:assets/aliens/grunt-walk.gif";
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
@@ -237,13 +238,37 @@ public class View extends Application implements Observer{
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
 					break;
+					
+				case MoveMessage.ACTIVATE_RAILGUN:
+					// Play fire animation (replace image with gif at board[row][col] once
+					// remove sprite
+					for (Node node : defendersGrid[message.getRow()][message.getCol()].getChildren()) {
+						if (node instanceof ImageView) {
+							if (node.getId() == "idle") {
+								node.setVisible(false);
+							} else if (node.getId() == "fire") {
+								node.setVisible(true);
+							}
+						} 
+					}
+					System.out.println(message.getRow() + " - Aliens to remove: " + message.getAliens());
+					for (Enemy alien : message.getAliens()) {
+						for (Node node : alien.getStackPane().getChildren()) {
+							if (node instanceof ImageView) {
+								node.setVisible(false);
+							} 
+						}
+					}
+					break;
 			}
 		}	
-//		
+		
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
-//		
-//		// TODO: controller.isGameOver();
+		
+		// Check if the game is over
+		controller.isGameOver();
+		
 	}
 	
 	public void music()
@@ -448,7 +473,8 @@ public class View extends Application implements Observer{
 	 */
 	public void setupGrid() {
 		Image square = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
-		Image gunImage = new Image(RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
+		Image gunImage = new Image(DefenderTower.RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
+		Image gunGif = new Image(DefenderTower.RAIL_GUN_GIF, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 		
 		for (int row = 0; row < Controller.ROWS; row ++) {
 			for (int col = 0; col < Controller.COLS; col++) {
@@ -459,7 +485,11 @@ public class View extends Application implements Observer{
 					gunStackPane.setTranslateX(COLUMN_OFFSET);
 					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					ImageView gunImageView = new ImageView(gunImage);
-					gunStackPane.getChildren().add(gunImageView);
+					gunImageView.setId("idle");
+					ImageView gunGifView = new ImageView(gunGif);
+					gunGifView.setId("fire");
+					gunGifView.setVisible(false); // Initially hide gif
+					gunStackPane.getChildren().addAll(gunImageView, gunGifView);
 					mainGroup.getChildren().add(gunStackPane);
 					
 					defendersGrid[row][col] = gunStackPane;

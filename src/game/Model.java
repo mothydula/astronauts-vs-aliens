@@ -92,6 +92,9 @@ public class Model extends Observable {
 		for (int row = 0; row < Controller.ROWS; row++) {
 			for (int col = 0; col < Controller.COLS; col++) {
 				board[row][col] = new Tile(null); // Initialize empty tile
+				if (col == 0) {
+					board[row][col].setRailGun(true);
+				}
 			}
 		}
 	}
@@ -166,5 +169,24 @@ public class Model extends Observable {
 
 	public DefenderTower getDefenderAt(int row, int col) {
 		return (DefenderTower) board[row][col].getCharacter();
+	}
+	
+	public void activateRailGun(int row, int col) {
+		board[row][col].setRailGun(false);
+		
+		// Create MoveMessage notifying View to activate RailGun animation
+		MoveMessage message = new MoveMessage(MoveMessage.ACTIVATE_RAILGUN, null, row, col, false);
+		
+		// Compile list of all aliens that need to be removed
+		List<Enemy> aliensToRemove = new ArrayList<Enemy>();
+		for (Enemy alien : aliens) {
+			if (alien.getRow() == row) {
+				aliensToRemove.add(alien);
+			}
+		}
+		message.setAliens(aliensToRemove);
+		
+		setChanged();
+		notifyObservers(message);
 	}
 }

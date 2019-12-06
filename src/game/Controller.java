@@ -19,6 +19,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.util.Duration;
+import map.Tile;
 
 public class Controller {
 	// Class fields
@@ -175,6 +176,21 @@ public class Controller {
 		}
 	}
 	
+	public void isGameOver() {
+		for (Enemy alien : model.getAliens()) {
+			if (alien.getCol() == 0) {
+				if (model.getBoard()[alien.getRow()][0].containsRailGun()) {
+					System.out.println("Saved by the rail gun - " + alien.getRow());
+					model.activateRailGun(alien.getRow(), 0);
+					
+				} else {
+					System.out.println("Game over - " + alien.getRow());
+				}
+				
+			}
+		}
+	}
+	
 	public int getSpeedMultiplier() {
 		return speedMultiplier;
 	}
@@ -255,7 +271,7 @@ public class Controller {
 				
 			};
 			timer.schedule(firstWave, WAVE_DELAY);
-			
+
 		}
 	}
 	

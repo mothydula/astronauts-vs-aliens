@@ -70,6 +70,14 @@ public abstract class DefenderTower extends BoardCharacter{
 	public static final String MILLENNIUM_FALCON_GIF		= "file:assets/defenders/spaceship.gif";
 	public static final String MILLENNIUM_FALCON_FIRING_GIF = "file:assets/defenders/spaceship-firing.gif";
 	
+	// RailGun
+	protected static final int HEALTH_RAIL_GUN = 30000;
+	protected static final int ATTACK_SPEED_RAIL_GUN = 300;
+	protected static final int DAMAGE_RAIL_GUN = 1000000;
+	protected static final int COST_RAIL_GUN = 0;
+	public static final String RAIL_GUN_IMAGE 			= "file:assets/general/rail-gun.png";
+	public static final String RAIL_GUN_GIF 			= "file:assets/general/rail-gun.gif";
+	
 	// Constructor
 	protected DefenderTower(int health, int attackSpeed, int damage, Image sprite) {
 		super(health, attackSpeed, damage, sprite);
