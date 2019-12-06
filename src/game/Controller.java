@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import ammo.Ammo;
@@ -35,12 +36,13 @@ public class Controller {
 	private final int CURRENCY_DEPOSIT = 25;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
-	private final long WAVE_DELAY = 3000l;
+	private final long WAVE_DELAY = 500l;
 	private AtomicLong timeElapsed;
 	private int speedMultiplier;
-	private boolean waveOneDone = false;
-	private boolean waveTwoDone = false;
-	private boolean waveThreeDone = false;
+	private AtomicBoolean waveOneDone = new AtomicBoolean(false);
+	private AtomicBoolean waveTwoDone = new AtomicBoolean(false);
+	private AtomicBoolean waveTwoStarted = new AtomicBoolean(false);
+	private AtomicBoolean waveThreeDone = new AtomicBoolean(false);
 	private Timer gamePlayTimer;
 
 	
@@ -130,7 +132,7 @@ public class Controller {
 					tower.decreaseHealth(alien.getDamage());
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
-				Platform.runLater(() ->alien.move());
+				Platform.runLater(() -> alien.move());
 			}
 		}
 		
@@ -147,13 +149,13 @@ public class Controller {
 	
 	private void calculateHitsOrDeaths() {
 		if (!model.hasAliens()) {
-			if (waveOneDone && !waveTwoDone && !waveThreeDone) {
+			if (waveOneDone.get() && !waveTwoStarted.get()) {
 				model.setWaveNumber(2);
 				generateAliens();
-			} else if (waveTwoDone && !waveThreeDone) {
+			} else if (waveTwoDone.get() && !waveThreeDone.get()) {
 				model.setWaveNumber(3);
 				generateAliens();
-			} else if (waveThreeDone){
+			} else if (waveThreeDone.get()){
 				System.out.println("YOU WON!!!");
 				System.exit(0);
 			}
@@ -188,7 +190,7 @@ public class Controller {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
 		
-		if (waveNumber == 1 && !waveOneDone) {						// WAVE ONE
+		if (waveNumber == 1) {						// WAVE ONE
 			System.out.println("WAVE ONE");
 			TimerTask firstWave = new TimerTask() {
 
@@ -207,23 +209,24 @@ public class Controller {
 					generateLittleGreenMan(3);
 					generateGrunt(3);
 					generateSprinter(3);
-					waveOneDone = true;
+					waveOneDone.set(true);
 				}
 				
 			};
 			timer.schedule(firstWave, 0);
 			timer.schedule(secondWave, WAVE_DELAY);
-		} else if (waveNumber == 2 && waveOneDone && !waveTwoDone) {				// WAVE TWO
-
+		} else if (waveNumber == 2) {				// WAVE TWO
+			System.out.println("WAVE TWO");
 			TimerTask firstWave = new TimerTask() {
 
 				@Override
 				public void run() {
-					generateLittleGreenMan(6);
-					generateGrunt(6);
-					generateSprinter(3);
+					generateLittleGreenMan(4);
+					generateGrunt(4);
+					generateSprinter(2);
 					generateManHunter(3);
-					generateTank(3);
+					generateTank(2);
+					waveTwoStarted.set(true);
 				}
 				
 			};
@@ -234,7 +237,7 @@ public class Controller {
 				public void run() {
 					generateTank(3);
 					generateManHunter(3);
-					waveTwoDone = true;
+					waveTwoDone.set(true);
 					System.out.println("WAVE TWO");
 				}
 				
@@ -242,19 +245,19 @@ public class Controller {
 			timer.schedule(firstWave, WAVE_DELAY);
 			timer.schedule(secondWave, WAVE_DELAY);
 			
-		} else if (waveNumber == 3 && waveTwoDone) {				// WAVE THREE
+		} else if (waveNumber == 3) {				// WAVE THREE
 			
 			TimerTask firstWave = new TimerTask() {
 
 				@Override
 				public void run() {
-					generateLittleGreenMan(6);
-					generateGrunt(6);
-					generateSprinter(6);
-					generateManHunter(6);
-					generateTank(3);
+					generateLittleGreenMan(4);
+					generateGrunt(4);
+					generateSprinter(4);
+					generateManHunter(4);
+					generateTank(2);
 					generateGargantua(3);
-					waveThreeDone = true;
+					waveThreeDone.set(true);
 					System.out.println("WAVE THREE");
 				}
 				
