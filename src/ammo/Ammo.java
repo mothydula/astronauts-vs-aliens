@@ -41,6 +41,9 @@ public class Ammo {
 	//TARS Ammo Image
 	public static final String TARS_AMMO_SPRITE = "file:assets/ammo/tars-ammo.png";
 	
+	// RailGun Ammo Image (same as MoonZeus)
+	public static final String RAIL_GUN_AMMO_SPRITE = MOON_ZEUS_AMMO_SPRITE;
+	
 	/**Constructor
 	 * */
 	public Ammo (DefenderTower dt, Image sprite) {
