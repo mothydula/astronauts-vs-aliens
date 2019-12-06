@@ -206,10 +206,10 @@ public class Controller {
 
 				@Override
 				public void run() {
+					waveOneDone.set(true);
 					generateLittleGreenMan(3);
 					generateGrunt(3);
 					generateSprinter(3);
-					waveOneDone.set(true);
 				}
 				
 			};
@@ -221,12 +221,12 @@ public class Controller {
 
 				@Override
 				public void run() {
+					waveTwoStarted.set(true);
 					generateLittleGreenMan(4);
 					generateGrunt(4);
 					generateSprinter(2);
 					generateManHunter(3);
 					generateTank(2);
-					waveTwoStarted.set(true);
 				}
 				
 			};
@@ -235,9 +235,9 @@ public class Controller {
 
 				@Override
 				public void run() {
+					waveTwoDone.set(true);
 					generateTank(3);
 					generateManHunter(3);
-					waveTwoDone.set(true);
 					System.out.println("WAVE TWO");
 				}
 				
@@ -251,13 +251,13 @@ public class Controller {
 
 				@Override
 				public void run() {
+					waveThreeDone.set(true);
 					generateLittleGreenMan(4);
 					generateGrunt(4);
 					generateSprinter(4);
 					generateManHunter(4);
 					generateTank(2);
 					generateGargantua(3);
-					waveThreeDone.set(true);
 					System.out.println("WAVE THREE");
 				}
 				
