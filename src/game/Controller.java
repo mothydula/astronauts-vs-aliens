@@ -36,7 +36,7 @@ public class Controller {
 	private final int CURRENCY_DEPOSIT = 25;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
-	private final long WAVE_DELAY = 500l;
+	private final long WAVE_DELAY = 0;
 	private AtomicLong timeElapsed;
 	private int speedMultiplier;
 	private AtomicBoolean waveOneDone = new AtomicBoolean(false);
@@ -137,7 +137,7 @@ public class Controller {
 		}
 		
 		List<Ammo> bullets = new ArrayList<>(model.getBullets());
-		for(Ammo bullet: bullets) {
+		for(Ammo bullet : bullets) {
 			if (bullet.getCol() < COLS+2) {
 				Platform.runLater(() -> bullet.move());
 			} else {
@@ -400,9 +400,7 @@ public class Controller {
 	}
 	
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
-		if (model.isEmpty(row, col)) {
-			// model.notifyInvalidRemoval();
-		} else {
+		if (!model.isEmpty(row, col)) {
 			model.removeTower(towerToRemove, row, col);
 		}
 	}

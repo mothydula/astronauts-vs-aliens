@@ -129,7 +129,7 @@ public class Model extends Observable {
 		
 		// Notify Observers
 		setChanged();
-		notifyObservers(message); // TODO: Handle successful placement
+		notifyObservers(message);
 	}
 	
 	public void depositSpacebucks(int amount) {
