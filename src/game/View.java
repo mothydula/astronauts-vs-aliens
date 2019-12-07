@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
@@ -68,12 +69,16 @@ public class View extends Application implements Observer{
 	private final int DEFENDERS_BOTTOM_PADDING = 10;
 	private final int MENUBAR_LEFT_PADDING = 20;
 	
+	
+	// Start Menu constants
 	private final int ASTRO_WIDTH = 300; // Start menu sprite
 	private final int ASTRO_HEIGHT = 300; // Start menu sprite
-	private final int ASTRO_LEFT_MARGIN = 100;
-	private final int ALIEN_WIDTH = 350; // Start menu sprite
-	private final int ALIEN_HEIGHT = 300; // Start menu sprite
-	private final int ALIEN_RIGHT_MARGIN = 100;
+	private final int ASTRO_LEFT_MARGIN = 50;
+	private final int ALIEN_WIDTH = 250; // Start menu sprite
+	private final int ALIEN_HEIGHT = 250; // Start menu sprite
+	private final int ALIEN_RIGHT_MARGIN = 50;
+	private final int MAP_SELECTION_WIDTH = 175;
+	private final int MAP_SELECTION_HEIGHT = 80;
 	
 	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
 	private final String GAMEOVER_BACKGROUND_IMAGE  ="file:assets/general/game-over-background.png";
@@ -411,8 +416,8 @@ public class View extends Application implements Observer{
 		startBorderPane.setCenter(buttonBox);
 		
 		BorderPane.setAlignment(titleBanner,        Pos.CENTER);
-		BorderPane.setAlignment(astronautImageView, Pos.CENTER);
-		BorderPane.setAlignment(alienImageView,     Pos.CENTER);
+		BorderPane.setAlignment(astronautImageView, Pos.CENTER_LEFT);
+		BorderPane.setAlignment(alienImageView,     Pos.CENTER_RIGHT);
 		BorderPane.setAlignment(buttonBox,          Pos.CENTER);
 		
 		BorderPane.setMargin(titleBanner,        new Insets(TITLE_TOP_MARGIN, 0, 0, 0)); // top right bottom left
@@ -484,16 +489,18 @@ public class View extends Application implements Observer{
 			infoStage.show();
 		});
 		
-		Button tempBtn = new Button("?");
-		tempBtn.setMinHeight(40);
-		tempBtn.setMinWidth(100);
-		tempBtn.setOnAction( e -> {
-			System.out.println("TODO: Insert temp functionality");
-		});
+//		Button tempBtn = new Button("?");
+//		tempBtn.setMinHeight(40);
+//		tempBtn.setMinWidth(100);
+//		tempBtn.setOnAction( e -> {
+//			System.out.println("TODO: Insert temp functionality");
+//		});
+		
+		HBox mapSelector = createMapSelectionBar();
 		
 		Button startBtn = new Button("Start");
-		startBtn.setMinHeight(60);
-		startBtn.setMinWidth(150);
+		startBtn.setMinHeight(40);
+		startBtn.setMinWidth(100);
 		startBtn.setOnAction( e -> {
 			// Switch scene to Game Scene
 			setupGameScene();
@@ -503,11 +510,93 @@ public class View extends Application implements Observer{
 			primaryStage.show();
 		});
 		
-		buttonBox.getChildren().addAll(infoBtn, tempBtn, startBtn);
+		HBox bottomBox = new HBox(infoBtn, startBtn);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.setPadding(new Insets(10, 10, 10, 10));
+		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
+		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
+		
+		buttonBox.getChildren().addAll(mapSelector, bottomBox);
 		
 		return buttonBox;
 	}
 	
+	
+	public HBox createMapSelectionBar() {
+		
+		HBox mapSelector = new HBox(3);
+		mapSelector.setAlignment(Pos.CENTER);
+		
+		// Create VBox containing ImageView and checkbox for each stage
+		VBox mapOneBox = new VBox(2);
+		mapOneBox.setAlignment(Pos.CENTER);
+		ImageView mapOneView = new ImageView(new Image(STAGEONE_BACKGROUND_IMAGE));
+		mapOneView.setFitWidth(MAP_SELECTION_WIDTH);
+		mapOneView.setFitHeight(MAP_SELECTION_HEIGHT);
+		CheckBox mapOneCheckBox = new CheckBox("Easy");
+		mapOneCheckBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);");
+		mapOneCheckBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		mapOneBox.getChildren().addAll(mapOneView, mapOneCheckBox);
+
+		VBox mapTwoBox = new VBox(2);
+		mapTwoBox.setAlignment(Pos.CENTER);
+		ImageView mapTwoView = new ImageView(new Image(STAGETWO_BACKGROUND_IMAGE));
+		mapTwoView.setFitWidth(MAP_SELECTION_WIDTH);
+		mapTwoView.setFitHeight(MAP_SELECTION_HEIGHT);
+		CheckBox mapTwoCheckBox = new CheckBox("Medium");
+		mapTwoCheckBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);");
+		mapTwoCheckBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		mapTwoBox.getChildren().addAll(mapTwoView, mapTwoCheckBox);
+
+		VBox mapThreeBox = new VBox(2);
+		mapThreeBox.setAlignment(Pos.CENTER);
+		ImageView mapThreeView = new ImageView(new Image(STAGETHREE_BACKGROUND_IMAGE));
+		mapThreeView.setFitWidth(MAP_SELECTION_WIDTH);
+		mapThreeView.setFitHeight(MAP_SELECTION_HEIGHT);
+		CheckBox mapThreeCheckBox = new CheckBox("Hard");
+		mapThreeCheckBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);");
+		mapThreeCheckBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		mapThreeBox.getChildren().addAll(mapThreeView, mapThreeCheckBox);
+
+		mapOneBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		
+		mapTwoBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		
+		mapThreeBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		
+		mapOneCheckBox.setOnAction( e -> {
+			
+		});
+		
+		mapTwoCheckBox.setOnAction(e -> {
+
+		});
+
+		mapThreeCheckBox.setOnAction(e -> {
+
+		});
+		
+		mapSelector.getChildren().addAll(mapOneBox, mapTwoBox, mapThreeBox);
+		return mapSelector;
+	}
 	
 	/**
 	 * Sets up the game scene containing the actual game
