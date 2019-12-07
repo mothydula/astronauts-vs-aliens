@@ -45,70 +45,32 @@ public class Tank extends Enemy {
 	 * animation.
 	 */
 	public void generateAnimations() {
-		// Walk
-		ImageView walkView = new ImageView(TANK_WALK);
-		walkView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				TANK_WALK_WIDTH, 
-				TANK_WALK_HEIGHT
-			));
-		walkView.setFitWidth(IMAGE_WIDTH);
-		walkView.setFitHeight(IMAGE_HEIGHT);
-		Animation walkAnimation = new SpriteAnimation(walkView, Duration.millis(TANK_WALK_TIME), 
-				TANK_WALK_COUNT,
+		ImageView walkView = generateAnimation(
+				TANK_WALK, 
+				TANK_WALK_COUNT, 
 				TANK_WALK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				TANK_WALK_WIDTH, 
-				TANK_WALK_HEIGHT
-			);
-		walkAnimation.setCycleCount(Animation.INDEFINITE);
-		walkAnimation.play();
-		super.setImageView(walkView); // This will be the initial image view that is shown
-		super.setWalkAnimation(walkAnimation);
-
-		// Attack
-		final ImageView attackView = new ImageView(TANK_ATTACK);
-		attackView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				TANK_ATTACK_WIDTH, 
-				TANK_ATTACK_HEIGHT
-			));
-		attackView.setFitWidth(IMAGE_WIDTH);
-		attackView.setFitHeight(IMAGE_HEIGHT);
-		final Animation attackAnimation = new SpriteAnimation(attackView, Duration.millis(TANK_ATTACK_TIME),
+				TANK_WALK_HEIGHT, 
+				TANK_WALK_TIME);
+		super.setWalkView(walkView);
+		
+		ImageView attackView = generateAnimation(
+				TANK_ATTACK, 
 				TANK_ATTACK_COUNT, 
 				TANK_ATTACK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				TANK_ATTACK_WIDTH, 
-				TANK_ATTACK_HEIGHT
-			);
-		attackAnimation.setCycleCount(Animation.INDEFINITE);
-		super.setAttackAnimation(attackAnimation);
-
-		// Die
-		final ImageView dieView = new ImageView(TANK_DIE);
-		dieView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				TANK_DIE_WIDTH, 
-				TANK_DIE_HEIGHT));
-		dieView.setFitWidth(IMAGE_WIDTH);
-		dieView.setFitHeight(IMAGE_HEIGHT);
-		final Animation dieAnimation = new SpriteAnimation(dieView, Duration.millis(TANK_DIE_TIME), 
-				TANK_DIE_COUNT,
+				TANK_ATTACK_HEIGHT, 
+				TANK_ATTACK_TIME);
+		super.setAttackView(attackView);
+		
+		ImageView dieView = generateAnimation(
+				TANK_DIE, 
+				TANK_DIE_COUNT, 
 				TANK_DIE_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				TANK_DIE_WIDTH, 
-				TANK_DIE_HEIGHT
-			);
-		dieAnimation.setCycleCount(Animation.INDEFINITE);
-		dieAnimation.play();
-		super.setDieAnimation(dieAnimation);
+				TANK_DIE_HEIGHT, 
+				TANK_DIE_TIME);
+		super.setDieView(dieView);
 	}
 
 }
