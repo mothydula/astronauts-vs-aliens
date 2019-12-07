@@ -79,6 +79,9 @@ public class View extends Application implements Observer{
 	private final int ALIEN_RIGHT_MARGIN = 50;
 	private final int MAP_SELECTION_WIDTH = 175;
 	private final int MAP_SELECTION_HEIGHT = 80;
+	private final int STAGE_ONE_ID = 1;
+	private final int STAGE_TWO_ID = 2;
+	private final int STAGE_THREE_ID = 3;
 	
 	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
 	private final String GAMEOVER_BACKGROUND_IMAGE  ="file:assets/general/game-over-background.png";
@@ -110,6 +113,7 @@ public class View extends Application implements Observer{
 	private Group mainGroup;
 	private BorderPane startBorderPane;
 	private boolean paused;
+	private int selectedMap = STAGE_ONE_ID;
 	
 	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
@@ -521,7 +525,14 @@ public class View extends Application implements Observer{
 		return buttonBox;
 	}
 	
-	
+	/**
+	 * Creates the Map Selection Bar
+	 * 
+	 * User is given the option of selecting from three different 
+	 * themed maps with growing difficulty.
+	 * 
+	 * @return Geneates HBox containing Map Selector Bar
+	 */
 	public HBox createMapSelectionBar() {
 		
 		HBox mapSelector = new HBox(3);
@@ -533,7 +544,7 @@ public class View extends Application implements Observer{
 		ImageView mapOneView = new ImageView(new Image(STAGEONE_BACKGROUND_IMAGE));
 		mapOneView.setFitWidth(MAP_SELECTION_WIDTH);
 		mapOneView.setFitHeight(MAP_SELECTION_HEIGHT);
-		CheckBox mapOneCheckBox = new CheckBox("Easy");
+		CheckBox mapOneCheckBox = new CheckBox("The Canyon");
 		mapOneCheckBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);");
 		mapOneCheckBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
 		mapOneBox.getChildren().addAll(mapOneView, mapOneCheckBox);
@@ -543,7 +554,7 @@ public class View extends Application implements Observer{
 		ImageView mapTwoView = new ImageView(new Image(STAGETWO_BACKGROUND_IMAGE));
 		mapTwoView.setFitWidth(MAP_SELECTION_WIDTH);
 		mapTwoView.setFitHeight(MAP_SELECTION_HEIGHT);
-		CheckBox mapTwoCheckBox = new CheckBox("Medium");
+		CheckBox mapTwoCheckBox = new CheckBox("Sky Bridge");
 		mapTwoCheckBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);");
 		mapTwoCheckBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
 		mapTwoBox.getChildren().addAll(mapTwoView, mapTwoCheckBox);
@@ -553,11 +564,13 @@ public class View extends Application implements Observer{
 		ImageView mapThreeView = new ImageView(new Image(STAGETHREE_BACKGROUND_IMAGE));
 		mapThreeView.setFitWidth(MAP_SELECTION_WIDTH);
 		mapThreeView.setFitHeight(MAP_SELECTION_HEIGHT);
-		CheckBox mapThreeCheckBox = new CheckBox("Hard");
+		CheckBox mapThreeCheckBox = new CheckBox("The Nest");
 		mapThreeCheckBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);");
 		mapThreeCheckBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
 		mapThreeBox.getChildren().addAll(mapThreeView, mapThreeCheckBox);
 
+		mapOneCheckBox.setSelected(true); // Default selected map
+		
 		mapOneBox.setStyle(
 				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
 				"-fx-background-radius: 6;" + 
@@ -583,15 +596,53 @@ public class View extends Application implements Observer{
 				"-fx-border-color: white;");
 		
 		mapOneCheckBox.setOnAction( e -> {
-			
+			if (mapOneCheckBox.isSelected()) {
+				mapOneCheckBox.setSelected(true);
+				mapTwoCheckBox.setSelected(false);
+				mapThreeCheckBox.setSelected(false);
+				// Set Map One as currently selected
+				selectedMap = STAGE_ONE_ID;
+			} else {
+				if (mapTwoCheckBox.isSelected() || mapThreeCheckBox.isSelected()) {
+					mapOneCheckBox.setSelected(false);
+				} else {
+					mapOneCheckBox.setSelected(true);
+				}
+			}
 		});
 		
 		mapTwoCheckBox.setOnAction(e -> {
-
+			if (mapTwoCheckBox.isSelected()) {
+				mapOneCheckBox.setSelected(false);
+				mapTwoCheckBox.setSelected(true);
+				mapThreeCheckBox.setSelected(false);
+				// Set Map One as currently selected
+				selectedMap = STAGE_TWO_ID;
+			} else {
+				mapTwoCheckBox.setSelected(false);
+				if (mapTwoCheckBox.isSelected() || mapThreeCheckBox.isSelected()) {
+					mapOneCheckBox.setSelected(false);
+				} else {
+					mapOneCheckBox.setSelected(true);
+				}
+			}
 		});
 
 		mapThreeCheckBox.setOnAction(e -> {
-
+			if (mapThreeCheckBox.isSelected()) {
+				mapOneCheckBox.setSelected(false);
+				mapTwoCheckBox.setSelected(false);
+				mapThreeCheckBox.setSelected(true);
+				// Set Map One as currently selected
+				selectedMap = STAGE_THREE_ID;
+			} else {
+				mapThreeCheckBox.setSelected(false);
+				if (mapTwoCheckBox.isSelected() || mapThreeCheckBox.isSelected()) {
+					mapOneCheckBox.setSelected(false);
+				} else {
+					mapOneCheckBox.setSelected(true);
+				}
+			}
 		});
 		
 		mapSelector.getChildren().addAll(mapOneBox, mapTwoBox, mapThreeBox);
@@ -605,7 +656,13 @@ public class View extends Application implements Observer{
 	public void setupGameScene() {
 		mainGroup = new Group();
 
-		Image bgImage = new Image(STAGEONE_BACKGROUND_IMAGE);
+		Image bgImage = new Image(STAGEONE_BACKGROUND_IMAGE); // Default
+		if (selectedMap == STAGE_TWO_ID) {
+			bgImage = new Image(STAGETWO_BACKGROUND_IMAGE);
+		} else if (selectedMap == STAGE_THREE_ID){
+			bgImage = new Image(STAGETHREE_BACKGROUND_IMAGE);
+		}
+		
 
 	    ImageView bgImageView = new ImageView(bgImage);
 	    bgImageView.setFitHeight(SCENE_HEIGHT);
