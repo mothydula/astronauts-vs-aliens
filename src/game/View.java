@@ -121,6 +121,11 @@ public class View extends Application implements Observer{
 		initializeNewView();
 	}
 	
+	/**
+	 * Method that initializes a new View object with fresh
+	 * attributes to allow reusability if user wishes to start
+	 * a new game.
+	 */
 	public void initializeNewView() {
 		paused = false;
 		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
@@ -143,6 +148,10 @@ public class View extends Application implements Observer{
 		removeToggled = false;
 	}
 
+	/**
+	 * Method called upon launching the Viw. Will provide
+	 * the user with a STart Menu to begin the Game.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
@@ -159,7 +168,10 @@ public class View extends Application implements Observer{
 		this.primaryStage.show();
 	}
 
-
+	/**
+	 * Method to execute updates to the View according to 
+	 * the changes observed on the Model.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg instanceof MoveMessage) {
@@ -207,6 +219,14 @@ public class View extends Application implements Observer{
 		
 	}
 	
+	/**
+	 * Executes movement on the board
+	 * 
+	 * This method is responsible for all movement on the board, including
+	 * tower placement, tower removal and alien/ammo movement.
+	 *  
+	 * @param message MoveMessage object containing information on requested move
+	 */
 	public void performMove(MoveMessage message) {
 		if (message.isRemove()) {
 			if (message.getCharacter() instanceof DefenderTower) {
@@ -233,13 +253,16 @@ public class View extends Application implements Observer{
 				alienPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 				alienPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
 				alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET + rand.nextInt(ALIEN_RANDOM_OFFSET));
-//				alienPane.setStyle("-fx-border-color: black");
-//				Platform.runLater(() -> mainGroup.getChildren().add(alienPane));
 				mainGroup.getChildren().add(alienPane);
 			}
 		}
 	}
 	
+	/**
+	 * Places a bullet onto the View (to initiate Ammo animation)
+	 * 
+	 * @param message MoveMessage object containing information on requested placement
+	 */
 	public void placeBullet(MoveMessage message) {
 		Ammo bullet = message.getBullet();
 		StackPane bulletPane = bullet.getStackPane();
@@ -249,6 +272,12 @@ public class View extends Application implements Observer{
 		mainGroup.getChildren().add(bulletPane);
 	}
 	
+	/**
+	 * Method that provides user with Game Over modal when detected
+	 * 
+	 * User will be presented a Modal that will stop the progress of the
+	 * game and allow the user to return to the MainMenu.
+	 */
 	public void triggerGameOverModal() {
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
@@ -301,8 +330,11 @@ public class View extends Application implements Observer{
 		setupStartMenu();
 	}
 	
-	public void music()
-	{
+	/**
+	 * Generates a music player to play specific music 
+	 * depending on the current state of the game
+	 */
+	public void music()	{
 		String resource = null;
 	    if (isIntro) {
 			resource = new File(INTRO_MUSIC).toURI().toString();
@@ -322,6 +354,12 @@ public class View extends Application implements Observer{
 	    musicPlayer.play();
 	}
 	
+	/**
+	 * Generates the Start Menu
+	 * 
+	 * This menu allows the user to view the theme of the game and
+	 * provides them with different options of playing the game.
+	 */
 	public void setupStartMenu() {
 		startBorderPane = new BorderPane();
 		
@@ -371,6 +409,15 @@ public class View extends Application implements Observer{
 		primaryStage.setScene(scene);
 	}
 	
+	/**
+	 * Generates Button Box held in the center of the Start Menu
+	 * 
+	 * This component stores the various buttons that are provided
+	 * within the Start Menu to allow the user to view information
+	 * about the game, select a game mode, and begin the game.
+	 * 
+	 * @return generated VBox object with the associated Buttons
+	 */
 	@SuppressWarnings("deprecation")
 	public VBox createStartMenuButtonBox() {
 		VBox buttonBox = new VBox(3);
@@ -520,7 +567,12 @@ public class View extends Application implements Observer{
 		
 	}
 	
-	
+	/**
+	 * Sets up drag & drop handlers for the Grid
+	 * 
+	 * Creates both a dragOver and dragDropped event handler
+	 * to handle placement/removal of towers on the grid.
+	 */
 	private void setupGridHandler() {
 		mainGroup.setOnDragOver(e -> {
 			e.acceptTransferModes(TransferMode.ANY);
@@ -560,6 +612,14 @@ public class View extends Application implements Observer{
 		});
 	}
 	
+	/**
+	 * Creates new instantiation of objects
+	 * 
+	 * This method was created to ensure that the Object that is
+	 * being placed is independent and will not interfere with other
+	 * references.
+	 * @return
+	 */
 	private DefenderTower generateTowerFromSelected() {
 		DefenderTower tower = null;
 		if (selectedTower instanceof Asteroid) {
