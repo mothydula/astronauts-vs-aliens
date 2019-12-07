@@ -77,12 +77,16 @@ public class View extends Application implements Observer{
 	
 	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
 	private final String GAMEOVER_BACKGROUND_IMAGE  ="file:assets/general/game-over-background.png";
-	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/general/stage-one-background.png";
+	private final String STAGEONE_BACKGROUND_IMAGE 	= "file:assets/general/stage-one-background.png";
+	private final String STAGETWO_BACKGROUND_IMAGE 	= "file:assets/general/stage-two-background.png";
+	private final String STAGETHREE_BACKGROUND_IMAGE 	= "file:assets/general/stage-three-background.png";
 	private final String TITLE_GRAPHIC 			= "file:assets/general/game-title.png";
 	private final String SPACEBUCKS_IMAGE	 	= "file:assets/general/spacebucks-image.png";
 	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
+	
+	private Image PLACEMENT_SQUARE = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 
 	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
@@ -512,7 +516,7 @@ public class View extends Application implements Observer{
 	public void setupGameScene() {
 		mainGroup = new Group();
 
-		Image bgImage = new Image(GAME_BACKGROUND_IMAGE);
+		Image bgImage = new Image(STAGEONE_BACKGROUND_IMAGE);
 
 	    ImageView bgImageView = new ImageView(bgImage);
 	    bgImageView.setFitHeight(SCENE_HEIGHT);
@@ -560,17 +564,14 @@ public class View extends Application implements Observer{
 	 * as well as the extreme home-base/enemy-entry points
 	 */
 	public void setupGrid() {
-		Image square = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
-		
 		for (int row = 0; row < Controller.ROWS; row ++) {
 			for (int col = 0; col < Controller.COLS; col++) {
 				StackPane tempStackPane = new StackPane();
-//				tempStackPane.setStyle("-fx-border-color: black");
 				tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 				tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 				tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 				if (col > 0) {
-					ImageView squareImageView = new ImageView(square);
+					ImageView squareImageView = new ImageView(PLACEMENT_SQUARE);
 					tempStackPane.getChildren().add(squareImageView);
 				}
 				mainGroup.getChildren().add(tempStackPane);
