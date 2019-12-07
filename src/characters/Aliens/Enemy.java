@@ -67,6 +67,9 @@ public class Enemy extends BoardCharacter {
 	private ImageView walkView;
 	private ImageView attackView;
 	private ImageView dieView;
+	private Animation walkAnimation;
+	private Animation attackAnimation;
+	private Animation dieAnimation;
 	
 	public static final String WALK_ID = "walk";
 	public static final String ATTACK_ID = "attack";
@@ -163,7 +166,7 @@ public class Enemy extends BoardCharacter {
 		}
 	}
 	
-	public ImageView generateAnimation(Image spriteImage, int count, int columns, int spriteWidth, int spriteHeight, int animationTime) {
+	public ImageView generateAnimation(Image spriteImage, int count, int columns, int spriteWidth, int spriteHeight, int animationTime, String animationId) {
 		ImageView view = new ImageView(spriteImage);
 		view.setViewport(new Rectangle2D(
 				OFFSET_X, 
@@ -181,9 +184,23 @@ public class Enemy extends BoardCharacter {
 				spriteWidth, 
 				spriteHeight
 			);
+		
+		if (animationId.equals(WALK_ID)) {
+			walkAnimation = animation;
+		} else if (animationId.equals(ATTACK_ID)) {
+			attackAnimation = animation;
+		} else if (animationId.equals(DIE_ID)) {
+			dieAnimation = animation;
+		}
 		animation.setCycleCount(Animation.INDEFINITE);
 		animation.play();
 		return view;
 	}
 
+	public void updateAnimationSpeed(int speed) {
+		walkAnimation.setRate(speed);
+		attackAnimation.setRate(speed);
+		dieAnimation.setRate(speed);
+	}
+	
 }

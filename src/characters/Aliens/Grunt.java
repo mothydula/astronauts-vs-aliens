@@ -51,7 +51,8 @@ public class Grunt extends Enemy {
 				GRUNT_WALK_COLUMNS, 
 				GRUNT_WALK_WIDTH, 
 				GRUNT_WALK_HEIGHT, 
-				GRUNT_WALK_TIME);
+				GRUNT_WALK_TIME,
+				WALK_ID);
 		super.setWalkView(walkView);
 		
 		ImageView attackView = generateAnimation(
@@ -60,7 +61,8 @@ public class Grunt extends Enemy {
 				GRUNT_ATTACK_COLUMNS, 
 				GRUNT_ATTACK_WIDTH, 
 				GRUNT_ATTACK_HEIGHT, 
-				GRUNT_ATTACK_TIME);
+				GRUNT_ATTACK_TIME,
+				ATTACK_ID);
 		super.setAttackView(attackView);
 		
 		ImageView dieView = generateAnimation(
@@ -69,7 +71,8 @@ public class Grunt extends Enemy {
 				GRUNT_DIE_COLUMNS, 
 				GRUNT_DIE_WIDTH, 
 				GRUNT_DIE_HEIGHT, 
-				GRUNT_DIE_TIME);
+				GRUNT_DIE_TIME,
+				DIE_ID);
 		super.setDieView(dieView);
 	}
 

@@ -51,7 +51,8 @@ public class Tank extends Enemy {
 				TANK_WALK_COLUMNS, 
 				TANK_WALK_WIDTH, 
 				TANK_WALK_HEIGHT, 
-				TANK_WALK_TIME);
+				TANK_WALK_TIME,
+				WALK_ID);
 		super.setWalkView(walkView);
 		
 		ImageView attackView = generateAnimation(
@@ -60,7 +61,8 @@ public class Tank extends Enemy {
 				TANK_ATTACK_COLUMNS, 
 				TANK_ATTACK_WIDTH, 
 				TANK_ATTACK_HEIGHT, 
-				TANK_ATTACK_TIME);
+				TANK_ATTACK_TIME,
+				ATTACK_ID);
 		super.setAttackView(attackView);
 		
 		ImageView dieView = generateAnimation(
@@ -69,7 +71,8 @@ public class Tank extends Enemy {
 				TANK_DIE_COLUMNS, 
 				TANK_DIE_WIDTH, 
 				TANK_DIE_HEIGHT, 
-				TANK_DIE_TIME);
+				TANK_DIE_TIME,
+				DIE_ID);
 		super.setDieView(dieView);
 	}
 

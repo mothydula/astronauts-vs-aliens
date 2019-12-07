@@ -52,7 +52,8 @@ public class Gargantua extends Enemy{
 				GARGANTUA_WALK_COLUMNS, 
 				GARGANTUA_WALK_WIDTH, 
 				GARGANTUA_WALK_HEIGHT, 
-				GARGANTUA_WALK_TIME);
+				GARGANTUA_WALK_TIME,
+				WALK_ID);
 		super.setWalkView(walkView);
 		
 		ImageView attackView = generateAnimation(
@@ -61,7 +62,8 @@ public class Gargantua extends Enemy{
 				GARGANTUA_ATTACK_COLUMNS, 
 				GARGANTUA_ATTACK_WIDTH, 
 				GARGANTUA_ATTACK_HEIGHT, 
-				GARGANTUA_ATTACK_TIME);
+				GARGANTUA_ATTACK_TIME,
+				ATTACK_ID);
 		super.setAttackView(attackView);
 		
 		ImageView dieView = generateAnimation(
@@ -70,7 +72,8 @@ public class Gargantua extends Enemy{
 				GARGANTUA_DIE_COLUMNS, 
 				GARGANTUA_DIE_WIDTH, 
 				GARGANTUA_DIE_HEIGHT, 
-				GARGANTUA_DIE_TIME);
+				GARGANTUA_DIE_TIME,
+				DIE_ID);
 		super.setDieView(dieView);
 	}
 

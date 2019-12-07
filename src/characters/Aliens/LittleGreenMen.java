@@ -52,7 +52,8 @@ public class LittleGreenMen extends Enemy {
 				LGM_WALK_COLUMNS, 
 				LGM_WALK_WIDTH, 
 				LGM_WALK_HEIGHT, 
-				LGM_WALK_TIME);
+				LGM_WALK_TIME,
+				WALK_ID);
 		super.setWalkView(walkView);
 		
 		ImageView attackView = generateAnimation(
@@ -61,7 +62,8 @@ public class LittleGreenMen extends Enemy {
 				LGM_ATTACK_COLUMNS, 
 				LGM_ATTACK_WIDTH, 
 				LGM_ATTACK_HEIGHT, 
-				LGM_ATTACK_TIME);
+				LGM_ATTACK_TIME,
+				ATTACK_ID);
 		super.setAttackView(attackView);
 		
 		ImageView dieView = generateAnimation(
@@ -70,7 +72,8 @@ public class LittleGreenMen extends Enemy {
 				LGM_DIE_COLUMNS, 
 				LGM_DIE_WIDTH, 
 				LGM_DIE_HEIGHT, 
-				LGM_DIE_TIME);
+				LGM_DIE_TIME,
+				DIE_ID);
 		super.setDieView(dieView);
 	}
 

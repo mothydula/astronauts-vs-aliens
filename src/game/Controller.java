@@ -383,13 +383,20 @@ public class Controller {
 		resume();
 	}
 	
+	public void updateAlienAnimation(int speed) {
+		for (Enemy alien : model.getAliens()) {
+			alien.updateAnimationSpeed(speed);
+		}
+	}
 	
 	public void pause() {
 		gamePlayTimer.cancel();
+		updateAlienAnimation(0);
 	}
 	
 	public void resume() {
 		startTimeLine();
+		updateAlienAnimation(speedMultiplier);
 	}
 	
 	public void placeCharacter(BoardCharacter character, int row, int col) {

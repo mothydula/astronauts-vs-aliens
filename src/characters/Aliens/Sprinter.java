@@ -51,7 +51,8 @@ public class Sprinter extends Enemy {
 				SPRINTER_WALK_COLUMNS, 
 				SPRINTER_WALK_WIDTH, 
 				SPRINTER_WALK_HEIGHT, 
-				SPRINTER_WALK_TIME);
+				SPRINTER_WALK_TIME,
+				WALK_ID);
 		super.setWalkView(walkView);
 		
 		ImageView attackView = generateAnimation(
@@ -60,7 +61,8 @@ public class Sprinter extends Enemy {
 				SPRINTER_ATTACK_COLUMNS, 
 				SPRINTER_ATTACK_WIDTH, 
 				SPRINTER_ATTACK_HEIGHT, 
-				SPRINTER_ATTACK_TIME);
+				SPRINTER_ATTACK_TIME,
+				ATTACK_ID);
 		super.setAttackView(attackView);
 		
 		ImageView dieView = generateAnimation(
@@ -69,7 +71,8 @@ public class Sprinter extends Enemy {
 				SPRINTER_DIE_COLUMNS, 
 				SPRINTER_DIE_WIDTH, 
 				SPRINTER_DIE_HEIGHT, 
-				SPRINTER_DIE_TIME);
+				SPRINTER_DIE_TIME,
+				DIE_ID);
 		super.setDieView(dieView);
 	}
 

@@ -51,7 +51,8 @@ public class ManHunter extends Enemy {
 				MH_WALK_COLUMNS, 
 				MH_WALK_WIDTH, 
 				MH_WALK_HEIGHT, 
-				MH_WALK_TIME);
+				MH_WALK_TIME,
+				WALK_ID);
 		super.setWalkView(walkView);
 		
 		ImageView attackView = generateAnimation(
@@ -60,7 +61,8 @@ public class ManHunter extends Enemy {
 				MH_ATTACK_COLUMNS, 
 				MH_ATTACK_WIDTH, 
 				MH_ATTACK_HEIGHT, 
-				MH_ATTACK_TIME);
+				MH_ATTACK_TIME,
+				ATTACK_ID);
 		super.setAttackView(attackView);
 		
 		ImageView dieView = generateAnimation(
@@ -69,7 +71,8 @@ public class ManHunter extends Enemy {
 				MH_DIE_COLUMNS, 
 				MH_DIE_WIDTH, 
 				MH_DIE_HEIGHT, 
-				MH_DIE_TIME);
+				MH_DIE_TIME,
+				DIE_ID);
 		super.setDieView(dieView);
 	}
 
