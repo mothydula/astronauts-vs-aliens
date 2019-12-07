@@ -1,12 +1,16 @@
 package characters.Aliens;
 
 import characters.BoardCharacter;
+import game.SpriteAnimation;
 import game.View;
 import javafx.animation.Animation;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class Enemy extends BoardCharacter {
 	// Default values for characters
@@ -57,22 +61,35 @@ public class Enemy extends BoardCharacter {
 	
 	// Class variables
 	private StackPane stackPane;
+	private boolean isAttacking;
 	
 	// Animations
-	private ImageView imageView;
-	private Animation walkAnimation;
-	private Animation attackAnimation;
-	private Animation dieAnimation;
+	private ImageView walkView;
+	private ImageView attackView;
+	private ImageView dieView;
+	
+	public static final String WALK_ID = "walk";
+	public static final String ATTACK_ID = "attack";
+	public static final String DIE_ID = "die";
 
 	// Constructor
 	protected Enemy(int health, int attackSpeed, int damage, Image sprite) {
-		super(health, attackSpeed, damage, sprite);		
+		super(health, attackSpeed, damage, sprite);
+		isAttacking = false;
 	}
 	
 	public void setStackPane() {
 		stackPane = new StackPane();
 //		stackPane.setStyle("-fx-border-color: black");
-		stackPane.getChildren().add(imageView);
+		
+		// Add all views but only make walk animation visible
+		walkView.setVisible(true);
+		walkView.setId(WALK_ID);
+		attackView.setVisible(false);
+		attackView.setId(ATTACK_ID);
+		dieView.setVisible(false);
+		dieView.setId(DIE_ID);
+		stackPane.getChildren().addAll(walkView, attackView, dieView);
 	}
 	
 	public StackPane getStackPane() {
@@ -86,6 +103,14 @@ public class Enemy extends BoardCharacter {
 		String resource = new File(munchNoiseFile.mp3).toURI().toString();
 		munchNoise = new MediaPlayer(new Media(resource));
 		munchNoise.play();*/
+	}
+	
+	public boolean isAttacking() {
+		return isAttacking;
+	}
+	
+	public void setAttacking(boolean isAttacking) {
+		this.isAttacking = isAttacking;
 	}
 	
 	public void move() {
@@ -103,35 +128,62 @@ public class Enemy extends BoardCharacter {
 //		characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
 	}
 	
-	public void setWalkAnimation(Animation animation) {
-		walkAnimation = animation;
+	public void setWalkView(ImageView walkView) {
+		this.walkView = walkView;
 	}
 	
-	public Animation getWalkAnimation() {
-		return walkAnimation;
+	public ImageView getWalkView() {
+		return walkView;
 	}
 	
-	public void setAttackAnimation(Animation animation) {
-		attackAnimation = animation;
+	public void setAttackView(ImageView attackView) {
+		this.attackView = attackView;
 	}
 	
-	public Animation getAttackAnimation(Animation animation) {
-		return attackAnimation;
+	public ImageView getAttackView() {
+		return attackView;
 	}
 	
-	public void setDieAnimation(Animation animation) {
-		dieAnimation = animation;
+	public void setDieView(ImageView dieView) {
+		this.dieView = dieView;	
 	}
 	
-	public Animation getDieAnimation() {
-		return dieAnimation;
+	public ImageView getDieView() {
+		return dieView;
+	} 
+	
+	public void triggerAnimation(String animationId) {
+		for (Node node : stackPane.getChildren()) {
+			ImageView view = (ImageView) node;
+			if (view.getId().equals(animationId)) {
+				view.setVisible(true);
+			} else {
+				view.setVisible(false);
+			}
+		}
 	}
 	
-	public void setImageView(ImageView imageView) {
-		this.imageView = imageView;
+	public ImageView generateAnimation(Image spriteImage, int count, int columns, int spriteWidth, int spriteHeight, int animationTime) {
+		ImageView view = new ImageView(spriteImage);
+		view.setViewport(new Rectangle2D(
+				OFFSET_X, 
+				OFFSET_Y, 
+				spriteWidth, 
+				spriteHeight
+			));
+		view.setFitWidth(IMAGE_WIDTH);
+		view.setFitHeight(IMAGE_HEIGHT);
+		Animation animation = new SpriteAnimation(view, Duration.millis(animationTime), 
+				count,
+				columns, 
+				OFFSET_X, 
+				OFFSET_Y, 
+				spriteWidth, 
+				spriteHeight
+			);
+		animation.setCycleCount(Animation.INDEFINITE);
+		animation.play();
+		return view;
 	}
-	
-	public ImageView getImageView() {
-		return imageView;
-	}
+
 }
