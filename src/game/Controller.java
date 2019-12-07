@@ -2,10 +2,12 @@ package game;
 
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import ammo.Ammo;
@@ -15,32 +17,25 @@ import characters.Aliens.*;
 import characters.Astronauts.DefenderTower;
 import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.util.Duration;
-import map.Tile;
 
 public class Controller {
 	// Class fields
 	public static final int ROWS = 6;
 	public static final int COLS = 12;
 	private Model model;
-	private static final long FRAME_TIME = 100; // Milliseconds
-	private static final int WAVE_ONE_ALIENS = 15;
-	private static final int WAVE_TWO_ALIENS = 30;
-	private static final int WAVE_THREE_ALIENS = 40;
 	private int currentIncome;
-	private final int CURRENCY_TIMELINE = 10; // seconds
+	private final int CURRENCY_TIMELINE = 5000; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
-	private final long WAVE_DELAY = 3000l;
+	private final long WAVE_DELAY = 0;
 	private AtomicLong timeElapsed;
 	private int speedMultiplier;
-	private boolean waveOneDone = false;
-	private boolean waveTwoDone = false;
-	private boolean waveThreeDone = false;
+	private AtomicBoolean waveOneDone = new AtomicBoolean(false);
+	private AtomicBoolean waveTwoDone = new AtomicBoolean(false);
+	private AtomicBoolean waveTwoStarted = new AtomicBoolean(false);
+	private AtomicBoolean waveThreeDone = new AtomicBoolean(false);
 	private Timer gamePlayTimer;
 
 	
@@ -66,8 +61,12 @@ public class Controller {
 
 			@Override
 			public void run() {
-				Platform.runLater(() -> calculateHitsOrDeaths());
-				Platform.runLater(() -> animate());
+				calculateHitsOrDeaths();
+				try {
+					animate();
+				} catch(ConcurrentModificationException e) {
+					
+				}
 			}
 			
 		};
@@ -112,7 +111,7 @@ public class Controller {
 		
 		gamePlayTimer.schedule(turnTask, 0, 100 / speedMultiplier);
 		gamePlayTimer.schedule(bullets, 0, 1000 / speedMultiplier);
-		gamePlayTimer.schedule(money, 0, 5000 / speedMultiplier);
+		gamePlayTimer.schedule(money, 0, CURRENCY_TIMELINE / speedMultiplier);
 		gamePlayTimer.schedule(increaseTime, 0, 1);
 	}
 	
@@ -121,21 +120,21 @@ public class Controller {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
 				if (tower == null) {
-					alien.move();
+					Platform.runLater(() -> alien.move());
 				} else {
 					tower.decreaseHealth(alien.getDamage());
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
-				alien.move();
+				Platform.runLater(() -> alien.move());
 			}
 		}
 		
 		List<Ammo> bullets = new ArrayList<>(model.getBullets());
-		for(Ammo bullet: bullets) {
+		for(Ammo bullet : bullets) {
 			if (bullet.getCol() < COLS+2) {
-				bullet.move();
+				Platform.runLater(() -> bullet.move());
 			} else {
-				model.removeBullet(bullet);
+				Platform.runLater(() -> model.removeBullet(bullet));
 			}
 		}
 	}
@@ -143,13 +142,13 @@ public class Controller {
 	
 	private void calculateHitsOrDeaths() {
 		if (!model.hasAliens()) {
-			if (waveOneDone && !waveTwoDone && !waveThreeDone) {
+			if (waveOneDone.get() && !waveTwoStarted.get()) {
 				model.setWaveNumber(2);
 				generateAliens();
-			} else if (waveTwoDone && !waveThreeDone) {
+			} else if (waveTwoDone.get() && !waveThreeDone.get()) {
 				model.setWaveNumber(3);
 				generateAliens();
-			} else if (waveThreeDone){
+			} else if (waveThreeDone.get()){
 				System.out.println("YOU WON!!!");
 				System.exit(0);
 			}
@@ -165,7 +164,7 @@ public class Controller {
 				}
 			}
 			if (hit) {
-				model.removeBullet(bullet);
+				Platform.runLater(() -> model.removeBullet(bullet));
 			}
 		}
 		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
@@ -199,7 +198,7 @@ public class Controller {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
 		
-		if (waveNumber == 1 && !waveOneDone) {						// WAVE ONE
+		if (waveNumber == 1) {						// WAVE ONE
 			System.out.println("WAVE ONE");
 			TimerTask firstWave = new TimerTask() {
 
@@ -215,26 +214,27 @@ public class Controller {
 
 				@Override
 				public void run() {
+					waveOneDone.set(true);
 					generateLittleGreenMan(3);
 					generateGrunt(3);
 					generateSprinter(3);
-					waveOneDone = true;
 				}
 				
 			};
 			timer.schedule(firstWave, 0);
 			timer.schedule(secondWave, WAVE_DELAY);
-		} else if (waveNumber == 2 && waveOneDone && !waveTwoDone) {				// WAVE TWO
-
+		} else if (waveNumber == 2) {				// WAVE TWO
+			System.out.println("WAVE TWO");
 			TimerTask firstWave = new TimerTask() {
 
 				@Override
 				public void run() {
-					generateLittleGreenMan(6);
-					generateGrunt(6);
-					generateSprinter(3);
+					waveTwoStarted.set(true);
+					generateLittleGreenMan(4);
+					generateGrunt(4);
+					generateSprinter(2);
 					generateManHunter(3);
-					generateTank(3);
+					generateTank(2);
 				}
 				
 			};
@@ -243,9 +243,9 @@ public class Controller {
 
 				@Override
 				public void run() {
+					waveTwoDone.set(true);
 					generateTank(3);
 					generateManHunter(3);
-					waveTwoDone = true;
 					System.out.println("WAVE TWO");
 				}
 				
@@ -253,19 +253,19 @@ public class Controller {
 			timer.schedule(firstWave, WAVE_DELAY);
 			timer.schedule(secondWave, WAVE_DELAY);
 			
-		} else if (waveNumber == 3 && waveTwoDone) {				// WAVE THREE
+		} else if (waveNumber == 3) {				// WAVE THREE
 			
 			TimerTask firstWave = new TimerTask() {
 
 				@Override
 				public void run() {
-					generateLittleGreenMan(6);
-					generateGrunt(6);
-					generateSprinter(6);
-					generateManHunter(6);
-					generateTank(3);
+					waveThreeDone.set(true);
+					generateLittleGreenMan(4);
+					generateGrunt(4);
+					generateSprinter(4);
+					generateManHunter(4);
+					generateTank(2);
 					generateGargantua(3);
-					waveThreeDone = true;
 					System.out.println("WAVE THREE");
 				}
 				
@@ -408,9 +408,7 @@ public class Controller {
 	}
 	
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
-		if (model.isEmpty(row, col)) {
-			// model.notifyInvalidRemoval();
-		} else {
+		if (!model.isEmpty(row, col)) {
 			model.removeTower(towerToRemove, row, col);
 		}
 	}

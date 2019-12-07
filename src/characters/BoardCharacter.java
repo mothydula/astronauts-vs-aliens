@@ -12,7 +12,7 @@ public class BoardCharacter {
 	private int health;
 	private int attackSpeed;
 	private int damage;
-	private Image sprite;
+	protected Image sprite;
 	private int row;
 	private int col;
 	

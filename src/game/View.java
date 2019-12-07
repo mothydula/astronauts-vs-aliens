@@ -227,7 +227,6 @@ public class View extends Application implements Observer{
 					Ammo bullet = message.getBullet();
 					StackPane bulletPane = bullet.getStackPane();
 					
-//					bulletPane.setStyle("-fx-border-color: black");
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
@@ -276,7 +275,6 @@ public class View extends Application implements Observer{
 		Media song;
 		String resource = null;
 	    if (isIntro) {
-			System.out.println("trying");
 			resource = new File(INTRO_MUSIC).toURI().toString();
 		} else {
 			resource = new File(IN_GAME_MUSIC).toURI().toString();
@@ -446,7 +444,7 @@ public class View extends Application implements Observer{
 	
 	/**
 	 * Sets up Progress Bar for Game Stage
-	 * 
+	 *
 	 * This progress bar element will maintain the status of the current
 	 * stages, updating accordingly as the game progresses.
 	 */
@@ -533,22 +531,46 @@ public class View extends Application implements Observer{
 					if (!removeToggled) {
 						// Place tower
 						db.clear();
-						controller.placeCharacter(selectedTower, row, col);
+						controller.placeCharacter(generateTowerFromSelected(), row, col);
 						
 					} else {
 						indexToRemove = new int[]{row, col};
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						if (towerToRemove != null) {
 							controller.removeTower(towerToRemove, row, col);
-						} else {
-							removeToggled = false;
 						}
+						removeToggled = false;
 					}
 				}
 				e.setDropCompleted(true);
 				e.consume();
 			}
 		});
+	}
+	
+	private DefenderTower generateTowerFromSelected() {
+		DefenderTower tower = null;
+		if (selectedTower instanceof Asteroid) {
+			tower = new Asteroid();
+		} else if (selectedTower instanceof AstroJoe) {
+			tower = new AstroJoe();
+		} else if (selectedTower instanceof ExplosiveAstroJoe) {
+			tower = new ExplosiveAstroJoe();
+		} else if (selectedTower instanceof MillenniumFalcon) {
+			tower = new MillenniumFalcon();
+		} else if (selectedTower instanceof MoneyBush) {
+			tower = new MoneyBush();
+		} else if (selectedTower instanceof MoneyTree) {
+			tower = new MoneyTree();
+		} else if (selectedTower instanceof MoonZeus) {
+			tower = new MoonZeus();
+		} else if (selectedTower instanceof StartrellCluggins) {
+			tower = new StartrellCluggins();
+		} else if (selectedTower instanceof Tars) {
+			tower = new Tars();
+		}
+		
+		return tower;
 	}
 	
 	
