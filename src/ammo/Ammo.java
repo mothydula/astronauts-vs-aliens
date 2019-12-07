@@ -47,6 +47,9 @@ public class Ammo {
 	public static final String TARS_AMMO_SPRITE = "file:assets/ammo/tars-ammo.png";
 	public static final String TARS_AMMO_NOISE = "assets/sounds/ammo_noises/tarsAmmoNoise.m4a";
 	
+	//Millenium Falcon Ammo Noise
+	public static final String MILLENIUM_FALCON_AMMO_NOISE = "assets/sounds/ammo_noises/milleniumFalconAmmoNoise.mp3";
+	
 	// RailGun Ammo Image (same as MoonZeus)
 	public static final String RAIL_GUN_AMMO_SPRITE = MOON_ZEUS_AMMO_SPRITE;
 
@@ -113,6 +116,9 @@ public class Ammo {
 				break;
 			case "Tars":
 				noiseFile = TARS_AMMO_NOISE;
+				break;
+			case "Millenium Falcon":
+				noiseFile = MILLENIUM_FALCON_AMMO_NOISE;
 				break;
 			default:
 				noiseFile = "Not Found";

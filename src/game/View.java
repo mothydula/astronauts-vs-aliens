@@ -223,8 +223,8 @@ public class View extends Application implements Observer{
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
 
-					bullet.playBulletNoise();
 					mainGroup.getChildren().add(bulletPane);
+					//bullet.playBulletNoise();
 					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
@@ -309,6 +309,8 @@ public class View extends Application implements Observer{
 	 * game and allow the user to return to the MainMenu.
 	 */
 	public void triggerGameOverModal() {
+		musicPlayer.stop();
+		
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
 		modal.initOwner(primaryStage);
@@ -466,20 +468,20 @@ public class View extends Application implements Observer{
 		//Pulls up the info window to show the user a general overview of game
 		//mechanics
 		infoBtn.setOnAction( e -> {
-			Text infoText = new Text("INSTRUCTIONS\n"
+			Text infoText = new Text("INSTRUCTIONS:\n"
 					+ "The objective of this game is to fend of your enemies\n"
-					+ "for as long as possible. You'll do this buy accumulating spaceBucks(?)\n"
+					+ "for as long as possible. You'll do this by accumulating SpaceBucks\n"
 					+ "and spending them on defenders to protect your galaxy(?)\n"
-					+ "from the incoming aliens. THe more expensive a defender is,\n"
-					+ "the more useful they probably are. However, use your space-\n"
-					+ "bucks wisely!\n\n"
-					+ "HOW-TO\n"
-					+ "You can place a defender by clicking them from the queue and placing\n"
+					+ "from the incoming aliens. The more expensive a defender is,\n"
+					+ "the more useful they probably are. However, use your Space-\n"
+					+ "Bucks wisely!\n\n"
+					+ "HOW-TO:\n"
+					+ "You can place a defender by dragging them from the queue and placing\n"
 					+ "them anywhere between the alien spawn station and the last line of defense.\n\n"
 					+ "No two defenders can occupy the same tile.\n\n"
-					+ "A defender can be removed by clicking and highlighting their tile and\n"
-					+ "clicking the remove button.\n\n"
-					+ "Hover over a defender in the queue for about 1-2 sec to view specs");
+					+ "A defender can be removed by dragging and dropping the remove button 'X'\n"
+					+ "on the defender'.\n\n"
+					+ "Hover over a defender in the queue for about 1-2 seconds to view specs");
 			ScrollPane infoPane = new ScrollPane();
 			infoPane.setPadding(new Insets(12,12,12,12));
 			infoPane.setPrefHeight(350);

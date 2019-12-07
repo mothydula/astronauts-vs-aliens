@@ -18,7 +18,7 @@ public class MillenniumFalcon extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "Millennium Falcon\n" + super.infoCard();
+		return "Millenium Falcon\n" + super.infoCard();
 	}
 
 	@Override
