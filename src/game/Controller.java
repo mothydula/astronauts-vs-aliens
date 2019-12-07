@@ -120,8 +120,14 @@ public class Controller {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
 				if (tower == null) {
+					if (alien.isAttacking()) {
+						alien.setAttacking(false);
+					}
+					alien.triggerAnimation(Enemy.WALK_ID);
 					Platform.runLater(() -> alien.move());
 				} else {
+					alien.setAttacking(true);
+					alien.triggerAnimation(Enemy.ATTACK_ID);
 					tower.decreaseHealth(alien.getDamage());
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
