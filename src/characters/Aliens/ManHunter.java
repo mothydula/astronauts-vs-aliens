@@ -45,71 +45,32 @@ public class ManHunter extends Enemy {
 	 * animation.
 	 */
 	public void generateAnimations() {
-		// Walk
-		ImageView walkView = new ImageView(MANHUNTER_WALK);
-		walkView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				MH_WALK_WIDTH, 
-				MH_WALK_HEIGHT
-			));
-		walkView.setFitWidth(IMAGE_WIDTH);
-		walkView.setFitHeight(IMAGE_HEIGHT);
-		Animation walkAnimation = new SpriteAnimation(walkView, Duration.millis(MH_WALK_TIME), 
-				MH_WALK_COUNT,
+		ImageView walkView = generateAnimation(
+				MANHUNTER_WALK, 
+				MH_WALK_COUNT, 
 				MH_WALK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				MH_WALK_WIDTH, 
-				MH_WALK_HEIGHT
-			);
-		walkAnimation.setCycleCount(Animation.INDEFINITE);
-		walkAnimation.play();
-		super.setImageView(walkView); // This will be the initial image view that is shown
-		super.setWalkAnimation(walkAnimation);
-
-		// Attack
-		final ImageView attackView = new ImageView(MANHUNTER_ATTACK);
-		attackView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				MH_ATTACK_WIDTH, 
-				MH_ATTACK_HEIGHT
-			));
-		attackView.setFitWidth(IMAGE_WIDTH);
-		attackView.setFitHeight(IMAGE_HEIGHT);
-		final Animation attackAnimation = new SpriteAnimation(attackView, Duration.millis(MH_ATTACK_TIME),
+				MH_WALK_HEIGHT, 
+				MH_WALK_TIME);
+		super.setWalkView(walkView);
+		
+		ImageView attackView = generateAnimation(
+				MANHUNTER_ATTACK, 
 				MH_ATTACK_COUNT, 
 				MH_ATTACK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				MH_ATTACK_WIDTH, 
-				MH_ATTACK_HEIGHT
-			);
-		attackAnimation.setCycleCount(Animation.INDEFINITE);
-		attackAnimation.play();
-		super.setAttackAnimation(attackAnimation);
-
-		// Die
-		final ImageView dieView = new ImageView(MANHUNTER_DIE);
-		dieView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				MH_DIE_WIDTH, 
-				MH_DIE_HEIGHT));
-		dieView.setFitWidth(IMAGE_WIDTH);
-		dieView.setFitHeight(IMAGE_HEIGHT);
-		final Animation dieAnimation = new SpriteAnimation(dieView, Duration.millis(MH_DIE_TIME), 
-				MH_DIE_COUNT,
+				MH_ATTACK_HEIGHT, 
+				MH_ATTACK_TIME);
+		super.setAttackView(attackView);
+		
+		ImageView dieView = generateAnimation(
+				MANHUNTER_DIE, 
+				MH_DIE_COUNT, 
 				MH_DIE_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				MH_DIE_WIDTH, 
-				MH_DIE_HEIGHT
-			);
-		dieAnimation.setCycleCount(Animation.INDEFINITE);
-		dieAnimation.play();
-		super.setDieAnimation(dieAnimation);
+				MH_DIE_HEIGHT, 
+				MH_DIE_TIME);
+		super.setDieView(dieView);
 	}
 
 }
