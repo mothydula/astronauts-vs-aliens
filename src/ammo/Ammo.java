@@ -19,6 +19,7 @@ public class Ammo {
 	private int speed;
 	private Image sprite;
 	private StackPane stackPane;
+	private DefenderTower defender;
 	private int col;
 	private int row;
 	
@@ -26,26 +27,30 @@ public class Ammo {
 	protected static final int SPRITE_WIDTH = 35;
 	protected static final int SPRITE_HEIGHT = 35;
 	
-	//AstroJoe Ammo Image
+	//AstroJoe Ammo Fields
 	public static final String ASTROJOE_AMMO_SPRITE = "file:assets/ammo/astro-joe-ammo.png";
+	public static final String ASTROJOE_AMMO_NOISE = "assets/sounds/ammo_noises/astroJoeAmmoNoise.wav";
 	
-	//Explosive AstroJoe Ammo Image
+	//Explosive AstroJoe Ammo Fields
 	public static final String EXPLOSIVE_ASTROJOE_AMMO_SPRITE = "file:assets/ammo/explosive-astro-joe-ammo.png";
+	public static final String EXPLOSIVE_ASTROJOE_AMMO_NOISE = "assets/sounds/ammo_noises/explosiveAstroJoeAmmoNoise.mp3";
 	
-	//MoonZeus Ammo Image
+	//MoonZeus Ammo Fields
 	public static final String MOON_ZEUS_AMMO_SPRITE = "file:assets/ammo/moon-zeus-ammo.png";
+	public static final String MOON_ZEUS_AMMO_NOISE = "assets/sounds/ammo_noises/moonZeusAmmoNoise.m4a";
 	
-	//Startrell Cluggins Ammo Image
+	//Startrell Cluggins Ammo Fields
 	public static final String STARTRELL_CLUGGINS_AMMO_SPRITE = "file:assets/ammo/startrell-cluggins-ammo.png";
+	public static final String STARTRELL_CLUGGINS_AMMO_NOISE = "assets/sounds/ammo_noises/startrellClugginsAmmoNoise.mp3";
 	
-	//TARS Ammo Image
+	//TARS Ammo Fields
 	public static final String TARS_AMMO_SPRITE = "file:assets/ammo/tars-ammo.png";
+	public static final String TARS_AMMO_NOISE = "assets/sounds/ammo_noises/tarsAmmoNoise.m4a";
 	
 	// RailGun Ammo Image (same as MoonZeus)
 	public static final String RAIL_GUN_AMMO_SPRITE = MOON_ZEUS_AMMO_SPRITE;
-	
-	/**Constructor
-	 * */
+
+	// Constructor
 	public Ammo (DefenderTower dt, Image sprite) {
 		
 		//Grabs the stats that are held in each unique DefenderTower object
@@ -54,6 +59,7 @@ public class Ammo {
 		this.sprite = sprite;
 		this.col = dt.getCol();
 		this.row = dt.getRow();
+		this.defender = dt;
 		setStackPane();
 	}
 	public void setStackPane() {
@@ -91,12 +97,30 @@ public class Ammo {
 	}
 	
 	public void playBulletNoise() {
-		// TODO: for Trey, have a bullet noise for each defender's ammo,
-		// each time a piece of ammo is fired
-		/*MediaPlayer ammoNoise;
-		String resource = new File(ammoNoiseFile.mp3).toURI().toString();
-		ammoNoise = new MediaPlayer(new Media(resource));
-		ammoNoise.play();*/
+		String noiseFile = null;
+		switch (this.defender.toString().split("\n")[0]) {
+			case "AstroJoe":
+				noiseFile = ASTROJOE_AMMO_NOISE;
+				break;
+			case "ExplosiveAstroJoe":
+				noiseFile = EXPLOSIVE_ASTROJOE_AMMO_NOISE;
+				break;
+			case "Moon Zeus":
+				noiseFile = MOON_ZEUS_AMMO_NOISE;
+				break;
+			case "Startrell Cluggins":
+				noiseFile = STARTRELL_CLUGGINS_AMMO_NOISE;
+				break;
+			case "Tars":
+				noiseFile = TARS_AMMO_NOISE;
+				break;
+			default:
+				noiseFile = "Not Found";
+		}
+		//System.out.println(noiseFile);
+		String resource = new File(noiseFile).toURI().toString();
+		MediaPlayer ammoNoise = new MediaPlayer(new Media(resource));
+		ammoNoise.play();
 	}
 	
 	public void move() {
