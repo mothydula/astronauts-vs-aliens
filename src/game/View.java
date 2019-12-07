@@ -493,14 +493,13 @@ public class View extends Application implements Observer{
 			infoStage.show();
 		});
 		
-//		Button tempBtn = new Button("?");
-//		tempBtn.setMinHeight(40);
-//		tempBtn.setMinWidth(100);
-//		tempBtn.setOnAction( e -> {
-//			System.out.println("TODO: Insert temp functionality");
-//		});
-		
-		HBox mapSelector = createMapSelectionBar();
+		VBox mapPicker = new VBox(2);
+		mapPicker.setAlignment(Pos.CENTER);
+		Text mapText = new Text("Select Map");
+		mapText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
+		mapText.setFill(Color.WHITE);
+		HBox mapDisplay = createMapSelectionBar();
+		mapPicker.getChildren().addAll(mapText, mapDisplay);
 		
 		Button startBtn = new Button("Start");
 		startBtn.setMinHeight(40);
@@ -520,7 +519,17 @@ public class View extends Application implements Observer{
 		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
 		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
 		
-		buttonBox.getChildren().addAll(mapSelector, bottomBox);
+		buttonBox.getChildren().addAll(mapPicker, bottomBox);
+		buttonBox.setMaxWidth(600);
+		buttonBox.setMaxHeight(200);
+		
+		buttonBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.5);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 2;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: black;");
 		
 		return buttonBox;
 	}
