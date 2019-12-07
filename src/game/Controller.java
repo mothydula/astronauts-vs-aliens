@@ -18,6 +18,8 @@ import characters.Astronauts.DefenderTower;
 import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
 import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 
 public class Controller {
 	// Class fields
@@ -184,17 +186,16 @@ public class Controller {
 	public void isGameOver() {
 		for (Enemy alien : model.getAliens()) {
 			if (alien.getCol() == 0) {
-				if (model.getBoard()[alien.getRow()][0].containsRailGun()) {
-					System.out.println("Saved by the rail gun - " + alien.getRow());
-					model.activateRailGun(alien.getRow(), 0);
-					
-				} else {
-					System.out.println("Game over - " + alien.getRow());
+				// Game over, pause timer, animate attacking aliens & end game
+				pause();
+				for (Enemy survivingAlien : model.getAliens()) {
+					survivingAlien.triggerAnimation(Enemy.ATTACK_ID);
 				}
-				
+				model.setGameOver();
 			}
 		}
 	}
+	
 	
 	public int getSpeedMultiplier() {
 		return speedMultiplier;
@@ -367,11 +368,16 @@ public class Controller {
 	
 	
 	public void increaseSpeed() {
-		if (speedMultiplier == 8) {
-			speedMultiplier = 1;
+		if (speedMultiplier == 1) {
+			speedMultiplier = 4;
 		} else {
-			speedMultiplier *= 2;
+			speedMultiplier = 1;
 		}
+//		if (speedMultiplier == 8) {
+//			speedMultiplier = 1;
+//		} else {
+//			speedMultiplier *= 2;
+//		}
 		pause();
 		resume();
 	}
@@ -417,5 +423,17 @@ public class Controller {
 		if (!model.isEmpty(row, col)) {
 			model.removeTower(towerToRemove, row, col);
 		}
+	}
+	
+	public void fireRailGun(BoardCharacter railGun) {
+//		TimerTask firedRailGun = new TimerTask() {
+//			@Override
+//			public void run() {
+//				Platform.runLater(() -> model.addBullet(((DefenderTower)railGun).shoot()));
+//			}
+//		};
+//		
+//		gamePlayTimer.schedule(firedRailGun, 0, 1000 / speedMultiplier);
+		Platform.runLater(() -> model.addBullet(((DefenderTower)railGun).shoot()));
 	}
 }
