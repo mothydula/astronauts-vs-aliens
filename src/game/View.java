@@ -188,7 +188,7 @@ public class View extends Application implements Observer{
 					int fadeInTimeInvalid = 150; 
 					int fadeOutTimeInvalid = 150; 
 					Toast.makeText(primaryStage, toastMsgInvalid, 
-							toastMsgTimeInvalid, fadeInTimeInvalid, fadeOutTimeInvalid);
+							toastMsgTimeInvalid, fadeInTimeInvalid, fadeOutTimeInvalid, Color.RED);
 					break;
 				case MoveMessage.INSUFFICIENT_FUNDS:
 					// Display "Not enough funds"
@@ -196,7 +196,7 @@ public class View extends Application implements Observer{
 					int toastMsgTime = 1000; 
 					int fadeInTime = 150; 
 					int fadeOutTime= 150; 
-					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime, Color.RED);
 					break;
 
 				case MoveMessage.BULLET_PLACEMENT:
@@ -209,7 +209,13 @@ public class View extends Application implements Observer{
 					triggerGameOverModal();
 					break;
 			}
-		}	
+		} else if (arg instanceof String) {
+			String waveMsg = ((String)arg);
+			int waveMsgTime = 2000; 
+			int fadeInTime = 150; 
+			int fadeOutTime = 150; 
+			Toast.makeText(primaryStage, waveMsg, waveMsgTime, fadeInTime, fadeOutTime, Color.FORESTGREEN);
+		}
 		
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));

@@ -9,13 +9,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public final class Toast {
-	public static void makeText(Stage ownerStage, String toastMsg, int toastDelay, int fadeInDelay, int fadeOutDelay) {
+	public static void makeText(Stage ownerStage, String toastMsg, int toastDelay, int fadeInDelay, int fadeOutDelay, Color color) {
 		Stage toastStage = new Stage();
 		toastStage.initOwner(ownerStage);
 		toastStage.setResizable(false);
@@ -23,8 +24,8 @@ public final class Toast {
 		toastStage.centerOnScreen();
 		
 		Text text = new Text(toastMsg);
-		text.setFont(Font.font("Verdana", 30));
-		text.setFill(Color.RED);
+		text.setFont(Font.font("Courier New", FontWeight.BOLD, 35));
+		text.setFill(color);
 		
 		StackPane root = new StackPane(text);
 		root.setStyle("-fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-padding: 30px;");

@@ -211,7 +211,8 @@ public class Controller {
 			TimerTask firstWave = new TimerTask() {
 
 				@Override
-				public void run() {
+				public void run() {					
+					Platform.runLater(() -> model.displayWaveToast());
 					generateLittleGreenMan(3);
 					generateGrunt(3);
 				}
@@ -238,11 +239,13 @@ public class Controller {
 				@Override
 				public void run() {
 					waveTwoStarted.set(true);
+					Platform.runLater(() -> model.displayWaveToast());
 					generateLittleGreenMan(4);
 					generateGrunt(4);
 					generateSprinter(2);
 					generateManHunter(3);
 					generateTank(2);
+					
 				}
 				
 			};
@@ -268,6 +271,7 @@ public class Controller {
 				@Override
 				public void run() {
 					waveThreeDone.set(true);
+					Platform.runLater(() -> model.displayWaveToast());
 					generateLittleGreenMan(4);
 					generateGrunt(4);
 					generateSprinter(4);

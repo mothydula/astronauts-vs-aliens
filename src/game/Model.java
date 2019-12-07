@@ -173,4 +173,17 @@ public class Model extends Observable {
 		setChanged();
 		notifyObservers(message);
 	}
+	
+	public void displayWaveToast() {
+		String waveNumber = "";
+		if (currentWave == 1) {
+			waveNumber = "Wave One!";
+		} else if (currentWave == 2) {
+			waveNumber = "Wave Two!";
+		} else if (currentWave == 3) {
+			waveNumber = "Wave Three!";
+		}
+		setChanged();
+		notifyObservers(waveNumber);
+	}
 }
