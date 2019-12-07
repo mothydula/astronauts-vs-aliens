@@ -67,9 +67,6 @@ public class Enemy extends BoardCharacter {
 	private ImageView walkView;
 	private ImageView attackView;
 	private ImageView dieView;
-	private Animation walkAnimation;
-	private Animation attackAnimation;
-	private Animation dieAnimation;
 	
 	public static final String WALK_ID = "walk";
 	public static final String ATTACK_ID = "attack";
