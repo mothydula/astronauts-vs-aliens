@@ -45,71 +45,32 @@ public class Grunt extends Enemy {
 	 * animation.
 	 */
 	public void generateAnimations() {
-		// Walk
-		ImageView walkView = new ImageView(GRUNT_WALK);
-		walkView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				GRUNT_WALK_WIDTH, 
-				GRUNT_WALK_HEIGHT
-			));
-		walkView.setFitWidth(IMAGE_WIDTH);
-		walkView.setFitHeight(IMAGE_HEIGHT);
-		Animation walkAnimation = new SpriteAnimation(walkView, Duration.millis(GRUNT_WALK_TIME), 
-				GRUNT_WALK_COUNT,
+		ImageView walkView = generateAnimation(
+				GRUNT_WALK, 
+				GRUNT_WALK_COUNT, 
 				GRUNT_WALK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				GRUNT_WALK_WIDTH, 
-				GRUNT_WALK_HEIGHT
-			);
-		walkAnimation.setCycleCount(Animation.INDEFINITE);
-		walkAnimation.play();
-		super.setImageView(walkView); // This will be the initial image view that is shown
-		super.setWalkAnimation(walkAnimation);
-
-		// Attack
-		final ImageView attackView = new ImageView(GRUNT_ATTACK);
-		attackView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				GRUNT_ATTACK_WIDTH, 
-				GRUNT_ATTACK_HEIGHT
-			));
-		attackView.setFitWidth(IMAGE_WIDTH);
-		attackView.setFitHeight(IMAGE_HEIGHT);
-		final Animation attackAnimation = new SpriteAnimation(attackView, Duration.millis(GRUNT_ATTACK_TIME),
+				GRUNT_WALK_HEIGHT, 
+				GRUNT_WALK_TIME);
+		super.setWalkView(walkView);
+		
+		ImageView attackView = generateAnimation(
+				GRUNT_ATTACK, 
 				GRUNT_ATTACK_COUNT, 
 				GRUNT_ATTACK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				GRUNT_ATTACK_WIDTH, 
-				GRUNT_ATTACK_HEIGHT
-			);
-		attackAnimation.setCycleCount(Animation.INDEFINITE);
-		attackAnimation.play();
-		super.setAttackAnimation(attackAnimation);
-
-		// Die
-		final ImageView dieView = new ImageView(GRUNT_DIE);
-		dieView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				GRUNT_DIE_WIDTH, 
-				GRUNT_DIE_HEIGHT));
-		dieView.setFitWidth(IMAGE_WIDTH);
-		dieView.setFitHeight(IMAGE_HEIGHT);
-		final Animation dieAnimation = new SpriteAnimation(dieView, Duration.millis(GRUNT_DIE_TIME), 
-				GRUNT_DIE_COUNT,
+				GRUNT_ATTACK_HEIGHT, 
+				GRUNT_ATTACK_TIME);
+		super.setAttackView(attackView);
+		
+		ImageView dieView = generateAnimation(
+				GRUNT_DIE, 
+				GRUNT_DIE_COUNT, 
 				GRUNT_DIE_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				GRUNT_DIE_WIDTH, 
-				GRUNT_DIE_HEIGHT
-			);
-		dieAnimation.setCycleCount(Animation.INDEFINITE);
-		dieAnimation.play();
-		super.setDieAnimation(dieAnimation);
+				GRUNT_DIE_HEIGHT, 
+				GRUNT_DIE_TIME);
+		super.setDieView(dieView);
 	}
 
 }
