@@ -231,7 +231,7 @@ public class View extends Application implements Observer{
 					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
 
-
+					bullet.playBulletNoise();
 					mainGroup.getChildren().add(bulletPane);
 					break;
 				case MoveMessage.BULLET_REMOVAL:
@@ -248,10 +248,8 @@ public class View extends Application implements Observer{
 	
 	public void music()
 	{
-		Media song;
 		String resource = null;
 	    if (isIntro) {
-			System.out.println("trying");
 			resource = new File(INTRO_MUSIC).toURI().toString();
 		} else {
 			resource = new File(IN_GAME_MUSIC).toURI().toString();
