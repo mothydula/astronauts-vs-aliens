@@ -46,70 +46,32 @@ public class LittleGreenMen extends Enemy {
 	 * animation.
 	 */
 	public void generateAnimations() {
-		// Walk
-		ImageView walkView = new ImageView(LITTLEGREENMAN_WALK);
-		walkView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				LGM_WALK_WIDTH, 
-				LGM_WALK_HEIGHT
-			));
-		walkView.setFitWidth(IMAGE_WIDTH);
-		walkView.setFitHeight(IMAGE_HEIGHT);
-		Animation walkAnimation = new SpriteAnimation(walkView, Duration.millis(LGM_WALK_TIME), 
-				LGM_WALK_COUNT,
+		ImageView walkView = generateAnimation(
+				LITTLEGREENMAN_WALK, 
+				LGM_WALK_COUNT, 
 				LGM_WALK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				LGM_WALK_WIDTH, 
-				LGM_WALK_HEIGHT
-			);
-		walkAnimation.setCycleCount(Animation.INDEFINITE);
-		walkAnimation.play();
-		super.setImageView(walkView); // This will be the initial image view that is shown
-		super.setWalkAnimation(walkAnimation);
-
-		// Attack
-		final ImageView attackView = new ImageView(LITTLEGREENMAN_ATTACK);
-		attackView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				LGM_ATTACK_WIDTH, 
-				LGM_ATTACK_HEIGHT
-			));
-		attackView.setFitWidth(IMAGE_WIDTH);
-		attackView.setFitHeight(IMAGE_HEIGHT);
-		final Animation attackAnimation = new SpriteAnimation(attackView, Duration.millis(LGM_ATTACK_TIME),
+				LGM_WALK_HEIGHT, 
+				LGM_WALK_TIME);
+		super.setWalkView(walkView);
+		
+		ImageView attackView = generateAnimation(
+				LITTLEGREENMAN_ATTACK, 
 				LGM_ATTACK_COUNT, 
 				LGM_ATTACK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				LGM_ATTACK_WIDTH, 
-				LGM_ATTACK_HEIGHT
-			);
-		attackAnimation.setCycleCount(Animation.INDEFINITE);
-		attackAnimation.play();
-		super.setAttackAnimation(attackAnimation);
-
-		// Die
-		final ImageView dieView = new ImageView(LITTLEGREENMAN_DIE);
-		dieView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				LGM_DIE_WIDTH, 
-				LGM_DIE_HEIGHT));
-		dieView.setFitWidth(IMAGE_WIDTH);
-		dieView.setFitHeight(IMAGE_HEIGHT);
-		final Animation dieAnimation = new SpriteAnimation(dieView, Duration.millis(LGM_DIE_TIME), LGM_DIE_COUNT,
+				LGM_ATTACK_HEIGHT, 
+				LGM_ATTACK_TIME);
+		super.setAttackView(attackView);
+		
+		ImageView dieView = generateAnimation(
+				LITTLEGREENMAN_DIE, 
+				LGM_DIE_COUNT, 
 				LGM_DIE_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				LGM_DIE_WIDTH, 
-				LGM_DIE_HEIGHT
-			);
-		dieAnimation.setCycleCount(Animation.INDEFINITE);
-		dieAnimation.play();
-		super.setDieAnimation(dieAnimation);
+				LGM_DIE_HEIGHT, 
+				LGM_DIE_TIME);
+		super.setDieView(dieView);
 	}
 
 }
