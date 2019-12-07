@@ -6,17 +6,13 @@ import java.util.Observer;
 import java.util.Random;
 import ammo.Ammo;
 import characters.Astronauts.*;
-import javafx.animation.Animation;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -42,11 +38,13 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import characters.Aliens.Enemy;
+import characters.Aliens.*;
 
 public class View extends Application implements Observer{
 	
@@ -62,11 +60,9 @@ public class View extends Application implements Observer{
 	private final int SCENE_WIDTH = 1300;
 	private final int SCENE_HEIGHT = 800;
 	public static final int GP_CELL_SIZE = 80;
-	private final int CELL_GAP = 5;
 	private final int TITLE_TOP_MARGIN = 75;
 	private final int PROGRESSBAR_TOP_MARGIN = 50;
 	private final int PROGRESSBAR_WIDTH = 500;
-	private final int GRIDPANE_TOP_MARGIN = 25;
 	private final int DEFENDERS_TOP_PADDING = 10;
 	private final int DEFENDERS_BOTTOM_PADDING = 10;
 	private final int MENUBAR_LEFT_PADDING = 20;
@@ -79,13 +75,12 @@ public class View extends Application implements Observer{
 	private final int ALIEN_RIGHT_MARGIN = 100;
 	
 	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
+	private final String GAMEOVER_BACKGROUND_IMAGE  ="file:assets/general/game-over-background.png";
 	private final String GAME_BACKGROUND_IMAGE 	= "file:assets/general/stage-one-background.png";
 	private final String TITLE_GRAPHIC 			= "file:assets/general/game-title.png";
 	private final String SPACEBUCKS_IMAGE	 	= "file:assets/general/spacebucks-image.png";
 	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
-	private final String ALIEN_STARTER_IMAGE 	= "file:assets/aliens/grunt-walk.gif";
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
-	private final String BLUE_CIRCLE			= "file:assets/general/blue-circle.png";
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
 
 	// fields for the music files
@@ -104,11 +99,7 @@ public class View extends Application implements Observer{
 	private Stage primaryStage;
 	private Group mainGroup;
 	private BorderPane startBorderPane;
-	private BorderPane gameBorderPane;
 	private boolean paused;
-	
-	// Automatic currency generator
-	private Timeline timeline;
 	
 	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
@@ -118,7 +109,6 @@ public class View extends Application implements Observer{
 	
 	// notifies update that defender is being removed, not placed.
 	private boolean removeToggled;
-	private int[] indexToRemove;
 	
 	// music player fields
 	private MediaPlayer musicPlayer;
@@ -128,6 +118,10 @@ public class View extends Application implements Observer{
 
 	public View() {
 		Platform.setImplicitExit(true);  // If all windows are closed, exit program.
+		initializeNewView();
+	}
+	
+	public void initializeNewView() {
 		paused = false;
 		defendersGrid = new StackPane[Controller.ROWS][Controller.COLS];
 		model = new Model();
@@ -147,8 +141,6 @@ public class View extends Application implements Observer{
 
 		isIntro = true;
 		removeToggled = false;
-		indexToRemove = new int[]{0, 0};
-		
 	}
 
 	@Override
@@ -166,7 +158,8 @@ public class View extends Application implements Observer{
 		setupStartMenu();
 		this.primaryStage.show();
 	}
-	
+
+
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg instanceof MoveMessage) {
@@ -174,90 +167,34 @@ public class View extends Application implements Observer{
 			
 			switch(message.getType()) {
 				case MoveMessage.VALID_MOVE:
-					if (message.isRemove()) {
-						if (message.getCharacter() instanceof DefenderTower) {
-							mainGroup.getChildren().remove(defendersGrid[message.getRow()][message.getCol()]);
-						} else {
-							mainGroup.getChildren().remove(((Enemy) message.getCharacter()).getStackPane());
-						}
-						removeToggled = false;
-					} else {
-						if (message.getCharacter() instanceof DefenderTower) {
-							StackPane characterPane = new StackPane();
-							characterPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-							characterPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
-							characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
-
-							Image towerImage = message.getCharacter().getImage();
-							ImageView towerImageView = new ImageView(towerImage);
-							characterPane.getChildren().add(towerImageView);
-							mainGroup.getChildren().add(characterPane);
-							defendersGrid[message.getRow()][message.getCol()] = characterPane;
-						} else {
-							Random rand = new Random();
-							StackPane alienPane = ((Enemy) message.getCharacter()).getStackPane();
-							alienPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-							alienPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
-							alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET + rand.nextInt(ALIEN_RANDOM_OFFSET));
-//							alienPane.setStyle("-fx-border-color: black");
-//							Platform.runLater(() -> mainGroup.getChildren().add(alienPane));
-							mainGroup.getChildren().add(alienPane);
-						}
-					}
+					performMove(message);
 					break;
 				case MoveMessage.INVALID_MOVE:
 					// Display "Tile taken
 					String toastMsgInvalid = "Tile is already taken!";
-					int toastMsgTimeInvalid = 1000; //3.5 seconds
-					int fadeInTimeInvalid = 150; //0.5 seconds
-					int fadeOutTimeInvalid = 150; //0.5 seconds
+					int toastMsgTimeInvalid = 1000; 
+					int fadeInTimeInvalid = 150; 
+					int fadeOutTimeInvalid = 150; 
 					Toast.makeText(primaryStage, toastMsgInvalid, 
 							toastMsgTimeInvalid, fadeInTimeInvalid, fadeOutTimeInvalid);
 					break;
 				case MoveMessage.INSUFFICIENT_FUNDS:
 					// Display "Not enough funds"
 					String toastMsg = "Not enough funds!";
-					int toastMsgTime = 1000; //3.5 seconds
-					int fadeInTime = 150; //0.5 seconds
-					int fadeOutTime= 150; //0.5 seconds
+					int toastMsgTime = 1000; 
+					int fadeInTime = 150; 
+					int fadeOutTime= 150; 
 					Toast.makeText(primaryStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 					break;
 
 				case MoveMessage.BULLET_PLACEMENT:
-					Ammo bullet = message.getBullet();
-					StackPane bulletPane = bullet.getStackPane();
-					
-					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-					bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
-					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
-
-
-					mainGroup.getChildren().add(bulletPane);
+					placeBullet(message);
 					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
 					break;
-					
-				case MoveMessage.ACTIVATE_RAILGUN:
-					// Play fire animation (replace image with gif at board[row][col] once
-					// remove sprite
-					for (Node node : defendersGrid[message.getRow()][message.getCol()].getChildren()) {
-						if (node instanceof ImageView) {
-							if (node.getId() == "idle") {
-								node.setVisible(false);
-							} else if (node.getId() == "fire") {
-								node.setVisible(true);
-							}
-						} 
-					}
-					System.out.println(message.getRow() + " - Aliens to remove: " + message.getAliens());
-					for (Enemy alien : message.getAliens()) {
-						for (Node node : alien.getStackPane().getChildren()) {
-							if (node instanceof ImageView) {
-								node.setVisible(false);
-							} 
-						}
-					}
+				case MoveMessage.GAME_OVER:
+					triggerGameOverModal();
 					break;
 			}
 		}	
@@ -270,9 +207,102 @@ public class View extends Application implements Observer{
 		
 	}
 	
+	public void performMove(MoveMessage message) {
+		if (message.isRemove()) {
+			if (message.getCharacter() instanceof DefenderTower) {
+				mainGroup.getChildren().remove(defendersGrid[message.getRow()][message.getCol()]);
+			} else {
+				mainGroup.getChildren().remove(((Enemy) message.getCharacter()).getStackPane());
+			}
+			removeToggled = false;
+		} else {
+			if (message.getCharacter() instanceof DefenderTower) {
+				StackPane characterPane = new StackPane();
+				characterPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+				characterPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
+				characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
+
+				Image towerImage = message.getCharacter().getImage();
+				ImageView towerImageView = new ImageView(towerImage);
+				characterPane.getChildren().add(towerImageView);
+				mainGroup.getChildren().add(characterPane);
+				defendersGrid[message.getRow()][message.getCol()] = characterPane;
+			} else {
+				Random rand = new Random();
+				StackPane alienPane = ((Enemy) message.getCharacter()).getStackPane();
+				alienPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+				alienPane.setTranslateY(BOARD_OFFSET + (message.getRow() * ROW_OFFSET));
+				alienPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET + rand.nextInt(ALIEN_RANDOM_OFFSET));
+//				alienPane.setStyle("-fx-border-color: black");
+//				Platform.runLater(() -> mainGroup.getChildren().add(alienPane));
+				mainGroup.getChildren().add(alienPane);
+			}
+		}
+	}
+	
+	public void placeBullet(MoveMessage message) {
+		Ammo bullet = message.getBullet();
+		StackPane bulletPane = bullet.getStackPane();
+		bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+		bulletPane.setTranslateY(BOARD_OFFSET + (bullet.getRow() * ROW_OFFSET) + (ROW_OFFSET/3));
+		bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
+		mainGroup.getChildren().add(bulletPane);
+	}
+	
+	public void triggerGameOverModal() {
+		Stage modal = new Stage();
+		modal.initModality(Modality.APPLICATION_MODAL);
+		modal.initOwner(primaryStage);
+		modal.setTitle("Astronauts vs Aliens");
+		
+		BorderPane gameOverPane = new BorderPane();
+		gameOverPane.setPadding(new Insets(10, 10, 10, 10));
+		
+		Image bgImage = new Image(GAMEOVER_BACKGROUND_IMAGE, 350, 300, false, false);
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
+	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundPosition.CENTER,
+	            bSize));
+	    gameOverPane.setBackground(borderPaneBackground);
+		
+		Image gameOverTitle = new Image("file:assets/general/game-over-title.png", 300, 50, false, false);
+		ImageView gameOverView = new ImageView(gameOverTitle);
+		
+		ImageView astronautImageView = new ImageView();
+		astronautImageView.setImage(new Image(ASTRONAUT_STARTER_IMAGE, ASTRO_WIDTH / 2, ASTRO_HEIGHT / 2, false, false));
+		
+		
+		Button exitBtn = new Button("Main Menu");
+		exitBtn.setAlignment(Pos.CENTER);
+		
+		exitBtn.setOnAction( e -> {
+			Platform.runLater(() -> {
+				modal.close();
+			});
+		});
+		
+		gameOverPane.setTop(gameOverView);
+		gameOverPane.setCenter(astronautImageView);
+		gameOverPane.setBottom(exitBtn);
+		
+		BorderPane.setAlignment(gameOverView, Pos.CENTER);
+		BorderPane.setAlignment(astronautImageView, Pos.CENTER);
+		BorderPane.setAlignment(exitBtn, Pos.CENTER);
+		
+		Scene scene = new Scene(gameOverPane, 350, 300);
+		modal.setScene(scene);
+		modal.showAndWait();
+		
+		// Setup for new game
+		initializeNewView();
+		musicPlayer.stop();
+		setupStartMenu();
+	}
+	
 	public void music()
 	{
-		Media song;
 		String resource = null;
 	    if (isIntro) {
 			resource = new File(INTRO_MUSIC).toURI().toString();
@@ -306,8 +336,9 @@ public class View extends Application implements Observer{
 		ImageView astronautImageView = new ImageView();
 		astronautImageView.setImage(new Image(ASTRONAUT_STARTER_IMAGE, ASTRO_WIDTH, ASTRO_HEIGHT, false, false));
 		
-		ImageView alienImageView = new ImageView();
-		alienImageView.setImage(new Image(ALIEN_STARTER_IMAGE, ALIEN_WIDTH, ALIEN_HEIGHT, false, false));
+		ImageView alienImageView = new LittleGreenMen().getWalkView();
+		alienImageView.setFitWidth(ALIEN_WIDTH);
+		alienImageView.setFitHeight(ALIEN_HEIGHT);
 		
 		// Create & Set background for the border pane
 		Image bgImage = new Image(STARTER_BACKGROUND_IMAGE, SCENE_WIDTH, SCENE_HEIGHT, false, false);
@@ -471,37 +502,19 @@ public class View extends Application implements Observer{
 	 */
 	public void setupGrid() {
 		Image square = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
-		Image gunImage = new Image(DefenderTower.RAIL_GUN_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
-		Image gunGif = new Image(DefenderTower.RAIL_GUN_GIF, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 		
 		for (int row = 0; row < Controller.ROWS; row ++) {
 			for (int col = 0; col < Controller.COLS; col++) {
-				if (col == 0) {
-					StackPane gunStackPane = new StackPane();
-//					gunStackPane.setStyle("-fx-border-color: black");
-					gunStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
-					gunStackPane.setTranslateX(COLUMN_OFFSET);
-					gunStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-					ImageView gunImageView = new ImageView(gunImage);
-					gunImageView.setId("idle");
-					ImageView gunGifView = new ImageView(gunGif);
-					gunGifView.setId("fire");
-					gunGifView.setVisible(false); // Initially hide gif
-					gunStackPane.getChildren().addAll(gunImageView, gunGifView);
-					mainGroup.getChildren().add(gunStackPane);
-					
-					defendersGrid[row][col] = gunStackPane;
-				} else if (col <= Controller.COLS - 1) {
-					StackPane tempStackPane = new StackPane();
-//					tempStackPane.setStyle("-fx-border-color: black");
-					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
-					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
-					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-
+				StackPane tempStackPane = new StackPane();
+//				tempStackPane.setStyle("-fx-border-color: black");
+				tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
+				tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
+				tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+				if (col > 0) {
 					ImageView squareImageView = new ImageView(square);
 					tempStackPane.getChildren().add(squareImageView);
-					mainGroup.getChildren().add(tempStackPane);
 				}
+				mainGroup.getChildren().add(tempStackPane);
 			}
 		}
 		
@@ -534,7 +547,6 @@ public class View extends Application implements Observer{
 						controller.placeCharacter(generateTowerFromSelected(), row, col);
 						
 					} else {
-						indexToRemove = new int[]{row, col};
 						DefenderTower towerToRemove = model.getDefenderAt(row, col);
 						if (towerToRemove != null) {
 							controller.removeTower(towerToRemove, row, col);

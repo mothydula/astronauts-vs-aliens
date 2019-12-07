@@ -192,6 +192,7 @@ public class Controller {
 					survivingAlien.triggerAnimation(Enemy.ATTACK_ID);
 				}
 				model.setGameOver();
+				break;
 			}
 		}
 	}
@@ -369,7 +370,7 @@ public class Controller {
 	
 	public void increaseSpeed() {
 		if (speedMultiplier == 1) {
-			speedMultiplier = 4;
+			speedMultiplier = 2;
 		} else {
 			speedMultiplier = 1;
 		}
@@ -423,17 +424,5 @@ public class Controller {
 		if (!model.isEmpty(row, col)) {
 			model.removeTower(towerToRemove, row, col);
 		}
-	}
-	
-	public void fireRailGun(BoardCharacter railGun) {
-//		TimerTask firedRailGun = new TimerTask() {
-//			@Override
-//			public void run() {
-//				Platform.runLater(() -> model.addBullet(((DefenderTower)railGun).shoot()));
-//			}
-//		};
-//		
-//		gamePlayTimer.schedule(firedRailGun, 0, 1000 / speedMultiplier);
-		Platform.runLater(() -> model.addBullet(((DefenderTower)railGun).shoot()));
 	}
 }
