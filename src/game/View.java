@@ -37,6 +37,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -305,9 +306,14 @@ public class View extends Application implements Observer{
 		Image gameOverTitle = new Image("file:assets/general/game-over-title.png", 300, 50, false, false);
 		ImageView gameOverView = new ImageView(gameOverTitle);
 		
+		VBox centerBox = new VBox(2);
+		centerBox.setAlignment(Pos.CENTER);
 		ImageView astronautImageView = new ImageView();
 		astronautImageView.setImage(new Image(ASTRONAUT_STARTER_IMAGE, ASTRO_WIDTH / 2, ASTRO_HEIGHT / 2, false, false));
-		
+		Text text = new Text("Better luck next time!");
+		text.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+		text.setFill(Color.WHITE);
+		centerBox.getChildren().addAll(astronautImageView, text);
 		
 		Button exitBtn = new Button("Main Menu");
 		exitBtn.setAlignment(Pos.CENTER);
@@ -319,14 +325,14 @@ public class View extends Application implements Observer{
 		});
 		
 		gameOverPane.setTop(gameOverView);
-		gameOverPane.setCenter(astronautImageView);
+		gameOverPane.setCenter(centerBox);
 		gameOverPane.setBottom(exitBtn);
 		
 		BorderPane.setAlignment(gameOverView, Pos.CENTER);
-		BorderPane.setAlignment(astronautImageView, Pos.CENTER);
+		BorderPane.setAlignment(centerBox, Pos.CENTER);
 		BorderPane.setAlignment(exitBtn, Pos.CENTER);
 		
-		Scene scene = new Scene(gameOverPane, 350, 300);
+		Scene scene = new Scene(gameOverPane, 350, 350);
 		modal.setScene(scene);
 		modal.showAndWait();
 		
