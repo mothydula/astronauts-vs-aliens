@@ -46,71 +46,32 @@ public class Gargantua extends Enemy{
 	 * animation.
 	 */
 	public void generateAnimations() {
-		// Walk
-		ImageView walkView = new ImageView(GARGANTUA_WALK);
-		walkView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				GARGANTUA_WALK_WIDTH, 
-				GARGANTUA_WALK_HEIGHT
-			));
-		walkView.setFitWidth(IMAGE_WIDTH);
-		walkView.setFitHeight(IMAGE_HEIGHT);
-		Animation walkAnimation = new SpriteAnimation(walkView, Duration.millis(GARGANTUA_WALK_TIME), 
-				GARGANTUA_WALK_COUNT,
+		ImageView walkView = generateAnimation(
+				GARGANTUA_WALK, 
+				GARGANTUA_WALK_COUNT, 
 				GARGANTUA_WALK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				GARGANTUA_WALK_WIDTH, 
-				GARGANTUA_WALK_HEIGHT
-			);
-		walkAnimation.setCycleCount(Animation.INDEFINITE);
-		walkAnimation.play();
-		super.setImageView(walkView); // This will be the initial image view that is shown
-		super.setWalkAnimation(walkAnimation);
-
-		// Attack
-		final ImageView attackView = new ImageView(GARGANTUA_ATTACK);
-		attackView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				GARGANTUA_ATTACK_WIDTH, 
-				GARGANTUA_ATTACK_HEIGHT
-			));
-		attackView.setFitWidth(IMAGE_WIDTH);
-		attackView.setFitHeight(IMAGE_HEIGHT);
-		final Animation attackAnimation = new SpriteAnimation(attackView, Duration.millis(GARGANTUA_ATTACK_TIME),
+				GARGANTUA_WALK_HEIGHT, 
+				GARGANTUA_WALK_TIME);
+		super.setWalkView(walkView);
+		
+		ImageView attackView = generateAnimation(
+				GARGANTUA_ATTACK, 
 				GARGANTUA_ATTACK_COUNT, 
 				GARGANTUA_ATTACK_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				GARGANTUA_ATTACK_WIDTH, 
-				GARGANTUA_ATTACK_HEIGHT
-			);
-		attackAnimation.setCycleCount(Animation.INDEFINITE);
-		attackAnimation.play();
-		super.setAttackAnimation(attackAnimation);
-
-		// Die
-		final ImageView dieView = new ImageView(GARGANTUA_DIE);
-		dieView.setViewport(new Rectangle2D(
-				OFFSET_X, 
-				OFFSET_Y, 
-				GARGANTUA_DIE_WIDTH, 
-				GARGANTUA_DIE_HEIGHT));
-		dieView.setFitWidth(IMAGE_WIDTH);
-		dieView.setFitHeight(IMAGE_HEIGHT);
-		final Animation dieAnimation = new SpriteAnimation(dieView, Duration.millis(GARGANTUA_DIE_TIME), 
-				GARGANTUA_DIE_COUNT,
+				GARGANTUA_ATTACK_HEIGHT, 
+				GARGANTUA_ATTACK_TIME);
+		super.setAttackView(attackView);
+		
+		ImageView dieView = generateAnimation(
+				GARGANTUA_DIE, 
+				GARGANTUA_DIE_COUNT, 
 				GARGANTUA_DIE_COLUMNS, 
-				OFFSET_X, 
-				OFFSET_Y, 
 				GARGANTUA_DIE_WIDTH, 
-				GARGANTUA_DIE_HEIGHT
-			);
-		dieAnimation.setCycleCount(Animation.INDEFINITE);
-		dieAnimation.play();
-		super.setDieAnimation(dieAnimation);
+				GARGANTUA_DIE_HEIGHT, 
+				GARGANTUA_DIE_TIME);
+		super.setDieView(dieView);
 	}
 
 }
