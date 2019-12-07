@@ -10,12 +10,10 @@ public class Tile {
 	private BoardCharacter characterAtTile;
 	private Image image;
 	private ImageView view; // Required for Node of GridPane
-	private boolean containsRailGun;
 	
 	// Constructor
 	public Tile(BoardCharacter character) {
 		characterAtTile = character;
-		containsRailGun = false;
 	}
 	
 	// Methods
@@ -50,14 +48,6 @@ public class Tile {
 	
 	public void setImageView(ImageView view) {
 		this.view = view;
-	}
-	
-	public void setRailGun(boolean containsRailGun) {
-		this.containsRailGun = containsRailGun;
-	}
-	
-	public boolean containsRailGun() {
-		return containsRailGun;
 	}
 	
 }

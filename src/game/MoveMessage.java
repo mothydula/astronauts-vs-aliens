@@ -14,7 +14,7 @@ public class MoveMessage {
 	public static final int VALID_MOVE = 2;
 	public static final int BULLET_PLACEMENT = 3;
 	public static final int BULLET_REMOVAL = 4;
-	public static final int ACTIVATE_RAILGUN = 5;
+	public static final int GAME_OVER = 5;
 	
 	private int type;
 	private BoardCharacter character;
