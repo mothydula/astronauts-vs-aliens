@@ -5,6 +5,11 @@ import ammo.MoonZeusAmmo;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to Moon Zeus' properties; this defender is the 2nd most powerful
+ * (on a holistic scale) out of the 6 defenders who have the ability shoot. He is outmatched by only
+ * the Millenium Falcon.
+ */
 public class MoonZeus extends DefenderTower{
 	
 	public MoonZeus() {

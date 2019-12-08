@@ -5,6 +5,11 @@ import characters.IncomeTowers.IncomeTower;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to the MoneyBush's properties (a.k.a. SpaceBucks Printer);
+ * this 'defender' is one of three non-shooting board characters. The purpose of this character is 
+ * to increase the amount of money in the bank by 50 SpaceBucks every 10 seconds.
+ */
 public class MoneyBush extends IncomeTower {
 	
 	public MoneyBush() {

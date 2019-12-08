@@ -3,6 +3,10 @@ package characters.Aliens;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/*
+ * This class contains constants and methods related to Grunt's animations; this alien is the
+ * 5th most powerful out of the 6 (on a holistic scale).
+ */
 public class Grunt extends Enemy {
 
 	// Grunt - Walk

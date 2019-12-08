@@ -4,6 +4,14 @@ import ammo.Ammo;
 import characters.BoardCharacter;
 import javafx.scene.image.Image;
 
+/*
+ * This abstract class is the parent class of all defenders. It contains as constants the file paths
+ * for all the individual defender sprites as well as the specs for each individual defender; health,
+ * attack speed, damage (damage that they are able to take from aliens before death) as well as cost
+ * (the SpaceBucks required to 'buy' them and place them on the board). Also contained within this
+ * class are abstract methods implemented within the individual child defender classes. All individual
+ * defender classes extend this one.
+ */
 public abstract class DefenderTower extends BoardCharacter{
 	// Default values for characters
 	public static final int MONEY_GEN_TIMELINE = 15; // Currency

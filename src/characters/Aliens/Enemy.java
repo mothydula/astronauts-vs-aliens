@@ -11,6 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+/*
+ * This class is the parent class of all aliens. It contains as constants the file paths for all the
+ * individual alien sprites as well as the specs for each individual alien; health, attack speed and 
+ * damage (damage that they are able to take from bullets before death). Also contained within this class
+ * are methods associated with the animation of aliens. They are moved with reference to pixels but must
+ * still have a semblance of what row and column they're in so it can be known if a bullet 'hits' them.
+ * All individual alien classes extend this one.
+ */
 public class Enemy extends BoardCharacter {
 	// Default values for characters
 
