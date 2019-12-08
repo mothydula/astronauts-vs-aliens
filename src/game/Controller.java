@@ -50,7 +50,7 @@ public class Controller {
 	// Class fields
 	private Model model;
 	private int currentIncome;
-	private final int CURRENCY_TIMELINE = 5000; // seconds
+	private final int CURRENCY_TIMELINE = 10000; // seconds
 	private final int CURRENCY_DEPOSIT = 25;
 	private static Random rand;
 	private static final int RANDOM_COLUMN_BOUND = 3;
@@ -77,7 +77,7 @@ public class Controller {
 	public void initialize() {
 		timeElapsed = new AtomicLong(0);
 		rand = new Random();
-		model.depositSpacebucks(500);
+		model.depositSpacebucks(200);
 		currentIncome = 0;
 		speedMultiplier = 1;
 		generateAliens();
