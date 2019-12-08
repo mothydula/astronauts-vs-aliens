@@ -84,9 +84,9 @@ public class BoardCharacter {
 	}
 	
 	public String infoCard() {
-		return "Health: " + String.valueOf(this.health) +
-				"\nAttack Spd:" + String.valueOf(this.attackSpeed) +
-				"\nDamage: " + String.valueOf(this.damage);
+		return "Health: \t\t" + String.valueOf(this.health) +
+				"\nAttack Spd: \t" + String.valueOf(this.attackSpeed) +
+				"\nDamage: \t\t" + String.valueOf(this.damage);
 	}
 	
 }
