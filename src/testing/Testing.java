@@ -94,15 +94,16 @@ class Testing {
 		assertTrue(mF.canShoot());
 		assertTrue(mF.toString().startsWith("MillenniumFalcon"));
 		
-		
 		//Tars coverage
 		Tars tars = (Tars)testModel.getDefenderAt(1, 1);
 		tars.shoot();
 		assertTrue(tars.canShoot());
+		assertTrue(tars.toString().startsWith("Tars"));
 		
 		//MoneyTree coverage
 		MoneyTree moneyTree = (MoneyTree)testModel.getDefenderAt(1, 2);
 		assertFalse(moneyTree.canShoot());
+		assertTrue(moneyTree.toString().startsWith("MoneyTree"));
 		
 	}
 
