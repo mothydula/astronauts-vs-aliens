@@ -470,7 +470,7 @@ public class View extends Application implements Observer{
 			Text infoText = new Text("INSTRUCTIONS:\n"
 					+ "The objective of this game is to fend of your enemies\n"
 					+ "for as long as possible. You'll do this by accumulating SpaceBucks\n"
-					+ "and spending them on defenders to protect your galaxy(?)\n"
+					+ "and spending them on defenders to protect your galaxy\n"
 					+ "from the incoming aliens. The more expensive a defender is,\n"
 					+ "the more useful they probably are. However, use your Space-\n"
 					+ "Bucks wisely!\n\n"
@@ -503,13 +503,6 @@ public class View extends Application implements Observer{
 			infoStage.initStyle(StageStyle.UNDECORATED);
 			infoStage.show();
 		});
-		
-//		Button tempBtn = new Button("?");
-//		tempBtn.setMinHeight(40);
-//		tempBtn.setMinWidth(100);
-//		tempBtn.setOnAction( e -> {
-//			System.out.println("TODO: Insert temp functionality");
-//		});
 		
 		HBox mapSelector = createMapSelectionBar();
 		
