@@ -1018,6 +1018,12 @@ public class View extends Application implements Observer{
 		return utilityBar;
 	}
 	
+	/**
+	 * Displays the menu when the pause button is pressed. This menu
+	 * provides the user with the option to quit to the main menu, 
+	 * view helpful information about the game, or resume playing.
+	 * @param pauseBtn Pause Button required to be fired when resumed
+	 */
 	public void displayPauseMenu(Button pauseBtn) {
 		musicPlayer.stop();
 		
@@ -1110,9 +1116,7 @@ public class View extends Application implements Observer{
 		Scene scene = new Scene(gameOverPane, 450, 350);
 		modal.initStyle(StageStyle.UNDECORATED);
 		modal.setScene(scene);
-		modal.showAndWait();
-		
-		
+		modal.showAndWait();		
 	}
 	
 	/**
