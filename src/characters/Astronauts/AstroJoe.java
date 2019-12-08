@@ -24,7 +24,7 @@ public class AstroJoe extends DefenderTower {
 	}
 	
 	public String toString() {
-		return "AstroJoe\n" + super.infoCard();
+		return "Astro Joe\n" + super.infoCard();
 	}
 
 	@Override

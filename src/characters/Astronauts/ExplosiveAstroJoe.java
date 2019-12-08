@@ -22,7 +22,7 @@ public class ExplosiveAstroJoe extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "ExplosiveAstroJoe\n" + super.infoCard();
+		return "Explosive Astro Joe\n" + super.infoCard();
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class MoneyBush extends IncomeTower {
 	}
 	
 	public String toString() {
-		return "SpaceBucksPrinter\n" + super.infoCard();
+		return "Money Bush\n" + super.infoCard();
 	}
 
 	@Override
