@@ -82,5 +82,4 @@ public abstract class DefenderTower extends BoardCharacter{
 	
 	public abstract boolean canShoot();
 	
-	
 }

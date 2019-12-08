@@ -2,6 +2,7 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import characters.IncomeTowers.IncomeTower;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class MoneyTree extends IncomeTower {
@@ -12,7 +13,7 @@ public class MoneyTree extends IncomeTower {
 	}
 	
 	public int getCost() {
-		return COST_MONEY_TREE;
+		return COST_MONEY_TREE * Controller.costMultiplier;
 	} 
 	
 	public int getTimeline() {

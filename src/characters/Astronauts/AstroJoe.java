@@ -2,6 +2,7 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.AstroJoeAmmo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class AstroJoe extends DefenderTower {
@@ -14,7 +15,7 @@ public class AstroJoe extends DefenderTower {
 	}
 	
 	public int getCost() {
-		return COST_ASTROJOE;
+		return COST_ASTROJOE * Controller.costMultiplier;
 	}
 	
 	public String toString() {

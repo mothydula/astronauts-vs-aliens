@@ -2,6 +2,7 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.MoonZeusAmmo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class MoonZeus extends DefenderTower{
@@ -12,7 +13,7 @@ public class MoonZeus extends DefenderTower{
 	}
 	
 	public int getCost() {
-		return COST_MOON_ZEUS;
+		return COST_MOON_ZEUS * Controller.costMultiplier;
 	}
 	
 	public String toString() {
