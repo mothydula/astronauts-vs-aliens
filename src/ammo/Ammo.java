@@ -108,10 +108,10 @@ public class Ammo {
 	public void playBulletNoise() {
 		String noiseFile = null;
 		switch (this.defender.toString().split("\n")[0]) {
-			case "AstroJoe":
+			case "Astro Joe":
 				noiseFile = ASTROJOE_AMMO_NOISE;
 				break;
-			case "ExplosiveAstroJoe":
+			case "Explosive Astro Joe":
 				noiseFile = EXPLOSIVE_ASTROJOE_AMMO_NOISE;
 				break;
 			case "Moon Zeus":
