@@ -58,7 +58,7 @@ class Testing {
 		StartrellCluggins startrell = (StartrellCluggins)testModel.getDefenderAt(0, 0);
 		startrell.shoot();
 		assertTrue(startrell.canShoot());
-		assertTrue(startrell.toString().startsWith("StartrellCluggins"));
+		assertTrue(startrell.toString().startsWith("Startrell Cluggins"));
 		
 		//AstroJoe coverage
 		AstroJoe astroJoe = (AstroJoe)testModel.getDefenderAt(0, 1);
@@ -70,7 +70,7 @@ class Testing {
 		MoonZeus zeus = (MoonZeus)testModel.getDefenderAt(0, 2);
 		zeus.shoot();
 		assertTrue(zeus.canShoot());
-		assertTrue(zeus.toString().startsWith("MoonZeus"));
+		assertTrue(zeus.toString().startsWith("Moon Zeus"));
 		
 		//ExplosiveAstroJoe coverage
 		ExplosiveAstroJoe eAstroJoe = (ExplosiveAstroJoe)testModel.getDefenderAt(0, 3);
@@ -86,13 +86,15 @@ class Testing {
 		//MoneyBush coverage
 		MoneyBush moneyBush = (MoneyBush)testModel.getDefenderAt(0, 5);
 		assertFalse(moneyBush.canShoot());
-		assertTrue(moneyBush.toString().startsWith("MoneyBush"));
+		assertTrue(moneyBush.toString().startsWith("Money Bush"));
 		
 		//Millennium Falcon coverage
 		MillenniumFalcon mF = (MillenniumFalcon)testModel.getDefenderAt(1, 0);
 		mF.shoot();
 		assertTrue(mF.canShoot());
-		assertTrue(mF.toString().startsWith("MillenniumFalcon"));
+		assertTrue(mF.toString().startsWith("Millennium Falcon"));
+		mF.shotOne();
+		mF.shotTwo();
 		
 		//Tars coverage
 		Tars tars = (Tars)testModel.getDefenderAt(1, 1);
@@ -103,7 +105,7 @@ class Testing {
 		//MoneyTree coverage
 		MoneyTree moneyTree = (MoneyTree)testModel.getDefenderAt(1, 2);
 		assertFalse(moneyTree.canShoot());
-		assertTrue(moneyTree.toString().startsWith("MoneyTree"));
+		assertTrue(moneyTree.toString().startsWith("Money Tree"));
 		
 	}
 
