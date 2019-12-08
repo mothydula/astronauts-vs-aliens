@@ -10,6 +10,7 @@ public class Tile {
 	private BoardCharacter characterAtTile;
 	private Image image;
 	private ImageView view; // Required for Node of GridPane
+	private boolean restricted;
 	
 	// Constructor
 	public Tile(BoardCharacter character) {
@@ -50,4 +51,11 @@ public class Tile {
 		this.view = view;
 	}
 	
+	public void setRestriction(boolean restricted) {
+		this.restricted = restricted;
+	}
+	
+	public boolean isRestrictred() {
+		return restricted;
+	}
 }

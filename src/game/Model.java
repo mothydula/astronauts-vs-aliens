@@ -1,8 +1,11 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 
 import ammo.Ammo;
 import characters.*;
@@ -13,13 +16,11 @@ import map.Tile;
 public class Model extends Observable {
 	// Class fields
 	private Tile[][] board;
-	// TODO: add list of defenders to be able to iterate while animating?? Maybe not necessary of checking with row, col from alien.
 	private int bank;
 	private int currentWave;
 	private List<Enemy> aliens;
 	private List<Ammo> bullets;
 	private List<DefenderTower> towers;
-	// TODO: Create list of money trees, and every time one is added, start a timeline to add currency
 	
 	// Constructor
 	public Model () {
@@ -28,7 +29,7 @@ public class Model extends Observable {
 		bank = 0;
 		currentWave = 1;
 		aliens = new ArrayList<Enemy>();
-		board = new Tile[Controller.ROWS][Controller.COLS];
+		board = new Tile[Controller.ROWS][Controller.COLS];		
 		initializeBoard();
 	}
 	
@@ -96,9 +97,12 @@ public class Model extends Observable {
 		}
 	}
 	
-	
-	public boolean isEmpty(int row, int col) {
+	public boolean containsTower(int row, int col) {
 		return board[row][col].isEmpty();
+	}
+	
+	public boolean isAvailable(int row, int col) {
+		return board[row][col].isEmpty() && !board[row][col].isRestrictred();
 	}
 	
 	public Tile[][] getBoard() {
@@ -185,5 +189,14 @@ public class Model extends Observable {
 		}
 		setChanged();
 		notifyObservers(waveNumber);
+	}
+	
+	public void setRestrictionedTiles(Map<Integer, Set<Integer>> restrictedTiles) {
+		// Update restricted tiles on board
+		for (Integer row : restrictedTiles.keySet()) {
+			for (Integer col : restrictedTiles.get(row)) {
+				board[row][col].setRestriction(true);
+			}
+		}
 	}
 }

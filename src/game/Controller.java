@@ -2,9 +2,14 @@ package game;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,9 +27,14 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
 public class Controller {
-	// Class fields
+	// Static constants
 	public static final int ROWS = 6;
 	public static final int COLS = 12;
+	public static final int STAGE_ONE_ID = 1;
+	public static final int STAGE_TWO_ID = 2;
+	public static final int STAGE_THREE_ID = 3;
+	
+	// Class fields
 	private Model model;
 	private int currentIncome;
 	private final int CURRENCY_TIMELINE = 5000; // seconds
@@ -39,11 +49,12 @@ public class Controller {
 	private AtomicBoolean waveTwoStarted = new AtomicBoolean(false);
 	private AtomicBoolean waveThreeDone = new AtomicBoolean(false);
 	private Timer gamePlayTimer;
-
+	public Map<Integer, Set<Integer>> restrictedTiles;
 	
 	// Constructor
 	public Controller(Model model) {
 		this.model = model;
+		restrictedTiles = new HashMap<Integer, Set<Integer>>();
 	}
 	
 	// Methods
@@ -407,7 +418,7 @@ public class Controller {
 		int currBank = model.getSpacebucks();
 		
 		// Check if the tile is empty
-		if (model.isEmpty(row, col)) {
+		if (model.isAvailable(row, col)) {
 			
 			// Check if user can afford the tower
 			if ((character instanceof DefenderTower) && (currBank >= ((DefenderTower)character).getCost())) {
@@ -432,8 +443,31 @@ public class Controller {
 	}
 	
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
-		if (!model.isEmpty(row, col)) {
+		if (model.containsTower(row, col)) {
 			model.removeTower(towerToRemove, row, col);
 		}
+	}
+	
+	public void assignMap(int mapId) {
+		if (mapId == STAGE_TWO_ID) {
+			restrictedTiles.put(0,new HashSet<Integer>(Arrays.asList(3,4)));
+			restrictedTiles.put(1,new HashSet<Integer>(Arrays.asList(4,5)));
+			restrictedTiles.put(2,new HashSet<Integer>(Arrays.asList(4,5)));
+			restrictedTiles.put(3,new HashSet<Integer>(Arrays.asList(3,4)));
+			restrictedTiles.put(4,new HashSet<Integer>(Arrays.asList(5,6)));
+			restrictedTiles.put(5,new HashSet<Integer>(Arrays.asList(3,4)));
+		} else if (mapId == STAGE_THREE_ID) {
+			restrictedTiles.put(0,new HashSet<Integer>(Arrays.asList(1,3,6)));
+			restrictedTiles.put(1,new HashSet<Integer>(Arrays.asList(1,4,7)));
+			restrictedTiles.put(2,new HashSet<Integer>(Arrays.asList(1,2,5)));
+			restrictedTiles.put(3,new HashSet<Integer>(Arrays.asList(1,4)));
+			restrictedTiles.put(4,new HashSet<Integer>(Arrays.asList(1,3,6)));
+			restrictedTiles.put(5,new HashSet<Integer>(Arrays.asList(1,1,4)));
+		}
+		model.setRestrictionedTiles(restrictedTiles);
+	}
+	
+	public Map<Integer, Set<Integer>> getRestrictedTiles() {
+		return restrictedTiles;
 	}
 }
