@@ -63,6 +63,7 @@ public class Controller {
 	private AtomicBoolean waveThreeDone = new AtomicBoolean(false);
 	private Timer gamePlayTimer;
 	public Map<Integer, Set<Integer>> restrictedTiles;
+	public static int costMultiplier = 1;
 	
 	// Constructor
 	public Controller(Model model) {
@@ -77,7 +78,7 @@ public class Controller {
 	public void initialize() {
 		timeElapsed = new AtomicLong(0);
 		rand = new Random();
-		model.depositSpacebucks(200);
+		model.depositSpacebucks(175);
 		currentIncome = 0;
 		speedMultiplier = 1;
 		generateAliens();
@@ -264,8 +265,11 @@ public class Controller {
 				@Override
 				public void run() {					
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(3);
+					generateLittleGreenMan(4);
+					delaySpawn(6000);
 					generateGrunt(3);
+					delaySpawn(3000);
+					generateGrunt(2);
 				}
 				
 			};
@@ -275,9 +279,13 @@ public class Controller {
 				@Override
 				public void run() {
 					waveOneDone.set(true);
+					delaySpawn(10000);
 					generateLittleGreenMan(3);
+					delaySpawn(5000);
 					generateGrunt(3);
+					delaySpawn(4000);
 					generateSprinter(3);
+					
 				}
 				
 			};
@@ -292,11 +300,14 @@ public class Controller {
 					waveTwoStarted.set(true);
 					Platform.runLater(() -> model.displayWaveToast());
 					generateLittleGreenMan(4);
+					delaySpawn(7000);
 					generateGrunt(4);
 					generateSprinter(2);
+					delaySpawn(10000);
 					generateManHunter(3);
 					generateTank(2);
-					
+					generateGrunt(5);
+					generateLittleGreenMan(2);
 				}
 				
 			};
@@ -306,7 +317,9 @@ public class Controller {
 				@Override
 				public void run() {
 					waveTwoDone.set(true);
+					delaySpawn(15000);
 					generateTank(3);
+					delaySpawn(6000);
 					generateManHunter(3);
 					System.out.println("WAVE TWO");
 				}
@@ -324,17 +337,36 @@ public class Controller {
 					waveThreeDone.set(true);
 					Platform.runLater(() -> model.displayWaveToast());
 					generateLittleGreenMan(4);
+					delaySpawn(5000);
 					generateGrunt(4);
+					generateTank(2);
+					generateLittleGreenMan(4);
+					delaySpawn(10000);
 					generateSprinter(4);
 					generateManHunter(4);
-					generateTank(2);
+					delaySpawn(7000);
 					generateGargantua(3);
+					generateLittleGreenMan(4);
 					System.out.println("WAVE THREE");
 				}
 				
 			};
 			timer.schedule(firstWave, WAVE_DELAY);
 
+		}
+	}
+	
+	/**
+	 * Utility method used to delay the spawning. Place the Thread
+	 * to sleep for a specified period of time, given by delay.
+	 * @param delay Time specified to place the Thread to its sleep state
+	 */
+	public void delaySpawn(long delay) {
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
