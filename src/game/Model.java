@@ -177,6 +177,12 @@ public class Model extends Observable {
 		notifyObservers(message);
 	}
 	
+	public void setGameWon() {
+		MoveMessage message = new MoveMessage(MoveMessage.GAME_WON, null, 0, 0, false);
+		setChanged();
+		notifyObservers(message);
+	}
+	
 	public void displayWaveToast() {
 		String waveNumber = "";
 		if (currentWave == 1) {
