@@ -115,6 +115,7 @@ public class View extends Application implements Observer{
 	private final String ACID_POOL_IMAGE			= "file:assets/general/acid-pool.png";
 	private final String ASTRONAUT_STARTER_IMAGE 	= DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String REMOVE_X_IMAGE				= "file:assets/general/removeX.jpg";
+	private final String PAUSE_BACKGROUND_IMAGE		= "file:assets/general/pause-background.png";
 	
 	private Image PLACEMENT_SQUARE = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 	private Image ACID_POOL = new Image(ACID_POOL_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
@@ -144,6 +145,7 @@ public class View extends Application implements Observer{
 	private ProgressBar progressBar;
 	private Label progressLabel;
 	private Label bankAmount;
+	private Button infoBtn;
 	
 	// notifies update that defender is being removed, not placed.
 	private boolean removeToggled;
@@ -484,7 +486,7 @@ public class View extends Application implements Observer{
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(15);
 		
-		Button infoBtn = new Button("Info");
+		infoBtn = new Button("Info");
 		infoBtn.setMinHeight(40);
 		infoBtn.setMinWidth(100);
 		
@@ -1007,12 +1009,110 @@ public class View extends Application implements Observer{
 				controller.pause();
 				paused = true;
 				pauseBtn.setText("Resume");
+				displayPauseMenu(pauseBtn);
 			}
 		});
 		
 		utilityBar.getChildren().addAll(fastForwardBtn, pauseBtn);
 		
 		return utilityBar;
+	}
+	
+	public void displayPauseMenu(Button pauseBtn) {
+		musicPlayer.stop();
+		
+		Stage modal = new Stage();
+		modal.initModality(Modality.APPLICATION_MODAL);
+		modal.initOwner(primaryStage);
+		modal.setTitle("Astronauts vs Aliens");
+		
+		BorderPane gameOverPane = new BorderPane();
+		gameOverPane.setPadding(new Insets(20, 20, 20, 20));
+		
+		Image bgImage = new Image(PAUSE_BACKGROUND_IMAGE, 450, 350, false, false);
+		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
+	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundRepeat.NO_REPEAT,
+	            BackgroundPosition.CENTER,
+	            bSize));
+	    gameOverPane.setBackground(borderPaneBackground);
+		
+		// Title Text
+		Text text = new Text("PAUSED");
+		text.setFont(Font.font("Courier New", FontWeight.BOLD, 35));
+		text.setFill(Color.WHITE);
+		
+		// Startrell Cluggins Image
+		VBox view = new VBox(3);
+		view.setAlignment(Pos.CENTER);
+		ImageView astronautImageView = new ImageView();
+		astronautImageView.setImage(new Image(ASTRONAUT_STARTER_IMAGE, ASTRO_WIDTH / 2, ASTRO_HEIGHT / 2, false, false));
+		Text topText = new Text("Where are you going, Trooper?");
+		topText.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		topText.setFill(Color.WHITE);
+		Text bottomText = new Text("The Aliens aren't going to kill themselves!");
+		bottomText.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		bottomText.setFill(Color.WHITE);
+		view.getChildren().addAll(astronautImageView, topText, bottomText);
+		
+		// Button Bar: Info, Resume, Main Menu
+		HBox buttonBar = new HBox(3);
+		buttonBar.setAlignment(Pos.CENTER);
+		buttonBar.setSpacing(10);
+		buttonBar.setPadding(new Insets(10,10,10,10));
+		
+		Button infoBtn = this.infoBtn;
+		Button resumeBtn = new Button("Resume");
+		Button exitBtn = new Button("Main Menu");
+		
+		// Customizatons
+		infoBtn.setAlignment(Pos.CENTER);
+		resumeBtn.setAlignment(Pos.CENTER);
+		exitBtn.setAlignment(Pos.CENTER);
+		
+		infoBtn.setPrefSize(100, 40);
+		resumeBtn.setPrefSize(100, 40);
+		exitBtn.setPrefSize(100, 40);
+		
+		// Handlers (Note, infoBtn already has a handler defined)
+		resumeBtn.setOnAction( e -> {
+			Platform.runLater(() -> {
+				modal.close();
+				musicPlayer.play();
+				pauseBtn.fire();
+			});
+		});
+		
+		exitBtn.setOnAction( e -> {
+			Platform.runLater(() -> {
+				modal.close();
+				
+				// Setup for new game
+				initializeNewView();
+				musicPlayer.stop();
+				setupStartMenu();
+			});
+		});
+		
+		HBox.setMargin(resumeBtn, new Insets(10, 10, 10, 10));
+		HBox.setMargin(exitBtn, new Insets(10, 10, 10, 10));
+		
+		buttonBar.getChildren().addAll(infoBtn, resumeBtn, exitBtn);
+		
+		gameOverPane.setTop(text);
+		gameOverPane.setCenter(view);
+		gameOverPane.setBottom(buttonBar);
+		
+		BorderPane.setAlignment(text, Pos.CENTER);
+		BorderPane.setAlignment(exitBtn, Pos.CENTER);
+		
+		Scene scene = new Scene(gameOverPane, 450, 350);
+		modal.initStyle(StageStyle.UNDECORATED);
+		modal.setScene(scene);
+		modal.showAndWait();
+		
+		
 	}
 	
 	/**
