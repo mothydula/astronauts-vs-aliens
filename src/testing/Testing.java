@@ -11,6 +11,8 @@ import javafx.application.Application;
 
 class Testing {
 	private static Thread t;
+	private Model testModel = new Model();
+	private Controller testController = new Controller(testModel);
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException {
 		// Initialise Java FX
@@ -31,8 +33,7 @@ class Testing {
 	void characterTests() throws InterruptedException {
 		// Initialize the MVC
 		setUpClass();
-		Model testModel = new Model();
-		Controller testController = new Controller(testModel);
+		
 		//Place a character when broke
 		testController.placeCharacter(new StartrellCluggins(), 0, 0);
 		
