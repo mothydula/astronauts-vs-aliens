@@ -167,7 +167,9 @@ public class Controller {
 					}
 					alien.triggerAnimation(Enemy.WALK_ID);
 					Platform.runLater(() -> alien.move());
-					isGameOver(alien);
+					if (isGameOver(alien)) {
+						Platform.runLater( () -> model.setGameOver());
+					}
 				} else {
 					alien.setAttacking(true);
 					alien.triggerAnimation(Enemy.ATTACK_ID);
@@ -229,15 +231,16 @@ public class Controller {
 	 * Method that checks if the game is over, if so, pauses the timer
 	 * and initiated the game over updating presenting user with a Modal.
 	 */
-	private void isGameOver(Enemy alien) {
+	private boolean isGameOver(Enemy alien) {
 		if (alien.getCol() == 0) {
 			// Game over, pause timer, animate attacking aliens & end game
 			pause();
 			for (Enemy survivingAlien : model.getAliens()) {
 				survivingAlien.triggerAnimation(Enemy.ATTACK_ID);
 			}
-			Platform.runLater(() -> model.setGameOver());
+			return true;
 		}
+		return false;
 		
 	}
 	
