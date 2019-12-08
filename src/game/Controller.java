@@ -66,7 +66,6 @@ public class Controller {
 	private Timer gamePlayTimer;
 	public Map<Integer, Set<Integer>> restrictedTiles;
 	public static int costMultiplier = 1;
-	private AtomicBoolean gameOver = new AtomicBoolean(false);
 	
 	// Constructor
 	public Controller(Model model) {
