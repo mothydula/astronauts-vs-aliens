@@ -23,7 +23,7 @@ public class MillenniumFalcon extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "Millenium Falcon\n" + super.infoCard();
+		return "Millennium Falcon\n" + super.infoCard();
 	}
 
 	@Override
@@ -43,6 +43,6 @@ public class MillenniumFalcon extends DefenderTower{
 	@Override
 	public boolean canShoot() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }
