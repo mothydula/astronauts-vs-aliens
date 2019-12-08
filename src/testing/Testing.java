@@ -81,11 +81,13 @@ class Testing {
 		
 		//Asteroid coverage
 		Asteroid asteroid = (Asteroid)testModel.getDefenderAt(0, 4);
+		asteroid.shoot();
 		assertFalse(asteroid.canShoot());
 		assertTrue(asteroid.toString().startsWith("Asteroid"));
 		
 		//MoneyBush coverage
 		MoneyBush moneyBush = (MoneyBush)testModel.getDefenderAt(0, 5);
+		moneyBush.shoot();
 		assertFalse(moneyBush.canShoot());
 		assertTrue(moneyBush.toString().startsWith("Money Bush"));
 		
@@ -105,6 +107,7 @@ class Testing {
 		
 		//MoneyTree coverage
 		MoneyTree moneyTree = (MoneyTree)testModel.getDefenderAt(1, 2);
+		moneyTree.shoot();
 		assertFalse(moneyTree.canShoot());
 		assertTrue(moneyTree.toString().startsWith("Money Tree"));	
 	}
