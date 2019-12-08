@@ -214,7 +214,6 @@ public class View extends Application implements Observer{
 					break;
 
 				case MoveMessage.BULLET_PLACEMENT:
-					placeBullet(message);
 					Ammo bullet = message.getBullet();
 					StackPane bulletPane = bullet.getStackPane();
 					
@@ -224,7 +223,7 @@ public class View extends Application implements Observer{
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
 
 					mainGroup.getChildren().add(bulletPane);
-					//bullet.playBulletNoise();
+					bullet.playBulletNoise();
 					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
