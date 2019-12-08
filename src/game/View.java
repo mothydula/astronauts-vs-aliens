@@ -1,9 +1,12 @@
 package game;
 
 import java.io.*;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import java.util.Set;
+
 import ammo.Ammo;
 import characters.Astronauts.*;
 import javafx.application.Application;
@@ -79,9 +82,6 @@ public class View extends Application implements Observer{
 	private final int ALIEN_RIGHT_MARGIN = 50;
 	private final int MAP_SELECTION_WIDTH = 175;
 	private final int MAP_SELECTION_HEIGHT = 80;
-	private final int STAGE_ONE_ID = 1;
-	private final int STAGE_TWO_ID = 2;
-	private final int STAGE_THREE_ID = 3;
 	
 	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
 	private final String GAMEOVER_BACKGROUND_IMAGE  ="file:assets/general/game-over-background.png";
@@ -91,10 +91,12 @@ public class View extends Application implements Observer{
 	private final String TITLE_GRAPHIC 			= "file:assets/general/game-title.png";
 	private final String SPACEBUCKS_IMAGE	 	= "file:assets/general/spacebucks-image.png";
 	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
+	private final String ACID_POOL_IMAGE		= "file:assets/general/acid-pool.png";
 	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
 	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
 	
 	private Image PLACEMENT_SQUARE = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
+	private Image ACID_POOL = new Image(ACID_POOL_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 
 	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
@@ -113,7 +115,7 @@ public class View extends Application implements Observer{
 	private Group mainGroup;
 	private BorderPane startBorderPane;
 	private boolean paused;
-	private int selectedMap = STAGE_ONE_ID;
+	private int selectedMap = Controller.STAGE_ONE_ID;
 	
 	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
@@ -504,7 +506,16 @@ public class View extends Application implements Observer{
 			infoStage.show();
 		});
 		
+
 		HBox mapSelector = createMapSelectionBar();
+
+		VBox mapPicker = new VBox(2);
+		mapPicker.setAlignment(Pos.CENTER);
+		Text mapText = new Text("Select Map");
+		mapText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
+		mapText.setFill(Color.WHITE);
+		HBox mapDisplay = createMapSelectionBar();
+		mapPicker.getChildren().addAll(mapText, mapDisplay);
 		
 		Button startBtn = new Button("Start");
 		startBtn.setMinHeight(40);
@@ -524,7 +535,17 @@ public class View extends Application implements Observer{
 		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
 		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
 		
-		buttonBox.getChildren().addAll(mapSelector, bottomBox);
+		buttonBox.getChildren().addAll(mapPicker, bottomBox);
+		buttonBox.setMaxWidth(600);
+		buttonBox.setMaxHeight(200);
+		
+		buttonBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.5);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 2;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: black;");
 		
 		return buttonBox;
 	}
@@ -605,7 +626,7 @@ public class View extends Application implements Observer{
 				mapTwoCheckBox.setSelected(false);
 				mapThreeCheckBox.setSelected(false);
 				// Set Map One as currently selected
-				selectedMap = STAGE_ONE_ID;
+				selectedMap = Controller.STAGE_ONE_ID;
 			} else {
 				if (mapTwoCheckBox.isSelected() || mapThreeCheckBox.isSelected()) {
 					mapOneCheckBox.setSelected(false);
@@ -621,7 +642,7 @@ public class View extends Application implements Observer{
 				mapTwoCheckBox.setSelected(true);
 				mapThreeCheckBox.setSelected(false);
 				// Set Map One as currently selected
-				selectedMap = STAGE_TWO_ID;
+				selectedMap = Controller.STAGE_TWO_ID;
 			} else {
 				mapTwoCheckBox.setSelected(false);
 				if (mapTwoCheckBox.isSelected() || mapThreeCheckBox.isSelected()) {
@@ -638,7 +659,7 @@ public class View extends Application implements Observer{
 				mapTwoCheckBox.setSelected(false);
 				mapThreeCheckBox.setSelected(true);
 				// Set Map One as currently selected
-				selectedMap = STAGE_THREE_ID;
+				selectedMap = Controller.STAGE_THREE_ID;
 			} else {
 				mapThreeCheckBox.setSelected(false);
 				if (mapTwoCheckBox.isSelected() || mapThreeCheckBox.isSelected()) {
@@ -661,10 +682,14 @@ public class View extends Application implements Observer{
 		mainGroup = new Group();
 
 		Image bgImage = new Image(STAGEONE_BACKGROUND_IMAGE); // Default
-		if (selectedMap == STAGE_TWO_ID) {
+		if (selectedMap == Controller.STAGE_TWO_ID) {
 			bgImage = new Image(STAGETWO_BACKGROUND_IMAGE);
-		} else if (selectedMap == STAGE_THREE_ID){
+			controller.assignMap(Controller.STAGE_TWO_ID);
+		} else if (selectedMap == Controller.STAGE_THREE_ID){
 			bgImage = new Image(STAGETHREE_BACKGROUND_IMAGE);
+			controller.assignMap(Controller.STAGE_THREE_ID);
+		} else {
+			controller.assignMap(Controller.STAGE_ONE_ID);
 		}
 		
 
@@ -714,20 +739,30 @@ public class View extends Application implements Observer{
 	 * as well as the extreme home-base/enemy-entry points
 	 */
 	public void setupGrid() {
+		Map<Integer, Set<Integer>> rTiles = controller.getRestrictedTiles();
 		for (int row = 0; row < Controller.ROWS; row ++) {
 			for (int col = 0; col < Controller.COLS; col++) {
-				StackPane tempStackPane = new StackPane();
-				tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
-				tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
-				tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
-				if (col > 0) {
-					ImageView squareImageView = new ImageView(PLACEMENT_SQUARE);
+				if (!(rTiles.containsKey(row) && rTiles.get(row).contains(col))) {
+					StackPane tempStackPane = new StackPane();
+					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
+					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
+					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+					if (col > 0) {
+						ImageView squareImageView = new ImageView(PLACEMENT_SQUARE);
+						tempStackPane.getChildren().add(squareImageView);
+					}
+					mainGroup.getChildren().add(tempStackPane);
+				} else {
+					StackPane tempStackPane = new StackPane();
+					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
+					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
+					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
+					ImageView squareImageView = new ImageView(ACID_POOL);
 					tempStackPane.getChildren().add(squareImageView);
+					mainGroup.getChildren().add(tempStackPane);
 				}
-				mainGroup.getChildren().add(tempStackPane);
 			}
 		}
-		
 	}
 	
 	/**
