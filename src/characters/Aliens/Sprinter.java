@@ -77,4 +77,8 @@ public class Sprinter extends Enemy {
 		super.setDieView(dieView);
 	}
 
+	public String toString() {
+		return "Sprinter\n" + super.infoCard();
+	}
+	
 }

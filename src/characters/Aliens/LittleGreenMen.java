@@ -75,5 +75,9 @@ public class LittleGreenMen extends Enemy {
 				DIE_ID);
 		super.setDieView(dieView);
 	}
+	
+	public String toString() {
+		return "LittleGreenMen\n" + super.infoCard();
+	}
 
 }

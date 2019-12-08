@@ -76,5 +76,9 @@ public class Gargantua extends Enemy{
 				DIE_ID);
 		super.setDieView(dieView);
 	}
+	
+	public String toString() {
+		return "Garganuta\n" + super.infoCard();
+	}
 
 }

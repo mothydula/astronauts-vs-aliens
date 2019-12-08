@@ -75,5 +75,9 @@ public class ManHunter extends Enemy {
 				DIE_ID);
 		super.setDieView(dieView);
 	}
-
+	
+	public String toString() {
+		return "ManHunter\n" + super.infoCard();
+	}
+	
 }

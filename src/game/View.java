@@ -562,16 +562,16 @@ public class View extends Application implements Observer{
 			
 			for (Enemy alien : aliens) {
 				HBox hbox = new HBox();
-				
-				VBox leftBox = new VBox(alien.getWalkView());
-				VBox rightBox = new VBox(new Text(alien.toString()));
+
+				VBox leftBox = new VBox(new Text(alien.toString()));
+				VBox rightBox = new VBox(alien.getWalkView());
 				
 				leftBox.setMinWidth(100);
 				rightBox.setMinWidth(100);
 				hbox.setPrefWidth(250);
 				
 				leftBox.setAlignment(Pos.CENTER_LEFT);
-				rightBox.setAlignment(Pos.CENTER_LEFT);
+				rightBox.setAlignment(Pos.CENTER_RIGHT);
 				hbox.getChildren().addAll(leftBox, rightBox);
 				introGameInfo.getChildren().add(hbox);
 			}
