@@ -401,7 +401,6 @@ public class View extends Application implements Observer{
 	 * depending on the current state of the game
 	 */
 	public void music()	{
-		// TODO: after game music?? sad for when you lose
 		String resource = null;
 	    if (isIntro) {
 			resource = new File(INTRO_MUSIC).toURI().toString();
