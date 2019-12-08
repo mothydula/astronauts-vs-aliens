@@ -67,6 +67,9 @@ public class Controller {
 	public Map<Integer, Set<Integer>> restrictedTiles;
 	public static int costMultiplier = 1;
 	
+	public TimerTask secondWave;
+	public TimerTask firstWave;
+	
 	// Constructor
 	public Controller(Model model) {
 		this.model = model;
@@ -262,7 +265,7 @@ public class Controller {
 		
 		if (waveNumber == 1) {						// WAVE ONE
 			System.out.println("WAVE ONE");
-			TimerTask firstWave = new TimerTask() {
+			firstWave = new TimerTask() {
 
 				@Override
 				public void run() {					
@@ -276,7 +279,7 @@ public class Controller {
 				
 			};
 			
-			TimerTask secondWave = new TimerTask() {
+			secondWave = new TimerTask() {
 
 				@Override
 				public void run() {
@@ -295,7 +298,7 @@ public class Controller {
 			timer.schedule(secondWave, WAVE_DELAY);
 		} else if (waveNumber == 2) {				// WAVE TWO
 			System.out.println("WAVE TWO");
-			TimerTask firstWave = new TimerTask() {
+			firstWave = new TimerTask() {
 
 				@Override
 				public void run() {
@@ -314,7 +317,7 @@ public class Controller {
 				
 			};
 			
-			TimerTask secondWave = new TimerTask() {
+			secondWave = new TimerTask() {
 
 				@Override
 				public void run() {
@@ -332,7 +335,7 @@ public class Controller {
 			
 		} else if (waveNumber == 3) {				// WAVE THREE
 			
-			TimerTask firstWave = new TimerTask() {
+			firstWave = new TimerTask() {
 
 				@Override
 				public void run() {

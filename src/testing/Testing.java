@@ -117,14 +117,19 @@ class Testing {
 		testModel.removeTower(startrell, 0, 0);
 		
 		//Run the pause and play testing
-		pausePlayTests();
+		Model testModelTwo = new Model();
+		Controller testControllerTwo = new Controller(testModelTwo);
 		
+		testControllerTwo.initialize();
+
+		assertEquals(1, testControllerTwo.getSpeedMultiplier());
+		testControllerTwo.increaseSpeed();
+		assertEquals(2, testControllerTwo.getSpeedMultiplier());
 		
+		testModelTwo.setWaveNumber(2);
+		
+		testControllerTwo.firstWave.run();
 	}
 	
-	@Test
-	void pausePlayTests() {
-		
-	}
 
 }
