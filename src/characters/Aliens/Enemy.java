@@ -4,7 +4,6 @@ import characters.BoardCharacter;
 import game.SpriteAnimation;
 import game.View;
 import javafx.animation.Animation;
-import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;

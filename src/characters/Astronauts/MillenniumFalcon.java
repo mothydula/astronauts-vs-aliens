@@ -2,7 +2,6 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.MoonZeusAmmo;
-import ammo.StartrellClugginsAmmo;
 import ammo.TarsAmmo;
 import javafx.scene.image.Image;
 

@@ -505,9 +505,6 @@ public class View extends Application implements Observer{
 			infoStage.initStyle(StageStyle.UNDECORATED);
 			infoStage.show();
 		});
-		
-
-		HBox mapSelector = createMapSelectionBar();
 
 		VBox mapPicker = new VBox(2);
 		mapPicker.setAlignment(Pos.CENTER);

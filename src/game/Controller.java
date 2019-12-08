@@ -23,8 +23,6 @@ import characters.Astronauts.DefenderTower;
 import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
 import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 
 public class Controller {
 	// Static constants

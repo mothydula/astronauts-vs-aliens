@@ -1,7 +1,6 @@
 package ammo;
 
 import characters.Astronauts.DefenderTower;
-import characters.Astronauts.MoonZeus;
 import javafx.scene.image.Image;
 
 /**
