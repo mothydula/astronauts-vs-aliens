@@ -25,7 +25,7 @@ public class MoneyTree extends IncomeTower {
 	}
 	
 	public String toString() {
-		return "SpaceBucksFactory\n" + super.infoCard();
+		return "Money Tree\n" + super.infoCard();
 	}
 
 	@Override
