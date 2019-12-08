@@ -212,6 +212,9 @@ public class Controller {
 			for (Enemy alien : model.getAliens()) {
 				if (bullet.getCol() == alien.getCol() && bullet.getRow() == alien.getRow()) {
 					alien.decreaseHealth(bullet.getDamage());
+					if (alien.getHealth() <= 0) {
+						Platform.runLater(() -> model.removeAlien(alien));
+					}
 					hit = true;
 					continue;
 				}
