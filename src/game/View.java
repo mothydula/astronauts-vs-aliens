@@ -101,6 +101,8 @@ public class View extends Application implements Observer{
 	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
 	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
+	private final String LOSE_MUSIC				= "assets/sounds/houstonWeHaveProblem.mp3";
+	//private final String WIN_MUSIC
 
 	private final int ALIEN_RANDOM_OFFSET = 200;
 
@@ -311,6 +313,8 @@ public class View extends Application implements Observer{
 	 */
 	public void triggerGameOverModal() {
 		musicPlayer.stop();
+		musicPlayer = new MediaPlayer(new Media(new File(LOSE_MUSIC).toURI().toString()));
+		musicPlayer.play();
 		
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
@@ -482,7 +486,7 @@ public class View extends Application implements Observer{
 					+ "No two defenders can occupy the same tile.\n\n"
 					+ "A defender can be removed by dragging and dropping the remove button 'X'\n"
 					+ "on the defender'.\n\n"
-					+ "Hover over a defender in the queue for about 1-2 seconds to view specs");
+					+ "Note: Hover over a defender for about 1-2 seconds to view their specs.");
 			ScrollPane infoPane = new ScrollPane();
 			infoPane.setPadding(new Insets(12,12,12,12));
 			infoPane.setPrefHeight(350);
