@@ -141,7 +141,7 @@ public class View extends Application implements Observer{
 	
 	/**
 	 * Method that initializes a new View object with fresh
-	 * attributes to allow reusability if user wishes to start
+	 * attributes to allow re-usability if user wishes to start
 	 * a new game.
 	 */
 	public void initializeNewView() {
