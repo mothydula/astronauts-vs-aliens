@@ -137,6 +137,7 @@ public class View extends Application implements Observer{
 	private BorderPane startBorderPane;
 	private boolean paused;
 	private int selectedMap = Controller.STAGE_ONE_ID;
+	private int selectedMode = Controller.STANDARD_MODE;
 	
 	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
@@ -538,6 +539,8 @@ public class View extends Application implements Observer{
 		HBox mapDisplay = createMapSelectionBar();
 		mapPicker.getChildren().addAll(mapText, mapDisplay);
 		
+		VBox modeSelector = ceateModeSelector();
+		
 		Button startBtn = new Button("Start");
 		startBtn.setMinHeight(40);
 		startBtn.setMinWidth(100);
@@ -556,7 +559,7 @@ public class View extends Application implements Observer{
 		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
 		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
 		
-		buttonBox.getChildren().addAll(mapPicker, bottomBox);
+		buttonBox.getChildren().addAll(mapPicker, modeSelector, bottomBox);
 		buttonBox.setMaxWidth(600);
 		buttonBox.setMaxHeight(200);
 		
@@ -696,16 +699,103 @@ public class View extends Application implements Observer{
 	}
 	
 	/**
+	 * Generates the Mode Picker that allows the user to choose between
+	 * standard and double-cost mode.
+	 * @return UI VBox component used as mode selector
+	 */
+	public VBox ceateModeSelector() {
+		VBox modeSelector = new VBox(2);
+		modeSelector.setAlignment(Pos.CENTER);
+		modeSelector.setPadding(new Insets(10,10,10,10));
+		
+		Text modeText = new Text("Select Game Mode");
+		modeText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
+		modeText.setFill(Color.WHITE);
+		
+		HBox modePicker = new HBox(2);
+		modePicker.setAlignment(Pos.CENTER);
+		modePicker.setSpacing(10);
+		
+		CheckBox standardBox = new CheckBox("Standard");
+		CheckBox doubleCostBox = new CheckBox("Double Cost");
+		
+		// Padding
+		standardBox.setPadding(new Insets(10, 10, 10, 10));
+		doubleCostBox.setPadding(new Insets(10, 10, 10, 10));
+		
+		// Set default selection
+		standardBox.setSelected(true);
+		
+		standardBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);" + 
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		standardBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		
+		doubleCostBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);" + 
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		doubleCostBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		
+		standardBox.setOnAction( e -> {
+			if (standardBox.isSelected()) {
+				selectedMode = Controller.STANDARD_MODE;
+				standardBox.setSelected(true);
+				doubleCostBox.setSelected(false);
+			} else {
+				if (doubleCostBox.isSelected()) {
+					standardBox.setSelected(false);
+				} else {
+					selectedMode = Controller.STANDARD_MODE;
+					standardBox.setSelected(true);
+				}
+			}
+		});
+		
+		doubleCostBox.setOnAction( e ->  {
+			if (doubleCostBox.isSelected()) {
+				selectedMode = Controller.DOUBLE_COST_MODE;
+				doubleCostBox.setSelected(true);
+				standardBox.setSelected(false);
+			} else {
+				doubleCostBox.setSelected(false);
+				if (!standardBox.isSelected()) {
+					selectedMode = Controller.STANDARD_MODE;
+					standardBox.setSelected(true);
+				}
+			}
+		});
+		
+		modePicker.getChildren().addAll(standardBox, doubleCostBox);
+		
+		modeSelector.getChildren().addAll(modeText, modePicker);
+		
+		return modeSelector;
+	}
+	
+	/**
 	 * Sets up the game scene containing the actual game
 	 * assets and functionality
 	 */
 	public void setupGameScene() {
 		mainGroup = new Group();
+		
+		// Assign Selected Mode
+		controller.assignGameMode(selectedMode);
 
+		// Assign Selected Map
 		Image bgImage = new Image(STAGEONE_BACKGROUND_IMAGE); // Default
 		if (selectedMap == Controller.STAGE_TWO_ID) {
 			bgImage = new Image(STAGETWO_BACKGROUND_IMAGE);
 			controller.assignMap(Controller.STAGE_TWO_ID);
+			
 		} else if (selectedMap == Controller.STAGE_THREE_ID){
 			bgImage = new Image(STAGETHREE_BACKGROUND_IMAGE);
 			controller.assignMap(Controller.STAGE_THREE_ID);
@@ -713,7 +803,6 @@ public class View extends Application implements Observer{
 			controller.assignMap(Controller.STAGE_ONE_ID);
 		}
 		
-
 	    ImageView bgImageView = new ImageView(bgImage);
 	    bgImageView.setFitHeight(SCENE_HEIGHT);
 	    bgImageView.setFitWidth(SCENE_WIDTH);
