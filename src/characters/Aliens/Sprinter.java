@@ -3,6 +3,11 @@ package characters.Aliens;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/*
+ * This class contains constants and methods related to Sprinter's animations; this alien is the
+ * 4th most powerful out of the 6 (on a holistic scale), but has a defining characteristic of being
+ * the fastest alien.
+ */
 public class Sprinter extends Enemy {
 
 	// Sprinter - Walk

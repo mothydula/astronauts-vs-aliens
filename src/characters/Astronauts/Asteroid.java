@@ -4,6 +4,11 @@ import ammo.Ammo;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to the Asteroid's properties; this defender is one of three
+ * non-shooting board characters. The purpose of the asteroid is to simply take alien damage; it cannot
+ * attack/shoot.
+ */
 public class Asteroid extends DefenderTower{
 	
 	public Asteroid() {

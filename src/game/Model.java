@@ -11,7 +11,7 @@
  * File: Model.java
  * 
  * Description: Model of the MVC Design Pattern that stores the game 
- * state of Astro vs Aliens. This class maintains the game board and 
+ * state of Astronauts vs Aliens. This class maintains the game board and 
  * its associated surrounding/internal objects to make sure the game
  * state is tracked and updated accordingly. This is the Observable for 
  * the View and any modifications made to the game state will be updated
@@ -82,7 +82,7 @@ public class Model extends Observable {
 	}
 	
 	/**
-	 * Public accesor method for the towers attribute
+	 * Public accessor method for the towers attribute
 	 * @return List of DefenderTower objects
 	 */
 	public List<DefenderTower> getTowers() {
@@ -142,7 +142,7 @@ public class Model extends Observable {
 	}
 	
 	/**
-	 * Public accesor method for the currentWave attribute
+	 * Public accessor method for the currentWave attribute
 	 * @return int current wave number
 	 */
 	public int getWaveNumber() {
