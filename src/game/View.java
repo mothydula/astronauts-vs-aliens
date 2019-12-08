@@ -270,9 +270,6 @@ public class View extends Application implements Observer{
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
 		
-		// Check if the game is over
-		controller.isGameOver();
-		
 	}
 	
 	/**

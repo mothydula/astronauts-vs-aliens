@@ -66,6 +66,7 @@ public class Controller {
 	private Timer gamePlayTimer;
 	public Map<Integer, Set<Integer>> restrictedTiles;
 	public static int costMultiplier = 1;
+	private AtomicBoolean gameOver = new AtomicBoolean(false);
 	
 	// Constructor
 	public Controller(Model model) {
@@ -167,6 +168,7 @@ public class Controller {
 					}
 					alien.triggerAnimation(Enemy.WALK_ID);
 					Platform.runLater(() -> alien.move());
+					isGameOver(alien);
 				} else {
 					alien.setAttacking(true);
 					alien.triggerAnimation(Enemy.ATTACK_ID);
@@ -219,30 +221,22 @@ public class Controller {
 				Platform.runLater(() -> model.removeBullet(bullet));
 			}
 		}
-		List<Enemy> aliens = new ArrayList<Enemy>(model.getAliens());
-		for (Enemy alien : aliens) {
-			if (alien.getCol() == -1 || alien.getHealth() <= 0) {
-				Platform.runLater(() -> model.removeAlien(alien));
-			}
-		}
 	}
 	
 	/**
 	 * Method that checks if the game is over, if so, pauses the timer
 	 * and initiated the game over updating presenting user with a Modal.
 	 */
-	public void isGameOver() {
-		for (Enemy alien : model.getAliens()) {
-			if (alien.getCol() == 0) {
-				// Game over, pause timer, animate attacking aliens & end game
-				pause();
-				for (Enemy survivingAlien : model.getAliens()) {
-					survivingAlien.triggerAnimation(Enemy.ATTACK_ID);
-				}
-				model.setGameOver();
-				break;
+	private void isGameOver(Enemy alien) {
+		if (alien.getCol() == 0) {
+			// Game over, pause timer, animate attacking aliens & end game
+			pause();
+			for (Enemy survivingAlien : model.getAliens()) {
+				survivingAlien.triggerAnimation(Enemy.ATTACK_ID);
 			}
+			Platform.runLater(() -> model.setGameOver());
 		}
+		
 	}
 	
 	/**
