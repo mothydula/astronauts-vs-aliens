@@ -15,6 +15,7 @@ public class MoveMessage {
 	public static final int BULLET_PLACEMENT = 3;
 	public static final int BULLET_REMOVAL = 4;
 	public static final int GAME_OVER = 5;
+	public static final int GAME_WON = 6;
 	
 	private int type;
 	private BoardCharacter character;
