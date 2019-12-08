@@ -46,6 +46,8 @@ public class Controller {
 	public static final int STAGE_ONE_ID = 1;
 	public static final int STAGE_TWO_ID = 2;
 	public static final int STAGE_THREE_ID = 3;
+	public static final int STANDARD_MODE = 1;
+	public static final int DOUBLE_COST_MODE = 2;
 	
 	// Class fields
 	private Model model;
@@ -83,6 +85,7 @@ public class Controller {
 		speedMultiplier = 1;
 		generateAliens();
 		startTimeLine();
+		
 	}
 	
 	/**
@@ -595,6 +598,19 @@ public class Controller {
 			restrictedTiles.put(5,new HashSet<Integer>(Arrays.asList(1,1,4)));
 		}
 		model.setRestrictionedTiles(restrictedTiles);
+	}
+	
+	/**
+	 * Assigns the requested game mode, depending on the provided ID.
+	 * Can either be standard or double cost game modes
+	 * @param modeId Int ID associated with requested game mode
+	 */
+	public void assignGameMode(int modeId) {
+		if (modeId == STANDARD_MODE) {
+			costMultiplier = 1;
+		} else if (modeId == DOUBLE_COST_MODE) {
+			costMultiplier = 2;
+		}
 	}
 	
 	/**
