@@ -2,6 +2,7 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.TarsAmmo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class Tars extends DefenderTower{
@@ -12,7 +13,7 @@ public class Tars extends DefenderTower{
 	}
 	
 	public int getCost() {
-		return COST_TARS;
+		return COST_TARS * Controller.costMultiplier;
 	}
 	
 	public String toString() {

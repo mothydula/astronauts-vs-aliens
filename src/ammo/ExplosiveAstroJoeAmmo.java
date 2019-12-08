@@ -1,7 +1,6 @@
 package ammo;
 
 import characters.Astronauts.DefenderTower;
-import characters.Astronauts.ExplosiveAstroJoe;
 import javafx.scene.image.Image;
 /**
  * ExplosiveAstroJoe's Ammo class

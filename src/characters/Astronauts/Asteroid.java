@@ -1,6 +1,7 @@
 package characters.Astronauts;
 
 import ammo.Ammo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class Asteroid extends DefenderTower{
@@ -11,7 +12,7 @@ public class Asteroid extends DefenderTower{
 	}
 	
 	public int getCost() {
-		return COST_ASTEROID;
+		return COST_ASTEROID * Controller.costMultiplier;
 	}
 	
 	public String toString() {

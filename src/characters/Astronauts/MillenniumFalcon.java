@@ -2,8 +2,8 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.MoonZeusAmmo;
-import ammo.StartrellClugginsAmmo;
 import ammo.TarsAmmo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class MillenniumFalcon extends DefenderTower{
@@ -14,7 +14,7 @@ public class MillenniumFalcon extends DefenderTower{
 	}
 	
 	public int getCost() {
-		return COST_MILLENNIUM_FALCON;
+		return COST_MILLENNIUM_FALCON * Controller.costMultiplier;
 	}
 	
 	public String toString() {

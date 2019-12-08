@@ -2,6 +2,7 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.ExplosiveAstroJoeAmmo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class ExplosiveAstroJoe extends DefenderTower{
@@ -12,7 +13,7 @@ public class ExplosiveAstroJoe extends DefenderTower{
 	}
 
 	public int getCost() {
-		return COST_EXPLOSIVE_ASTROJOE;
+		return COST_EXPLOSIVE_ASTROJOE * Controller.costMultiplier;
 	}
 	
 	public String toString() {

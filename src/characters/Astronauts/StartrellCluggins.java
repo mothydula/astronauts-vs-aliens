@@ -2,6 +2,7 @@ package characters.Astronauts;
 
 import ammo.Ammo;
 import ammo.StartrellClugginsAmmo;
+import game.Controller;
 import javafx.scene.image.Image;
 
 public class StartrellCluggins extends DefenderTower{
@@ -12,7 +13,7 @@ public class StartrellCluggins extends DefenderTower{
 	}
 	
 	public int getCost() {
-		return COST_STARTRELL_CLUGGINS;
+		return COST_STARTRELL_CLUGGINS * Controller.costMultiplier;
 	}
 	
 	public String toString() {

@@ -1,11 +1,27 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: Toast.java
+ * 
+ * Description: Toast object used to generate utility Toast 
+ * messages that fade in and out. Utilization of this class 
+ * include displaying erroneous placement, invalid purchase, 
+ * and wave notifications.
+ */
+
 package game;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,6 +32,19 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public final class Toast {
+	
+	/**
+	 * Generates a Toast message that will display helpful 
+	 * information to the user, temporarily, using the given
+	 * time and text attributes. Adds Toast message to specified
+	 * stage.
+	 * @param ownerStage Stage to add the Toast message to
+	 * @param toastMsg String text to be set as Toast contents
+	 * @param toastDelay Time the Toast is to be displayed
+	 * @param fadeInDelay Time the Toast takes to fade into the stage
+	 * @param fadeOutDelay Time the Toast takes to fade out of the stage
+	 * @param color Color of the Text that will be displayed
+	 */
 	public static void makeText(Stage ownerStage, String toastMsg, int toastDelay, int fadeInDelay, int fadeOutDelay, Color color) {
 		Stage toastStage = new Stage();
 		toastStage.initOwner(ownerStage);

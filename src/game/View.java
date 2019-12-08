@@ -1,3 +1,21 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: View.java
+ * 
+ * Description: View that contains the User Interface and JavaFX
+ * GUI components that provide the front end that the user interacts
+ * with throughout the duration of the game. View Observes the modal
+ * for any changes and updates accordingly when notified.
+ */
+
 package game;
 
 import java.io.*;
@@ -83,17 +101,20 @@ public class View extends Application implements Observer{
 	private final int MAP_SELECTION_WIDTH = 175;
 	private final int MAP_SELECTION_HEIGHT = 80;
 	
-	private final String STARTER_BACKGROUND_IMAGE = "file:assets/general/space-gif.gif";
-	private final String GAMEOVER_BACKGROUND_IMAGE  ="file:assets/general/game-over-background.png";
+	private final String STARTER_BACKGROUND_IMAGE 	= "file:assets/general/space-gif.gif";
+	private final String GAMEOVER_BACKGROUND_IMAGE  = "file:assets/general/game-over-background.png";
+	private final String GAMEOVER_TITLE_IMAGE		= "file:assets/general/game-over-title.png";
+	private final String WINNING_BACKGROUND_IMAGE	= "file:assets/general/winning-background.png";
 	private final String STAGEONE_BACKGROUND_IMAGE 	= "file:assets/general/stage-one-background.png";
+	private final String WINNING_TITLE_IMAGE		= "file:assets/general/winning-title.png";
 	private final String STAGETWO_BACKGROUND_IMAGE 	= "file:assets/general/stage-two-background.png";
 	private final String STAGETHREE_BACKGROUND_IMAGE 	= "file:assets/general/stage-three-background.png";
-	private final String TITLE_GRAPHIC 			= "file:assets/general/game-title.png";
-	private final String SPACEBUCKS_IMAGE	 	= "file:assets/general/spacebucks-image.png";
-	private final String PLACEMENT_SQUARE_IMAGE = "file:assets/general/placement-square.png";
-	private final String ACID_POOL_IMAGE		= "file:assets/general/acid-pool.png";
-	private final String ASTRONAUT_STARTER_IMAGE = DefenderTower.STARTRELL_CLUGGINS_GIF;
-	private final String REMOVE_X_IMAGE			= "file:assets/general/removeX.jpg";
+	private final String TITLE_GRAPHIC 				= "file:assets/general/game-title.png";
+	private final String SPACEBUCKS_IMAGE	 		= "file:assets/general/spacebucks-image.png";
+	private final String PLACEMENT_SQUARE_IMAGE 	= "file:assets/general/placement-square.png";
+	private final String ACID_POOL_IMAGE			= "file:assets/general/acid-pool.png";
+	private final String ASTRONAUT_STARTER_IMAGE 	= DefenderTower.STARTRELL_CLUGGINS_GIF;
+	private final String REMOVE_X_IMAGE				= "file:assets/general/removeX.jpg";
 	
 	private Image PLACEMENT_SQUARE = new Image(PLACEMENT_SQUARE_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 	private Image ACID_POOL = new Image(ACID_POOL_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
@@ -118,6 +139,7 @@ public class View extends Application implements Observer{
 	private BorderPane startBorderPane;
 	private boolean paused;
 	private int selectedMap = Controller.STAGE_ONE_ID;
+	private int selectedMode = Controller.STANDARD_MODE;
 	
 	// Attributes so that we can update as the game progresses
 	private HBox progressHBox;
@@ -233,7 +255,10 @@ public class View extends Application implements Observer{
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
 					break;
 				case MoveMessage.GAME_OVER:
-					triggerGameOverModal();
+					triggerModal(GAMEOVER_TITLE_IMAGE, GAMEOVER_BACKGROUND_IMAGE, "Better luck next time!");
+					break;
+				case MoveMessage.GAME_WON:
+					triggerModal(WINNING_TITLE_IMAGE, WINNING_BACKGROUND_IMAGE, "Congratulations!");
 					break;
 			}
 		} else if (arg instanceof String) {
@@ -246,9 +271,6 @@ public class View extends Application implements Observer{
 		
 		// Update bank amount after each update
 		bankAmount.setText(String.valueOf(model.getSpacebucks()));
-		
-		// Check if the game is over
-		controller.isGameOver();
 		
 	}
 	
@@ -311,7 +333,7 @@ public class View extends Application implements Observer{
 	 * User will be presented a Modal that will stop the progress of the
 	 * game and allow the user to return to the MainMenu.
 	 */
-	public void triggerGameOverModal() {
+	public void triggerModal(String titleImage, String backgroundImage, String message) {
 		musicPlayer.stop();
 		musicPlayer = new MediaPlayer(new Media(new File(LOSE_MUSIC).toURI().toString()));
 		musicPlayer.play();
@@ -324,7 +346,7 @@ public class View extends Application implements Observer{
 		BorderPane gameOverPane = new BorderPane();
 		gameOverPane.setPadding(new Insets(10, 10, 10, 10));
 		
-		Image bgImage = new Image(GAMEOVER_BACKGROUND_IMAGE, 350, 300, false, false);
+		Image bgImage = new Image(backgroundImage, 350, 300, false, false);
 		BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true);
 	    Background borderPaneBackground = new Background(new BackgroundImage(bgImage,
 	            BackgroundRepeat.NO_REPEAT,
@@ -333,14 +355,14 @@ public class View extends Application implements Observer{
 	            bSize));
 	    gameOverPane.setBackground(borderPaneBackground);
 		
-		Image gameOverTitle = new Image("file:assets/general/game-over-title.png", 300, 50, false, false);
+		Image gameOverTitle = new Image(titleImage, 250, 50, false, false);
 		ImageView gameOverView = new ImageView(gameOverTitle);
 		
 		VBox centerBox = new VBox(2);
 		centerBox.setAlignment(Pos.CENTER);
 		ImageView astronautImageView = new ImageView();
 		astronautImageView.setImage(new Image(ASTRONAUT_STARTER_IMAGE, ASTRO_WIDTH / 2, ASTRO_HEIGHT / 2, false, false));
-		Text text = new Text("Better luck next time!");
+		Text text = new Text(message);
 		text.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
 		text.setFill(Color.WHITE);
 		centerBox.getChildren().addAll(astronautImageView, text);
@@ -509,9 +531,6 @@ public class View extends Application implements Observer{
 			infoStage.initStyle(StageStyle.UNDECORATED);
 			infoStage.show();
 		});
-		
-
-		HBox mapSelector = createMapSelectionBar();
 
 		VBox mapPicker = new VBox(2);
 		mapPicker.setAlignment(Pos.CENTER);
@@ -520,6 +539,8 @@ public class View extends Application implements Observer{
 		mapText.setFill(Color.WHITE);
 		HBox mapDisplay = createMapSelectionBar();
 		mapPicker.getChildren().addAll(mapText, mapDisplay);
+		
+		VBox modeSelector = ceateModeSelector();
 		
 		Button startBtn = new Button("Start");
 		startBtn.setMinHeight(40);
@@ -539,7 +560,7 @@ public class View extends Application implements Observer{
 		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
 		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
 		
-		buttonBox.getChildren().addAll(mapPicker, bottomBox);
+		buttonBox.getChildren().addAll(mapPicker, modeSelector, bottomBox);
 		buttonBox.setMaxWidth(600);
 		buttonBox.setMaxHeight(200);
 		
@@ -679,16 +700,103 @@ public class View extends Application implements Observer{
 	}
 	
 	/**
+	 * Generates the Mode Picker that allows the user to choose between
+	 * standard and double-cost mode.
+	 * @return UI VBox component used as mode selector
+	 */
+	public VBox ceateModeSelector() {
+		VBox modeSelector = new VBox(2);
+		modeSelector.setAlignment(Pos.CENTER);
+		modeSelector.setPadding(new Insets(10,10,10,10));
+		
+		Text modeText = new Text("Select Game Mode");
+		modeText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
+		modeText.setFill(Color.WHITE);
+		
+		HBox modePicker = new HBox(2);
+		modePicker.setAlignment(Pos.CENTER);
+		modePicker.setSpacing(10);
+		
+		CheckBox standardBox = new CheckBox("Standard");
+		CheckBox doubleCostBox = new CheckBox("Double Cost");
+		
+		// Padding
+		standardBox.setPadding(new Insets(10, 10, 10, 10));
+		doubleCostBox.setPadding(new Insets(10, 10, 10, 10));
+		
+		// Set default selection
+		standardBox.setSelected(true);
+		
+		standardBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);" + 
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		standardBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		
+		doubleCostBox.setStyle("-fx-text-fill: rgba(7, 92, 197, 1.0);" + 
+				"-fx-background-color: rgba(220, 220, 220, 0.85);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 1;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: white;");
+		doubleCostBox.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+		
+		standardBox.setOnAction( e -> {
+			if (standardBox.isSelected()) {
+				selectedMode = Controller.STANDARD_MODE;
+				standardBox.setSelected(true);
+				doubleCostBox.setSelected(false);
+			} else {
+				if (doubleCostBox.isSelected()) {
+					standardBox.setSelected(false);
+				} else {
+					selectedMode = Controller.STANDARD_MODE;
+					standardBox.setSelected(true);
+				}
+			}
+		});
+		
+		doubleCostBox.setOnAction( e ->  {
+			if (doubleCostBox.isSelected()) {
+				selectedMode = Controller.DOUBLE_COST_MODE;
+				doubleCostBox.setSelected(true);
+				standardBox.setSelected(false);
+			} else {
+				doubleCostBox.setSelected(false);
+				if (!standardBox.isSelected()) {
+					selectedMode = Controller.STANDARD_MODE;
+					standardBox.setSelected(true);
+				}
+			}
+		});
+		
+		modePicker.getChildren().addAll(standardBox, doubleCostBox);
+		
+		modeSelector.getChildren().addAll(modeText, modePicker);
+		
+		return modeSelector;
+	}
+	
+	/**
 	 * Sets up the game scene containing the actual game
 	 * assets and functionality
 	 */
 	public void setupGameScene() {
 		mainGroup = new Group();
+		
+		// Assign Selected Mode
+		controller.assignGameMode(selectedMode);
 
+		// Assign Selected Map
 		Image bgImage = new Image(STAGEONE_BACKGROUND_IMAGE); // Default
 		if (selectedMap == Controller.STAGE_TWO_ID) {
 			bgImage = new Image(STAGETWO_BACKGROUND_IMAGE);
 			controller.assignMap(Controller.STAGE_TWO_ID);
+			
 		} else if (selectedMap == Controller.STAGE_THREE_ID){
 			bgImage = new Image(STAGETHREE_BACKGROUND_IMAGE);
 			controller.assignMap(Controller.STAGE_THREE_ID);
@@ -696,7 +804,6 @@ public class View extends Application implements Observer{
 			controller.assignMap(Controller.STAGE_ONE_ID);
 		}
 		
-
 	    ImageView bgImageView = new ImageView(bgImage);
 	    bgImageView.setFitHeight(SCENE_HEIGHT);
 	    bgImageView.setFitWidth(SCENE_WIDTH);
