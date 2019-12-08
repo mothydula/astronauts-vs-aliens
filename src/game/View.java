@@ -371,6 +371,7 @@ public class View extends Application implements Observer{
 	 * depending on the current state of the game
 	 */
 	public void music()	{
+		// TODO: after game music?? sad for when you lose
 		String resource = null;
 	    if (isIntro) {
 			resource = new File(INTRO_MUSIC).toURI().toString();
@@ -454,7 +455,6 @@ public class View extends Application implements Observer{
 	 * 
 	 * @return generated VBox object with the associated Buttons
 	 */
-	@SuppressWarnings("deprecation")
 	public VBox createStartMenuButtonBox() {
 		VBox buttonBox = new VBox(3);
 		buttonBox.setAlignment(Pos.CENTER);
