@@ -12,7 +12,8 @@
  * 
  * Description: View that contains the User Interface and JavaFX
  * GUI components that provide the front end that the user interacts
- * with throughout the duration of the game.
+ * with throughout the duration of the game. View Observes the modal
+ * for any changes and updates accordingly when notified.
  */
 
 package game;
