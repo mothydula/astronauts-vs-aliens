@@ -4,6 +4,7 @@ import java.io.File;
 
 import characters.Astronauts.DefenderTower;
 import game.View;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -58,7 +59,14 @@ public class Ammo {
 	
 	// RailGun Ammo Image (same as MoonZeus)
 	public static final String RAIL_GUN_AMMO_SPRITE = MOON_ZEUS_AMMO_SPRITE;
-
+	
+	private MediaPlayer astroJoeAmmoNoise = new MediaPlayer(new Media(new File(ASTROJOE_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer tarsAmmoNoise = new MediaPlayer(new Media(new File(TARS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer milleniumFalconAmmoNoise = new MediaPlayer(new Media(new File(MILLENIUM_FALCON_AMMO_NOISE).toURI().toString()));
+	
 	// Constructor
 	public Ammo (DefenderTower dt, Image sprite) {
 		
@@ -106,33 +114,28 @@ public class Ammo {
 	}
 	
 	public void playBulletNoise() {
-		String noiseFile = null;
 		switch (this.defender.toString().split("\n")[0]) {
 			case "Astro Joe":
-				noiseFile = ASTROJOE_AMMO_NOISE;
+				Platform.runLater( () -> astroJoeAmmoNoise.play());
 				break;
 			case "Explosive Astro Joe":
-				noiseFile = EXPLOSIVE_ASTROJOE_AMMO_NOISE;
+				Platform.runLater( () -> explosiveAstroJoeAmmoNoise.play());
 				break;
 			case "Moon Zeus":
-				noiseFile = MOON_ZEUS_AMMO_NOISE;
+				Platform.runLater( () -> moonZeusAmmoNoise.play());
 				break;
 			case "Startrell Cluggins":
-				noiseFile = STARTRELL_CLUGGINS_AMMO_NOISE;
+				Platform.runLater( () -> startrellClugginsAmmoNoise.play());
 				break;
 			case "Tars":
-				noiseFile = TARS_AMMO_NOISE;
+				Platform.runLater( () -> tarsAmmoNoise.play());
 				break;
 			case "Millenium Falcon":
-				noiseFile = MILLENIUM_FALCON_AMMO_NOISE;
+				Platform.runLater( () -> milleniumFalconAmmoNoise.play());
 				break;
 			default:
-				noiseFile = "Not Found";
+				System.out.println("Noise file not found");
 		}
-		//System.out.println(noiseFile);
-		String resource = new File(noiseFile).toURI().toString();
-		MediaPlayer ammoNoise = new MediaPlayer(new Media(resource));
-		ammoNoise.play();
 	}
 	
 	public void move() {
