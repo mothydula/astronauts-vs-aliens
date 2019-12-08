@@ -3,6 +3,10 @@ package characters.Aliens;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/*
+ * This class contains constants and methods related to Little Green Man's animations;
+ * this alien is the least powerful out of the 6 (on a holistic scale).
+ */
 public class LittleGreenMen extends Enemy {
 
 	// LittleGreenMen - Walk

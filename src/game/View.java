@@ -123,6 +123,8 @@ public class View extends Application implements Observer{
 	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
 	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
+	private final String LOSE_MUSIC				= "assets/sounds/houstonWeHaveProblem.mp3";
+	//private final String WIN_MUSIC
 
 	private final int ALIEN_RANDOM_OFFSET = 200;
 
@@ -131,6 +133,7 @@ public class View extends Application implements Observer{
 	private Model model;
 	private Controller controller;
 	private DefenderTower[] defenderTowers;
+	private Enemy[] aliens;
 	private DefenderTower selectedTower;
 	
 	private Stage primaryStage;
@@ -163,7 +166,7 @@ public class View extends Application implements Observer{
 	
 	/**
 	 * Method that initializes a new View object with fresh
-	 * attributes to allow reusability if user wishes to start
+	 * attributes to allow re-usability if user wishes to start
 	 * a new game.
 	 */
 	public void initializeNewView() {
@@ -182,6 +185,14 @@ public class View extends Application implements Observer{
 				new MoonZeus(),
 				new MoneyTree(),
 				new MillenniumFalcon()
+		};
+		aliens = new Enemy[] {
+				new LittleGreenMen(),
+				new Grunt(),
+				new Sprinter(),
+				new ManHunter(),
+				new Tank(),
+				new Gargantua()
 		};
 
 		isIntro = true;
@@ -335,6 +346,8 @@ public class View extends Application implements Observer{
 	 */
 	public void triggerModal(String titleImage, String backgroundImage, String message) {
 		musicPlayer.stop();
+		musicPlayer = new MediaPlayer(new Media(new File(LOSE_MUSIC).toURI().toString()));
+		musicPlayer.play();
 		
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
@@ -484,7 +497,7 @@ public class View extends Application implements Observer{
 	public VBox createStartMenuButtonBox() {
 		VBox buttonBox = new VBox(3);
 		buttonBox.setAlignment(Pos.CENTER);
-		buttonBox.setSpacing(15);
+		buttonBox.setSpacing(25);
 		
 		infoBtn = new Button("Info");
 		infoBtn.setMinHeight(40);
@@ -493,30 +506,91 @@ public class View extends Application implements Observer{
 		//Pulls up the info window to show the user a general overview of game
 		//mechanics
 		infoBtn.setOnAction( e -> {
-			Text infoText = new Text("INSTRUCTIONS:\n"
-					+ "The objective of this game is to fend of your enemies\n"
+			VBox introGameInfo = new VBox();
+			
+			Text instructionsHeader = new Text("Instructions");
+			instructionsHeader.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+			
+			Text instructionsBody = new Text("The objective of this game is to fend of your enemies\n"
 					+ "for as long as possible. You'll do this by accumulating SpaceBucks\n"
 					+ "and spending them on defenders to protect your galaxy\n"
 					+ "from the incoming aliens. The more expensive a defender is,\n"
 					+ "the more useful they probably are. However, use your Space-\n"
-					+ "Bucks wisely!\n\n"
-					+ "HOW-TO:\n"
-					+ "You can place a defender by dragging them from the queue and placing\n"
+					+ "Bucks wisely!\n");
+			instructionsBody.setFont(Font.font("Courier New", 14));
+			
+			Text howToHeader = new Text("How To Play");
+			howToHeader.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+			
+			Text howToBody = new Text("You can place a defender by dragging them from the queue and placing\n"
 					+ "them anywhere between the alien spawn station and the last line of defense.\n\n"
 					+ "No two defenders can occupy the same tile.\n\n"
 					+ "A defender can be removed by dragging and dropping the remove button 'X'\n"
 					+ "on the defender'.\n\n"
-					+ "Hover over a defender in the queue for about 1-2 seconds to view specs");
+					+ "Hover over a defender in the queue for about 1-2 seconds to view specs\n");
+			howToBody.setFont(Font.font("Courier New", 14));
+			
+			// Add intro text information to VBox
+			introGameInfo.getChildren().addAll(instructionsHeader, instructionsBody, howToHeader, howToBody);
+			
+			// Add defender tower information
+			Text defenderHeader = new Text("\nDefenders");
+			defenderHeader.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+			
+			introGameInfo.getChildren().add(defenderHeader);
+
+			for (DefenderTower tower : defenderTowers) {
+				HBox hbox = new HBox();
+				
+				VBox leftBox = new VBox(new ImageView(tower.getImage()));
+				VBox rightBox = new VBox(new Text(tower.toString()));
+				
+				leftBox.setMinWidth(100);
+				rightBox.setMinWidth(100);
+				hbox.setPrefWidth(250);
+				
+				leftBox.setAlignment(Pos.CENTER_LEFT);
+				rightBox.setAlignment(Pos.CENTER_LEFT);
+				hbox.getChildren().addAll(leftBox, rightBox);
+				introGameInfo.getChildren().add(hbox);
+			}
+			
+			// Setup Alien information
+			Text alienHeader = new Text("\nAliens");
+			alienHeader.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+			introGameInfo.getChildren().add(alienHeader);
+			
+			for (Enemy alien : aliens) {
+				HBox hbox = new HBox();
+				
+				VBox leftBox = new VBox(alien.getWalkView());
+				VBox rightBox = new VBox(new Text(alien.toString()));
+				
+				leftBox.setMinWidth(100);
+				rightBox.setMinWidth(100);
+				hbox.setPrefWidth(250);
+				
+				leftBox.setAlignment(Pos.CENTER_LEFT);
+				rightBox.setAlignment(Pos.CENTER_LEFT);
+				hbox.getChildren().addAll(leftBox, rightBox);
+				introGameInfo.getChildren().add(hbox);
+			}
+			
 			ScrollPane infoPane = new ScrollPane();
 			infoPane.setPadding(new Insets(12,12,12,12));
 			infoPane.setPrefHeight(350);
-			infoPane.setContent(infoText);
-			VBox infoVBox = new VBox(8);
+			infoPane.setPrefWidth(700);
+			
+			VBox infoVBox = new VBox(2);
 			infoVBox.setPadding(new Insets(50,12,12,12));
 			Button returntoMenu = new Button("Close");
+			
 			infoVBox.getChildren().add(infoPane);
 			infoVBox.getChildren().add(returntoMenu);
 			infoVBox.setAlignment(Pos.CENTER);
+			
+			infoPane.setContent(introGameInfo);
+			
 			Scene infoScene = new Scene(infoVBox);
 			Stage infoStage = new Stage();
 			returntoMenu.setOnAction(ba->{
@@ -524,6 +598,7 @@ public class View extends Application implements Observer{
 			});
 			infoStage.setScene(infoScene);
 			infoStage.setTitle("Info");
+			infoStage.centerOnScreen();
 			
 			//Removes the minimize, maximize and close buttons
 			infoStage.initStyle(StageStyle.UNDECORATED);
@@ -571,6 +646,22 @@ public class View extends Application implements Observer{
 				"-fx-border-color: black;");
 		
 		return buttonBox;
+	}
+	
+	public void addAlienInfo(VBox introGameInfo, Enemy alien) {
+		HBox hbox = new HBox();
+		
+		VBox leftBox = new VBox(alien.getWalkView());
+		VBox rightBox = new VBox(new Text(alien.toString()));
+		
+		leftBox.setMinWidth(100);
+		rightBox.setMinWidth(100);
+		hbox.setPrefWidth(250);
+		
+		leftBox.setAlignment(Pos.CENTER_LEFT);
+		rightBox.setAlignment(Pos.CENTER_LEFT);
+		hbox.getChildren().addAll(leftBox, rightBox);
+		introGameInfo.getChildren().add(hbox);
 	}
 	
 	/**

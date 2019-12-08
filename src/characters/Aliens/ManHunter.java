@@ -3,6 +3,10 @@ package characters.Aliens;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/*
+ * This class contains constants and methods related to Manhunter's animations; this alien is the
+ * 3rd most powerful out of the 6 (on a holistic scale), behind Tank and Gargantua.
+ */
 public class ManHunter extends Enemy {
 
 	// Manhunter - Walk

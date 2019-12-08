@@ -3,6 +3,11 @@ package characters.Aliens;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/*
+ * This class contains constants and methods related to Sprinter's animations; this alien is the
+ * 2nd most powerful out of the 6 (on a holistic scale), outmatched only by Gargantua. Its defining
+ * characteristic is being able to take the most damage.
+ */
 public class Tank extends Enemy {
 
 	// Tank - Walk

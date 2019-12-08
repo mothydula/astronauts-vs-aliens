@@ -5,6 +5,12 @@ import characters.IncomeTowers.IncomeTower;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to the MoneyTree's properties (a.k.a. SpaceBucks Factory);
+ * this 'defender' is one of three non-shooting board characters. The purpose of this character is 
+ * to increase the amount of money in the bank by 100 SpaceBucks every 10 seconds; similar to the
+ * MoneyBush, but is able to generate more SpaceBucks (but understandably also costs more to buy).
+ */
 public class MoneyTree extends IncomeTower {
 	
 	public MoneyTree() {

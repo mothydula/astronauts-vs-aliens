@@ -5,6 +5,11 @@ import ammo.ExplosiveAstroJoeAmmo;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to ExplosiveAstroJoe's properties; this defender is the 5th
+ * most powerful (on a holistic scale) out of the 6 defenders who have the ability shoot. He is
+ * better than only AstroJoe.
+ */
 public class ExplosiveAstroJoe extends DefenderTower{
 
 	public ExplosiveAstroJoe() {
@@ -17,7 +22,7 @@ public class ExplosiveAstroJoe extends DefenderTower{
 	}
 	
 	public String toString() {
-		return "ExplosiveAstroJoe\n" + super.infoCard();
+		return "Explosive Astro Joe\n" + super.infoCard();
 	}
 
 	@Override

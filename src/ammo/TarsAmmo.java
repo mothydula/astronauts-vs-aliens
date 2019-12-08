@@ -4,7 +4,7 @@ import characters.Astronauts.DefenderTower;
 import javafx.scene.image.Image;
 
 /**
- * Class for Tars' Ammo
+ * Class for TARS' Ammo
  * */
 public class TarsAmmo extends Ammo{
 

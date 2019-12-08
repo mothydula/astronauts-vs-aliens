@@ -6,6 +6,11 @@ import ammo.TarsAmmo;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to the Millenium Falcon's properties; this defender is the
+ * most powerful (on a holistic scale) out of the 6 defenders who have the ability shoot. The ammo
+ * fired from this defender does the most damage out of any.
+ */
 public class MillenniumFalcon extends DefenderTower{
 	
 	public MillenniumFalcon() {

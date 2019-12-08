@@ -3,6 +3,12 @@ package characters.IncomeTowers;
 import characters.Astronauts.DefenderTower;
 import javafx.scene.image.Image;
 
+/* This abstract class is a specification of DefenderTower (inherits from DefenderTower).
+ * However, the difference in the defenders that inherit from this class is that they generate
+ * SpaceBucks during the duration of time that they remain on the board. This class contains
+ * abstract methods that its children must implement (getTimeline() and getDepositAmount() are
+ * specific to IncomeTower(). The two classes that extend this one are MoneyBush and MoneyTree.
+ */
 public abstract class IncomeTower extends DefenderTower {
 	
 	// MoneyBush

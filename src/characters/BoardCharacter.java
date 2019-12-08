@@ -2,6 +2,13 @@ package characters;
 
 import javafx.scene.image.Image;
 
+/*
+ * This class is the parent class of all aliens and defenders alike. It contains common fields
+ * like row and column (that indicate where the character is on the board) as well as health
+ * which enables characters to take damage (until health reaches 0). This class also contains an
+ * Image field which stores the sprite associated with each character. Enemy (the alien class) and
+ * DefenderTower (defender class) both inherit from this class.
+ */
 public class BoardCharacter {
 	
 	// Constants
@@ -84,9 +91,9 @@ public class BoardCharacter {
 	}
 	
 	public String infoCard() {
-		return "Health: " + String.valueOf(this.health) +
-				"\nAttack Spd:" + String.valueOf(this.attackSpeed) +
-				"\nDamage: " + String.valueOf(this.damage);
+		return "Health: \t\t" + String.valueOf(this.health) +
+				"\nAttack Spd: \t" + String.valueOf(this.attackSpeed) +
+				"\nDamage: \t\t" + String.valueOf(this.damage);
 	}
 	
 }

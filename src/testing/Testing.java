@@ -9,6 +9,7 @@ import characters.Astronauts.*;
 import game.*;
 import javafx.application.Application;
 
+
 class Testing {
 	
 	@BeforeClass
@@ -105,8 +106,7 @@ class Testing {
 		//MoneyTree coverage
 		MoneyTree moneyTree = (MoneyTree)testModel.getDefenderAt(1, 2);
 		assertFalse(moneyTree.canShoot());
-		assertTrue(moneyTree.toString().startsWith("Money Tree"));
-		
+		assertTrue(moneyTree.toString().startsWith("Money Tree"));	
 	}
 
 }
