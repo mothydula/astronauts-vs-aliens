@@ -5,6 +5,10 @@ import ammo.StartrellClugginsAmmo;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to Startrell's properties; this defender is the 4th most powerful
+ * (on a holistic scale) out of the 6 defenders who have the ability shoot.
+ */
 public class StartrellCluggins extends DefenderTower{
 	
 	public StartrellCluggins() {

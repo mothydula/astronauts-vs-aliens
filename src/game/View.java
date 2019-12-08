@@ -123,6 +123,8 @@ public class View extends Application implements Observer{
 	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
 	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
+	private final String LOSE_MUSIC				= "assets/sounds/houstonWeHaveProblem.mp3";
+	//private final String WIN_MUSIC
 
 	private final int ALIEN_RANDOM_OFFSET = 200;
 
@@ -164,7 +166,7 @@ public class View extends Application implements Observer{
 	
 	/**
 	 * Method that initializes a new View object with fresh
-	 * attributes to allow reusability if user wishes to start
+	 * attributes to allow re-usability if user wishes to start
 	 * a new game.
 	 */
 	public void initializeNewView() {
@@ -344,6 +346,8 @@ public class View extends Application implements Observer{
 	 */
 	public void triggerModal(String titleImage, String backgroundImage, String message) {
 		musicPlayer.stop();
+		musicPlayer = new MediaPlayer(new Media(new File(LOSE_MUSIC).toURI().toString()));
+		musicPlayer.play();
 		
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
@@ -571,8 +575,6 @@ public class View extends Application implements Observer{
 				hbox.getChildren().addAll(leftBox, rightBox);
 				introGameInfo.getChildren().add(hbox);
 			}
-			
-			
 			
 			ScrollPane infoPane = new ScrollPane();
 			infoPane.setPadding(new Insets(12,12,12,12));

@@ -12,6 +12,12 @@ import javafx.scene.layout.StackPane;
  * */
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
+/*
+ * This class contains the necessary sound and image files to display the ammo of the defenders.
+ * It also contains the methods that allow the ammo sprite/image to be moved across the board after
+ * it is 'fired'. All of the specific/individual ammo classes inherit from this one.
+ */
 public class Ammo {
 	
 	//The basic stats of the ammo

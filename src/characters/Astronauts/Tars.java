@@ -5,6 +5,11 @@ import ammo.TarsAmmo;
 import game.Controller;
 import javafx.scene.image.Image;
 
+/*
+ * This class contains methods related to TARS' properties; this defender is the 3rd most powerful
+ * (on a holistic scale) out of the 6 defenders who have the ability shoot. It is outmatched by only
+ * Moon Zeus and the Millenium Falcon.
+ */
 public class Tars extends DefenderTower{
 	
 	public Tars() {
