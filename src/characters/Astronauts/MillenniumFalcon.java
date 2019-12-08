@@ -38,6 +38,6 @@ public class MillenniumFalcon extends DefenderTower{
 	@Override
 	public boolean canShoot() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }
