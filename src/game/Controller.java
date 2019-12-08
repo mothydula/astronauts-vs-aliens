@@ -1,5 +1,21 @@
-package game;
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: Controller.java
+ * 
+ * Description: Controller class of the MVC design pattern
+ * that tracks the game logic ensuring that proper handling and
+ * updates are executed accordingly.
+ */
 
+package game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +30,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-
 import ammo.Ammo;
 import ammo.ExplosiveAstroJoeAmmo;
 import characters.BoardCharacter;
@@ -55,7 +70,10 @@ public class Controller {
 		restrictedTiles = new HashMap<Integer, Set<Integer>>();
 	}
 	
-	// Methods
+	/**
+	 * Initializes the environment for the game including starter
+	 * values, timelines, and Alien generation.
+	 */
 	public void initialize() {
 		timeElapsed = new AtomicLong(0);
 		rand = new Random();
@@ -66,6 +84,12 @@ public class Controller {
 		startTimeLine();
 	}
 	
+	/**
+	 * Generates the gameplay Timeline object that is the central
+	 * timer for the game. Include are various TimerTasks that run
+	 * scheduled tasks in the background to support the various
+	 * functionalities of the game.
+	 */
 	public void startTimeLine() {
 		gamePlayTimer = new Timer();
 		TimerTask turnTask = new TimerTask() {
@@ -126,6 +150,9 @@ public class Controller {
 		gamePlayTimer.schedule(increaseTime, 0, 1);
 	}
 	
+	/**
+	 * Triggers animations for Aliens, Towers, and Bullets
+	 */
 	private void animate() {
 		for (Enemy alien : model.getAliens()) {
 			try {
@@ -156,7 +183,11 @@ public class Controller {
 		}
 	}
 	
-	
+	/**
+	 * Method responsible for handling hits/deaths of aliens. Also
+	 * tracks the current state of the game waves to trigger the 
+	 * game won functionality if player survives all waves.
+	 */
 	private void calculateHitsOrDeaths() {
 		if (!model.hasAliens()) {
 			if (waveOneDone.get() && !waveTwoStarted.get()) {
@@ -166,8 +197,8 @@ public class Controller {
 				model.setWaveNumber(3);
 				generateAliens();
 			} else if (waveThreeDone.get()){
-				System.out.println("YOU WON!!!");
-				System.exit(0);
+				pause();
+				Platform.runLater( () -> model.setGameWon());
 			}
 		}
 		List<Ammo> bullets = new ArrayList<Ammo>(model.getBullets());
@@ -192,6 +223,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Method that checks if the game is over, if so, pauses the timer
+	 * and initiated the game over updating presenting user with a Modal.
+	 */
 	public void isGameOver() {
 		for (Enemy alien : model.getAliens()) {
 			if (alien.getCol() == 0) {
@@ -206,11 +241,18 @@ public class Controller {
 		}
 	}
 	
-	
+	/**
+	 * Public Accessor method for the speedMultiplier attribute
+	 * @return
+	 */
 	public int getSpeedMultiplier() {
 		return speedMultiplier;
 	}
 	
+	/**
+	 * Generates the alien waves with differing numbers of aliens
+	 * and differing types at each level.
+	 */
 	private void generateAliens() {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
@@ -296,6 +338,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Generates a LittleGreenMen object of a specified Amount
+	 * @param amount Requested number of Enemies to generate
+	 */
 	private void generateLittleGreenMan(int amount) {
 		for (int i = 0; i < amount; i++) {
 			LittleGreenMen alien = new LittleGreenMen();
@@ -310,6 +356,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Generates a Sprinter object of a specified Amount
+	 * @param amount Requested number of Enemies to generate
+	 */
 	private void generateSprinter(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Sprinter alien = new Sprinter();
@@ -324,6 +374,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Generates a Grunt object of a specified Amount
+	 * @param amount Requested number of Enemies to generate
+	 */
 	private void generateGrunt(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Grunt alien = new Grunt();
@@ -338,6 +392,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Generates a ManHunter object of a specified Amount
+	 * @param amount Requested number of Enemies to generate
+	 */
 	private void generateManHunter(int amount) {
 		for (int i = 0; i < amount; i++) {
 			ManHunter alien = new ManHunter();
@@ -352,6 +410,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Generates a Tank object of a specified Amount
+	 * @param amount Requested number of Enemies to generate
+	 */
 	private void generateTank(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Tank alien = new Tank();
@@ -366,6 +428,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Generates a Gargantua object of a specified Amount
+	 * @param amount Requested number of Enemies to generate
+	 */
 	private void generateGargantua(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Gargantua alien = new Gargantua();
@@ -380,38 +446,56 @@ public class Controller {
 		}
 	}
 	
-	
+	/**
+	 * Utility method used to increase the animation/play speed
+	 * of the game. Currently supports 1x and 2x speed.
+	 */
 	public void increaseSpeed() {
 		if (speedMultiplier == 1) {
 			speedMultiplier = 2;
 		} else {
 			speedMultiplier = 1;
 		}
-//		if (speedMultiplier == 8) {
-//			speedMultiplier = 1;
-//		} else {
-//			speedMultiplier *= 2;
-//		}
 		pause();
 		resume();
 	}
 	
+	/**
+	 * Utility method to update an Enemy animation according to 
+	 * a give speed.
+	 * @param speed Updated speed that the animation should run at 
+	 */
 	public void updateAlienAnimation(int speed) {
 		for (Enemy alien : model.getAliens()) {
 			alien.updateAnimationSpeed(speed);
 		}
 	}
 	
+	/**
+	 * Pauses the gameplay timer and updates all animations 
+	 * to pause them.
+	 */
 	public void pause() {
 		gamePlayTimer.cancel();
 		updateAlienAnimation(0);
 	}
 	
+	/**
+	 * Resumes the gameplay timer and updates all animations to
+	 * resume them at the current speedMultiplier.
+	 */
 	public void resume() {
 		startTimeLine();
 		updateAlienAnimation(speedMultiplier);
 	}
 	
+	/**
+	 * Places a BoardCharacter object at a specificed row and col on 
+	 * the board. Ensures that each character type is handled accordingly.
+	 * @param character BoardCharacter to be placed
+	 * @param row given row position for placement
+	 * @param col given col position for placement
+	 */
 	public void placeCharacter(BoardCharacter character, int row, int col) {
 		int currBank = model.getSpacebucks();
 		
@@ -436,16 +520,32 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Deposits specified amount of spacebucks into the players bank
+	 * @param amount
+	 */
 	public void depositSpacebucks(int amount) {
 		model.depositSpacebucks(amount);
 	}
 	
+	/**
+	 * Removes a given tower specified at a given row/col.
+	 * @param towerToRemove DefenderTower to remove 
+	 * @param row given row position to remove
+	 * @param col given col position to remove
+	 */
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
 		if (model.containsTower(row, col)) {
 			model.removeTower(towerToRemove, row, col);
 		}
 	}
 	
+	/**
+	 * Generates a HashMap of restricted row, [col, col, ...] pairs. This
+	 * will be used to ensure that the location if prohibited from placement 
+	 * and populated with the corresponding image in the View.
+	 * @param mapId ID for the given map to distinguish the level of difficulty
+	 */
 	public void assignMap(int mapId) {
 		if (mapId == STAGE_TWO_ID) {
 			restrictedTiles.put(0,new HashSet<Integer>(Arrays.asList(3,4)));
@@ -465,6 +565,10 @@ public class Controller {
 		model.setRestrictionedTiles(restrictedTiles);
 	}
 	
+	/**
+	 * Public Accesssor method for restrictedTiles HashMap
+	 * @return HashMap populated using assignMap()
+	 */
 	public Map<Integer, Set<Integer>> getRestrictedTiles() {
 		return restrictedTiles;
 	}
