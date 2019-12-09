@@ -76,5 +76,9 @@ public class Tank extends Enemy {
 				DIE_ID);
 		super.setDieView(dieView);
 	}
+	
+	public String toString() {
+		return "Tank\n" + super.infoCard();
+	}
 
 }

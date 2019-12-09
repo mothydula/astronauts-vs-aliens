@@ -33,6 +33,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -253,6 +254,9 @@ public class View extends Application implements Observer{
 				case MoveMessage.BULLET_PLACEMENT:
 					Ammo bullet = message.getBullet();
 					StackPane bulletPane = bullet.getStackPane();
+					bulletPane.setCache(true);
+					bulletPane.setCacheShape(true);
+					bulletPane.setCacheHint(CacheHint.SPEED);
 					
 					//bulletPane.setStyle("-fx-border-color: black");
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -260,7 +264,7 @@ public class View extends Application implements Observer{
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
 
 					mainGroup.getChildren().add(bulletPane);
-					bullet.playBulletNoise();
+					controller.playBulletNoise(bullet);
 					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
@@ -498,6 +502,57 @@ public class View extends Application implements Observer{
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(25);
 		
+		createInfoButton(); // infoBtn is global attribute
+		
+		VBox mapPicker = new VBox(2);
+		mapPicker.setAlignment(Pos.CENTER);
+		Text mapText = new Text("Select Map");
+		mapText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
+		mapText.setFill(Color.WHITE);
+		HBox mapDisplay = createMapSelectionBar();
+		mapPicker.getChildren().addAll(mapText, mapDisplay);
+		
+		VBox modeSelector = ceateModeSelector();
+		
+		Button startBtn = new Button("Start");
+		startBtn.setMinHeight(40);
+		startBtn.setMinWidth(100);
+		startBtn.setOnAction( e -> {
+			// Switch scene to Game Scene
+			setupGameScene();
+			isIntro = false;
+			musicPlayer.stop();
+			music(); // starts in game music
+			primaryStage.show();
+		});
+		
+		HBox bottomBox = new HBox(infoBtn, startBtn);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.setPadding(new Insets(10, 10, 10, 10));
+		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
+		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
+		
+		buttonBox.getChildren().addAll(mapPicker, modeSelector, bottomBox);
+		buttonBox.setMaxWidth(600);
+		buttonBox.setMaxHeight(200);
+		
+		buttonBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.5);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 2;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: black;");
+		
+		return buttonBox;
+	}
+	
+	/**
+	 * Method to create the Info Button and its handler to generate
+	 * a helpful menu the user can use to gain insight on rules, gameplay
+	 * and game characters they will come across
+	 */
+	public void createInfoButton() {
 		infoBtn = new Button("Info");
 		infoBtn.setMinHeight(40);
 		infoBtn.setMinWidth(100);
@@ -561,16 +616,16 @@ public class View extends Application implements Observer{
 			
 			for (Enemy alien : aliens) {
 				HBox hbox = new HBox();
-				
-				VBox leftBox = new VBox(alien.getWalkView());
-				VBox rightBox = new VBox(new Text(alien.toString()));
+
+				VBox leftBox = new VBox(new Text(alien.toString()));
+				VBox rightBox = new VBox(alien.getWalkView());
 				
 				leftBox.setMinWidth(100);
 				rightBox.setMinWidth(100);
 				hbox.setPrefWidth(250);
 				
 				leftBox.setAlignment(Pos.CENTER_LEFT);
-				rightBox.setAlignment(Pos.CENTER_LEFT);
+				rightBox.setAlignment(Pos.CENTER_RIGHT);
 				hbox.getChildren().addAll(leftBox, rightBox);
 				introGameInfo.getChildren().add(hbox);
 			}
@@ -603,50 +658,14 @@ public class View extends Application implements Observer{
 			infoStage.initStyle(StageStyle.UNDECORATED);
 			infoStage.show();
 		});
-
-		VBox mapPicker = new VBox(2);
-		mapPicker.setAlignment(Pos.CENTER);
-		Text mapText = new Text("Select Map");
-		mapText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
-		mapText.setFill(Color.WHITE);
-		HBox mapDisplay = createMapSelectionBar();
-		mapPicker.getChildren().addAll(mapText, mapDisplay);
-		
-		VBox modeSelector = ceateModeSelector();
-		
-		Button startBtn = new Button("Start");
-		startBtn.setMinHeight(40);
-		startBtn.setMinWidth(100);
-		startBtn.setOnAction( e -> {
-			// Switch scene to Game Scene
-			setupGameScene();
-			isIntro = false;
-			musicPlayer.stop();
-			music(); // starts in game music
-			primaryStage.show();
-		});
-		
-		HBox bottomBox = new HBox(infoBtn, startBtn);
-		bottomBox.setAlignment(Pos.CENTER);
-		bottomBox.setPadding(new Insets(10, 10, 10, 10));
-		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
-		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
-		
-		buttonBox.getChildren().addAll(mapPicker, modeSelector, bottomBox);
-		buttonBox.setMaxWidth(600);
-		buttonBox.setMaxHeight(200);
-		
-		buttonBox.setStyle(
-				"-fx-background-color: rgba(220, 220, 220, 0.5);" + 
-				"-fx-background-radius: 6;" + 
-				"-fx-border-style: solid inside;" + 
-				"-fx-border-width: 2;" + 
-				"-fx-border-radius: 5;" + 
-				"-fx-border-color: black;");
-		
-		return buttonBox;
 	}
 	
+	/**
+	 * Generates an HBox containing an Enemy object and their game stats
+	 * in a compact UI Element the user can easily read through
+	 * @param introGameInfo VBox that the new HBox will be added to
+	 * @param alien Enemy object to be added
+	 */
 	public void addAlienInfo(VBox introGameInfo, Enemy alien) {
 		HBox hbox = new HBox();
 		
@@ -943,6 +962,11 @@ public class View extends Application implements Observer{
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (!(rTiles.containsKey(row) && rTiles.get(row).contains(col))) {
 					StackPane tempStackPane = new StackPane();
+					
+					tempStackPane.setCache(true);
+					tempStackPane.setCacheShape(true);
+					tempStackPane.setCacheHint(CacheHint.SPEED);
+					
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -953,6 +977,11 @@ public class View extends Application implements Observer{
 					mainGroup.getChildren().add(tempStackPane);
 				} else {
 					StackPane tempStackPane = new StackPane();
+					
+					tempStackPane.setCache(true);
+					tempStackPane.setCacheShape(true);
+					tempStackPane.setCacheHint(CacheHint.SPEED);
+					
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);

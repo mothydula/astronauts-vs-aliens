@@ -75,5 +75,9 @@ public class Grunt extends Enemy {
 				DIE_ID);
 		super.setDieView(dieView);
 	}
+	
+	public String toString() {
+		return "Grunt\n" + super.infoCard();
+	}
 
 }
