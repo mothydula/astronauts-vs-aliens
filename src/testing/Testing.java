@@ -11,32 +11,14 @@ import javafx.application.Application;
 
 class Testing {
 	private static Thread t;
-	private static Thread t2;
 	private Model testModel = new Model();
 	private Controller testController = new Controller(testModel);
-	
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException {
 		// Initialise Java FX
 
 		System.out.printf("About to launch FX App\n");
 		t = new Thread("JavaFX Init Thread") {
-			public void run() {
-				Application.launch(View.class, new String[0]);
-			}
-		};
-		t.setDaemon(true);
-		t.start();
-		System.out.printf("FX App thread started\n");
-		Thread.sleep(500);
-	}
-	
-	@BeforeClass
-	public static void setUpClass2() throws InterruptedException {
-		// Initialise Java FX
-
-		System.out.printf("About to launch FX App\n");
-		t2 = new Thread("JavaFX Init Thread") {
 			public void run() {
 				Application.launch(View.class, new String[0]);
 			}
@@ -146,12 +128,16 @@ class Testing {
 		
 		assertEquals(0, testModelTwo.getAliens().size());
 		
-		testModelTwo.setWaveNumber(1);
-		testControllerTwo.firstWave.run();
-		testControllerTwo.firstWave.cancel();
-		testControllerTwo.secondWave.run();
-		testControllerTwo.secondWave.cancel();
-		
+		testControllerTwo.generateLittleGreenMan(4);
+		//delaySpawn(7000);
+		testControllerTwo.generateGrunt(4);
+		testControllerTwo.generateSprinter(2);
+		//delaySpawn(10000);
+		testControllerTwo.generateManHunter(3);
+		testControllerTwo.generateTank(2);
+		testControllerTwo.generateGrunt(5);
+		testControllerTwo.generateLittleGreenMan(2);
+
 		testControllerTwo.placeCharacter(moneyTree, 0, 0);
 		
 		//Remove the tile
@@ -159,17 +145,12 @@ class Testing {
 		
 		assertNotEquals(0, testModelTwo.getAliens().size());
 		
+		//testControllerTwo.firstWave.cancel();
+		//testControllerTwo.secondWave.cancel();
 		
-		
-		
-		testModelTwo.setWaveNumber(2);
-		testControllerTwo.firstWave.run();
-		testControllerTwo.secondWave.run();
-	}
-	
-	@Test
-	void enemyTests(){
-		
+		//testModelTwo.setWaveNumber(2);
+		//testControllerTwo.firstWave.run();
+		//testControllerTwo.secondWave.run();
 	}
 	
 
