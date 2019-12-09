@@ -33,6 +33,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -253,6 +254,9 @@ public class View extends Application implements Observer{
 				case MoveMessage.BULLET_PLACEMENT:
 					Ammo bullet = message.getBullet();
 					StackPane bulletPane = bullet.getStackPane();
+					bulletPane.setCache(true);
+					bulletPane.setCacheShape(true);
+					bulletPane.setCacheHint(CacheHint.SPEED);
 					
 					//bulletPane.setStyle("-fx-border-color: black");
 					bulletPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -260,7 +264,7 @@ public class View extends Application implements Observer{
 					bulletPane.setTranslateX((GP_CELL_SIZE * bullet.getCol()) + COLUMN_OFFSET + (GP_CELL_SIZE * 0.7));
 
 					mainGroup.getChildren().add(bulletPane);
-					bullet.playBulletNoise();
+					controller.playBulletNoise(bullet);
 					break;
 				case MoveMessage.BULLET_REMOVAL:
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
@@ -943,6 +947,11 @@ public class View extends Application implements Observer{
 			for (int col = 0; col < Controller.COLS; col++) {
 				if (!(rTiles.containsKey(row) && rTiles.get(row).contains(col))) {
 					StackPane tempStackPane = new StackPane();
+					
+					tempStackPane.setCache(true);
+					tempStackPane.setCacheShape(true);
+					tempStackPane.setCacheHint(CacheHint.SPEED);
+					
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);
@@ -953,6 +962,11 @@ public class View extends Application implements Observer{
 					mainGroup.getChildren().add(tempStackPane);
 				} else {
 					StackPane tempStackPane = new StackPane();
+					
+					tempStackPane.setCache(true);
+					tempStackPane.setCacheShape(true);
+					tempStackPane.setCacheHint(CacheHint.SPEED);
+					
 					tempStackPane.setTranslateY(BOARD_OFFSET + (row * ROW_OFFSET));
 					tempStackPane.setTranslateX((GP_CELL_SIZE * col) + COLUMN_OFFSET);
 					tempStackPane.setMaxSize(GP_CELL_SIZE, GP_CELL_SIZE);

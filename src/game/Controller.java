@@ -17,6 +17,7 @@
 
 package game;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
@@ -30,7 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import ammo.Ammo;
+import ammo.*;
 import ammo.ExplosiveAstroJoeAmmo;
 import characters.BoardCharacter;
 import characters.Aliens.*;
@@ -38,6 +39,9 @@ import characters.Astronauts.DefenderTower;
 import characters.Astronauts.MillenniumFalcon;
 import characters.IncomeTowers.IncomeTower;
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class Controller {
 	// Static constants
@@ -48,6 +52,19 @@ public class Controller {
 	public static final int STAGE_THREE_ID = 3;
 	public static final int STANDARD_MODE = 1;
 	public static final int DOUBLE_COST_MODE = 2;
+	
+	// Sound Effect Constants
+	public static final String ASTROJOE_AMMO_NOISE = "assets/sounds/ammo_noises/astroJoeAmmoNoise.wav";
+	public static final String EXPLOSIVE_ASTROJOE_AMMO_NOISE = "assets/sounds/ammo_noises/explosiveAstroJoeAmmoNoise.mp3";
+	public static final String MOON_ZEUS_AMMO_NOISE = "assets/sounds/ammo_noises/moonZeusAmmoNoise.m4a";
+	public static final String STARTRELL_CLUGGINS_AMMO_NOISE = "assets/sounds/ammo_noises/startrellClugginsAmmoNoise.mp3";
+	public static final String TARS_AMMO_NOISE = "assets/sounds/ammo_noises/tarsAmmoNoise.m4a";
+	public static final String MILLENIUM_FALCON_AMMO_NOISE = "assets/sounds/ammo_noises/milleniumFalconAmmoNoise.mp3";
+	private MediaPlayer astroJoeAmmoNoise = new MediaPlayer(new Media(new File(ASTROJOE_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer tarsAmmoNoise = new MediaPlayer(new Media(new File(TARS_AMMO_NOISE).toURI().toString()));
 	
 	// Class fields
 	private Model model;
@@ -618,5 +635,39 @@ public class Controller {
 	 */
 	public Map<Integer, Set<Integer>> getRestrictedTiles() {
 		return restrictedTiles;
+	}
+	
+	/**
+	 * Given a specified Bullet object, it will play the corresponding
+	 * sound snippet for that particular class.
+	 * @param bullet Specified bullet to play sound effect for
+	 */
+	public void playBulletNoise(Ammo bullet) {
+		if (bullet instanceof AstroJoeAmmo) {
+			Platform.runLater( () -> {
+				astroJoeAmmoNoise.play();
+				astroJoeAmmoNoise.seek(Duration.seconds(0));	
+			});
+		} else if (bullet instanceof ExplosiveAstroJoeAmmo) {
+			Platform.runLater( () -> {
+				explosiveAstroJoeAmmoNoise.play();
+				explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
+			});
+		} else if (bullet instanceof StartrellClugginsAmmo) {
+			Platform.runLater( () -> {
+				startrellClugginsAmmoNoise.play();
+				startrellClugginsAmmoNoise.seek(Duration.seconds(0));	
+			});
+		} else if (bullet instanceof TarsAmmo) {
+			Platform.runLater( () -> {
+				tarsAmmoNoise.play();
+				tarsAmmoNoise.seek(Duration.seconds(0));
+			});
+		} else if (bullet instanceof MoonZeusAmmo) {
+			Platform.runLater( () -> {
+				moonZeusAmmoNoise.play();
+				moonZeusAmmoNoise.seek(Duration.seconds(0));
+			});
+		}
 	}
 }
