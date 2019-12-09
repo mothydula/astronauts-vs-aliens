@@ -502,6 +502,57 @@ public class View extends Application implements Observer{
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(25);
 		
+		createInfoButton(); // infoBtn is global attribute
+		
+		VBox mapPicker = new VBox(2);
+		mapPicker.setAlignment(Pos.CENTER);
+		Text mapText = new Text("Select Map");
+		mapText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
+		mapText.setFill(Color.WHITE);
+		HBox mapDisplay = createMapSelectionBar();
+		mapPicker.getChildren().addAll(mapText, mapDisplay);
+		
+		VBox modeSelector = ceateModeSelector();
+		
+		Button startBtn = new Button("Start");
+		startBtn.setMinHeight(40);
+		startBtn.setMinWidth(100);
+		startBtn.setOnAction( e -> {
+			// Switch scene to Game Scene
+			setupGameScene();
+			isIntro = false;
+			musicPlayer.stop();
+			music(); // starts in game music
+			primaryStage.show();
+		});
+		
+		HBox bottomBox = new HBox(infoBtn, startBtn);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.setPadding(new Insets(10, 10, 10, 10));
+		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
+		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
+		
+		buttonBox.getChildren().addAll(mapPicker, modeSelector, bottomBox);
+		buttonBox.setMaxWidth(600);
+		buttonBox.setMaxHeight(200);
+		
+		buttonBox.setStyle(
+				"-fx-background-color: rgba(220, 220, 220, 0.5);" + 
+				"-fx-background-radius: 6;" + 
+				"-fx-border-style: solid inside;" + 
+				"-fx-border-width: 2;" + 
+				"-fx-border-radius: 5;" + 
+				"-fx-border-color: black;");
+		
+		return buttonBox;
+	}
+	
+	/**
+	 * Method to create the Info Button and its handler to generate
+	 * a helpful menu the user can use to gain insight on rules, gameplay
+	 * and game characters they will come across
+	 */
+	public void createInfoButton() {
 		infoBtn = new Button("Info");
 		infoBtn.setMinHeight(40);
 		infoBtn.setMinWidth(100);
@@ -607,50 +658,14 @@ public class View extends Application implements Observer{
 			infoStage.initStyle(StageStyle.UNDECORATED);
 			infoStage.show();
 		});
-
-		VBox mapPicker = new VBox(2);
-		mapPicker.setAlignment(Pos.CENTER);
-		Text mapText = new Text("Select Map");
-		mapText.setFont(Font.font("Courier New", FontWeight.BOLD, 26));
-		mapText.setFill(Color.WHITE);
-		HBox mapDisplay = createMapSelectionBar();
-		mapPicker.getChildren().addAll(mapText, mapDisplay);
-		
-		VBox modeSelector = ceateModeSelector();
-		
-		Button startBtn = new Button("Start");
-		startBtn.setMinHeight(40);
-		startBtn.setMinWidth(100);
-		startBtn.setOnAction( e -> {
-			// Switch scene to Game Scene
-			setupGameScene();
-			isIntro = false;
-			musicPlayer.stop();
-			music(); // starts in game music
-			primaryStage.show();
-		});
-		
-		HBox bottomBox = new HBox(infoBtn, startBtn);
-		bottomBox.setAlignment(Pos.CENTER);
-		bottomBox.setPadding(new Insets(10, 10, 10, 10));
-		HBox.setMargin(infoBtn, new Insets(10, 10, 10, 10));
-		HBox.setMargin(bottomBox, new Insets(10, 10, 10, 10));
-		
-		buttonBox.getChildren().addAll(mapPicker, modeSelector, bottomBox);
-		buttonBox.setMaxWidth(600);
-		buttonBox.setMaxHeight(200);
-		
-		buttonBox.setStyle(
-				"-fx-background-color: rgba(220, 220, 220, 0.5);" + 
-				"-fx-background-radius: 6;" + 
-				"-fx-border-style: solid inside;" + 
-				"-fx-border-width: 2;" + 
-				"-fx-border-radius: 5;" + 
-				"-fx-border-color: black;");
-		
-		return buttonBox;
 	}
 	
+	/**
+	 * Generates an HBox containing an Enemy object and their game stats
+	 * in a compact UI Element the user can easily read through
+	 * @param introGameInfo VBox that the new HBox will be added to
+	 * @param alien Enemy object to be added
+	 */
 	public void addAlienInfo(VBox introGameInfo, Enemy alien) {
 		HBox hbox = new HBox();
 		
