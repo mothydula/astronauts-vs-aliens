@@ -61,7 +61,7 @@ public class Controller {
 	public static final String TARS_AMMO_NOISE = "assets/sounds/ammo_noises/tarsAmmoNoise.m4a";
 	public static final String MILLENIUM_FALCON_AMMO_NOISE = "assets/sounds/ammo_noises/milleniumFalconAmmoNoise.mp3";
 	private MediaPlayer astroJoeAmmoNoise = new MediaPlayer(new Media(new File(ASTROJOE_AMMO_NOISE).toURI().toString()));
-	private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
+	//private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer tarsAmmoNoise = new MediaPlayer(new Media(new File(TARS_AMMO_NOISE).toURI().toString()));
@@ -215,7 +215,7 @@ public class Controller {
 	 * tracks the current state of the game waves to trigger the 
 	 * game won functionality if player survives all waves.
 	 */
-	private void calculateHitsOrDeaths() {
+	private void calculateHitsOrDeaths() throws ConcurrentModificationException {
 		if (!model.hasAliens()) {
 			if (waveOneDone.get() && !waveTwoStarted.get()) {
 				model.setWaveNumber(2);
@@ -694,8 +694,8 @@ public class Controller {
 			});
 		} else if (bullet instanceof ExplosiveAstroJoeAmmo) {
 			Platform.runLater( () -> {
-				explosiveAstroJoeAmmoNoise.play();
-				explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
+				//explosiveAstroJoeAmmoNoise.play();
+				//explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
 			});
 		} else if (bullet instanceof StartrellClugginsAmmo) {
 			Platform.runLater( () -> {
