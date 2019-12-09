@@ -195,7 +195,9 @@ public class View extends Application implements Observer{
 				new Tank(),
 				new Gargantua()
 		};
-
+		// Default settings
+		selectedMap = Controller.STAGE_ONE_ID;
+		selectedMode = Controller.STANDARD_MODE;
 		isIntro = true;
 		removeToggled = false;
 	}
