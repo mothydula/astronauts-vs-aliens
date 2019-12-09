@@ -379,7 +379,7 @@ public class Controller {
 	 * Generates a LittleGreenMen object of a specified Amount
 	 * @param amount Requested number of Enemies to generate
 	 */
-	private void generateLittleGreenMan(int amount) {
+	public void generateLittleGreenMan(int amount) {
 		for (int i = 0; i < amount; i++) {
 			LittleGreenMen alien = new LittleGreenMen();
 			int row = rand.nextInt(ROWS);
@@ -397,7 +397,7 @@ public class Controller {
 	 * Generates a Sprinter object of a specified Amount
 	 * @param amount Requested number of Enemies to generate
 	 */
-	private void generateSprinter(int amount) {
+	public void generateSprinter(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Sprinter alien = new Sprinter();
 			int row = rand.nextInt(ROWS);
@@ -415,7 +415,7 @@ public class Controller {
 	 * Generates a Grunt object of a specified Amount
 	 * @param amount Requested number of Enemies to generate
 	 */
-	private void generateGrunt(int amount) {
+	public void generateGrunt(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Grunt alien = new Grunt();
 			int row = rand.nextInt(ROWS);
@@ -433,7 +433,7 @@ public class Controller {
 	 * Generates a ManHunter object of a specified Amount
 	 * @param amount Requested number of Enemies to generate
 	 */
-	private void generateManHunter(int amount) {
+	public void generateManHunter(int amount) {
 		for (int i = 0; i < amount; i++) {
 			ManHunter alien = new ManHunter();
 			int row = rand.nextInt(ROWS);
@@ -451,7 +451,7 @@ public class Controller {
 	 * Generates a Tank object of a specified Amount
 	 * @param amount Requested number of Enemies to generate
 	 */
-	private void generateTank(int amount) {
+	public void generateTank(int amount) {
 		for (int i = 0; i < amount; i++) {
 			Tank alien = new Tank();
 			int row = rand.nextInt(ROWS);
