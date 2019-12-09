@@ -287,11 +287,7 @@ public class Controller {
 				@Override
 				public void run() {					
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(4);
-					delaySpawn(6000);
-					generateGrunt(3);
-					delaySpawn(3000);
-					generateGrunt(2);
+					waveOneSpawn();
 				}
 				
 			};
@@ -300,13 +296,7 @@ public class Controller {
 
 				@Override
 				public void run() {
-					waveOneDone.set(true);
-					delaySpawn(10000);
-					generateLittleGreenMan(3);
-					delaySpawn(5000);
-					generateGrunt(3);
-					delaySpawn(4000);
-					generateSprinter(3);
+					waveOnePtFiveSpawn();
 					
 				}
 				
@@ -321,15 +311,7 @@ public class Controller {
 				public void run() {
 					waveTwoStarted.set(true);
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(4);
-					delaySpawn(7000);
-					generateGrunt(4);
-					generateSprinter(2);
-					delaySpawn(10000);
-					generateManHunter(3);
-					generateTank(2);
-					generateGrunt(5);
-					generateLittleGreenMan(2);
+					waveTwoSpawn();
 				}
 				
 			};
@@ -338,12 +320,7 @@ public class Controller {
 
 				@Override
 				public void run() {
-					waveTwoDone.set(true);
-					delaySpawn(15000);
-					generateTank(3);
-					delaySpawn(6000);
-					generateManHunter(3);
-					System.out.println("WAVE TWO");
+					waveTwoPtFiveSpawn();
 				}
 				
 			};
@@ -358,18 +335,7 @@ public class Controller {
 				public void run() {
 					waveThreeDone.set(true);
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(4);
-					delaySpawn(5000);
-					generateGrunt(4);
-					generateTank(2);
-					generateLittleGreenMan(4);
-					delaySpawn(10000);
-					generateSprinter(4);
-					generateManHunter(4);
-					delaySpawn(7000);
-					generateGargantua(3);
-					generateLittleGreenMan(4);
-					System.out.println("WAVE THREE");
+					
 				}
 				
 			};
@@ -391,6 +357,81 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Handles the spawning for the first set in the first
+	 * wave of enemies
+	 * */
+	public void waveOneSpawn() {
+		generateLittleGreenMan(4);
+		delaySpawn(6000);
+		generateGrunt(3);
+		delaySpawn(3000);
+		generateGrunt(2);
+	}
+	
+	/**
+	 * Handles the spawning for the second set in the first
+	 * wave of enemies
+	 * */
+	public void waveOnePtFiveSpawn() {
+		waveOneDone.set(true);
+		delaySpawn(10000);
+		generateLittleGreenMan(3);
+		delaySpawn(5000);
+		generateGrunt(3);
+		delaySpawn(4000);
+		generateSprinter(3);
+	}
+	
+	/**
+	 * Handles the spawning for the first set in the second
+	 * wave of enemies
+	 * */
+	public void waveTwoSpawn() {
+		generateLittleGreenMan(4);
+		delaySpawn(7000);
+		generateGrunt(4);
+		generateSprinter(2);
+		delaySpawn(10000);
+		generateManHunter(3);
+		generateTank(2);
+		generateGrunt(5);
+		generateLittleGreenMan(2);
+	}
+	
+	/**
+	 * Handles the spawning for the second set in the second
+	 * wave of enemies
+	 * */
+	public void waveTwoPtFiveSpawn() {
+		waveTwoDone.set(true);
+		delaySpawn(15000);
+		generateTank(3);
+		delaySpawn(6000);
+		generateManHunter(3);
+		System.out.println("WAVE TWO");
+	}
+	
+	/**
+	 * Handles the spawning for the first set in the third
+	 * wave of enemies
+	 * */
+	public void waveThreeSpawn() {
+		generateLittleGreenMan(4);
+		delaySpawn(5000);
+		generateGrunt(4);
+		generateTank(2);
+		generateLittleGreenMan(4);
+		delaySpawn(10000);
+		generateSprinter(4);
+		generateManHunter(4);
+		delaySpawn(7000);
+		generateGargantua(3);
+		generateLittleGreenMan(4);
+		System.out.println("WAVE THREE");
+	}
+	
 	
 	/**
 	 * Generates a LittleGreenMen object of a specified Amount
