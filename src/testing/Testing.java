@@ -128,15 +128,9 @@ class Testing {
 		
 		assertEquals(0, testModelTwo.getAliens().size());
 		
-		testControllerTwo.generateLittleGreenMan(4);
-		//delaySpawn(7000);
-		testControllerTwo.generateGrunt(4);
-		testControllerTwo.generateSprinter(2);
-		//delaySpawn(10000);
-		testControllerTwo.generateManHunter(3);
-		testControllerTwo.generateTank(2);
-		testControllerTwo.generateGrunt(5);
-		testControllerTwo.generateLittleGreenMan(2);
+		//First wave
+		testControllerTwo.waveOneSpawn();
+		testControllerTwo.waveTwoPtFiveSpawn();
 
 		testControllerTwo.placeCharacter(moneyTree, 0, 0);
 		
