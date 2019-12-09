@@ -589,9 +589,15 @@ public class Controller {
 	 * @param col given col position to remove
 	 */
 	public void removeTower(DefenderTower towerToRemove, int row, int col) {
+		System.out.println(row + ":" + col);
+
 		if (model.containsTower(row, col)) {
+			System.out.println("HERE");
+
 			model.removeTower(towerToRemove, row, col);
 		}
+		System.out.println("NO");
+
 	}
 	
 	/**
