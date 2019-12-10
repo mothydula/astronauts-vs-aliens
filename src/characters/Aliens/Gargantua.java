@@ -78,7 +78,7 @@ public class Gargantua extends Enemy{
 	}
 	
 	public String toString() {
-		return "Garganuta\n" + super.infoCard();
+		return "Gargantua\n" + super.infoCard();
 	}
 
 }
