@@ -255,10 +255,19 @@ class Testing {
 		assertTrue(mh.toString().startsWith("ManHunter"));
 		
 		Sprinter sprinter = new Sprinter();
-		assertTrue(greenMan.toString().startsWith("Sprinter"));
+		assertTrue(sprinter.toString().startsWith("Sprinter"));
 		
 		Tank tank = new Tank();
 		assertTrue(tank.toString().startsWith("Tank"));
+		assertFalse(tank.isAttacking());
+		tank.setAttacking(true);
+		assertTrue(tank.isAttacking());
+		assertNotEquals(tank.getDieView(), tank.getAttackView());
+		
+		tank.setStackPane();
+		assertNotNull(tank.getStackPane());
+		tank.triggerAnimation(Enemy.ATTACK_ID);
+		
 	}
 
 }
