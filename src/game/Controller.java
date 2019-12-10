@@ -123,7 +123,7 @@ public class Controller {
 				calculateHitsOrDeaths();
 				try {
 					animate();
-				} catch(ConcurrentModificationException e) {
+				} catch(ConcurrentModificationException | NullPointerException e) {
 					
 				}
 			}

@@ -168,7 +168,7 @@ public class Model extends Observable {
 	 * @return boolean result of the check for an existing Object at row,col
 	 */
 	public boolean containsTower(int row, int col) {
-		return board[row][col].isEmpty();
+		return !board[row][col].isEmpty();
 	}
 	
 	/**
