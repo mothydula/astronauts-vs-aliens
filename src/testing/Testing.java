@@ -9,15 +9,22 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
-import characters.Aliens.Enemy;
-import characters.Aliens.Gargantua;
+import ammo.AstroJoeAmmo;
+import ammo.ExplosiveAstroJoeAmmo;
+import ammo.MoonZeusAmmo;
+import ammo.StartrellClugginsAmmo;
+import ammo.TarsAmmo;
+import characters.Aliens.*;
+
+import characters.Aliens.LittleGreenMen;
 import characters.Astronauts.*;
 import game.*;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 
 class Testing {
 	private static Thread t;
-	
+
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException {
 		// Initialise Java FX
@@ -43,7 +50,7 @@ class Testing {
 
 		testController.initialize();
 
-		//Place a character when broke
+		// Place a character when broke
 		testController.placeCharacter(new MillenniumFalcon(), 0, 0);
 		assertTrue(testModel.isAvailable(0, 0));
 		// Give the test bot enough money
@@ -119,105 +126,123 @@ class Testing {
 		moneyTree.shoot();
 		assertFalse(moneyTree.canShoot());
 		assertTrue(moneyTree.toString().startsWith("Money Tree"));
-		
-		//If there is already a Character on the board
+
+		// If there is already a Character on the board
 		testController.placeCharacter(new Asteroid(), 0, 0);
-		
-		//Remove the tile
+
+		// Remove the tile
 		testModel.removeTower(startrell, 0, 0);
-		
-		//Run the pause and play testing
+
+		// Run the pause and play testing
 
 		assertEquals(1, testController.getSpeedMultiplier());
-		//testController.increaseSpeed();
-		//assertEquals(2, testController.getSpeedMultiplier());
-		
-		//assertEquals(0, testModel.getAliens().size());
-		
-		//First wave
+		// testController.increaseSpeed();
+		// assertEquals(2, testController.getSpeedMultiplier());
+
+		// assertEquals(0, testModel.getAliens().size());
+
+		// First wave
 		testController.waveOneSpawn();
 		testController.waveOnePtFiveSpawn();
-		
+
 		int alienCount = 0;
-		
-		//Test for aliens on the board
-		for(int i = 0; i < testModel.getBoard().length; i++) {
-			for(int j = 0; j < testModel.getBoard()[0].length; j++) {
-				if(testModel.getBoard()[i][j].getCharacter() instanceof Enemy) {
+
+		// Test for aliens on the board
+		for (int i = 0; i < testModel.getBoard().length; i++) {
+			for (int j = 0; j < testModel.getBoard()[0].length; j++) {
+				if (testModel.getBoard()[i][j].getCharacter() instanceof Enemy) {
 					alienCount++;
 				}
 			}
 		}
-		
-		//assertTrue(alienCount > 0);
-		
-		//Second wave
+
+		// assertTrue(alienCount > 0);
+
+		// Second wave
 		testController.waveTwoSpawn();
 		testController.waveTwoPtFiveSpawn();
-		
-		//Third wave
+
+		// Third wave
 		testController.waveThreeSpawn();
 
 		testController.placeCharacter(moneyTree, 0, 0);
-		
-		//Remove the tile
+
+		// Remove the tile
 		testModel.removeTower(moneyTree, 0, 0);
-		
+
 		assertNotEquals(0, testModel.getAliens().size());
-		
-		
-		//Test the wave timer tasks
+
+		// Test the wave timer tasks
 		testModel.setWaveNumber(2);
 		testController.generateAliens();
 		assertNotNull(testController.firstWave);
 		assertNotNull(testController.secondWave);
-		
+
 		testController.firstWave = null;
 		testController.secondWave = null;
-		
+
 		testModel.setWaveNumber(1);
 		testController.generateAliens();
 		assertNotNull(testController.firstWave);
 		assertNotNull(testController.secondWave);
-		
+
 		testController.firstWave = null;
 		testController.secondWave = null;
-		
+
 		testModel.setWaveNumber(3);
 		testController.generateAliens();
 		assertNotNull(testController.firstWave);
 		assertNull(testController.secondWave);
-		
-		//Test speed multiplication
-		//assertEquals(testController.getSpeedMultiplier(), 1);
-		//testController.increaseSpeed();
-		//assertEquals(testController.getSpeedMultiplier(), 2);
-		
-		//Test the setup of assignMap
+
+		// Test speed multiplication
+		// assertEquals(testController.getSpeedMultiplier(), 1);
+		// testController.increaseSpeed();
+		// assertEquals(testController.getSpeedMultiplier(), 2);
+
+		// Test the setup of assignMap
 		assertTrue(testController.getRestrictedTiles().isEmpty());
 		testController.assignMap(2);
 		assertFalse(testController.getRestrictedTiles().isEmpty());
-		
+
 		testModel.setRestrictionedTiles(new HashMap<Integer, Set<Integer>>());
-		
-		
+
 		testController.assignMap(3);
 		assertFalse(testController.getRestrictedTiles().isEmpty());
 		assertEquals(testController.getRestrictedTiles().get(0).size(), 3);
-		
-		//Game mode tests
+
+		// Game mode tests
 		testController.assignGameMode(1);
 		assertEquals(testController.costMultiplier, 1);
 		testController.assignGameMode(2);
 		assertEquals(testController.costMultiplier, 2);
+
+		// Game over tests
+		LittleGreenMen greenMan = new LittleGreenMen();
+		assertFalse(testController.isGameOver(greenMan));
+		greenMan.setCol(0);
+		// assertTrue(testController.isGameOver(greenMan));
+
+		// Bullet Tests
+		testModel.addBullet(new AstroJoeAmmo(astroJoe));
+		assertFalse(testModel.getBullets().isEmpty());
+		testController.playBulletNoise(new AstroJoeAmmo(astroJoe));
+		testController.playBulletNoise(new ExplosiveAstroJoeAmmo(eAstroJoe));
+		testController.playBulletNoise(new StartrellClugginsAmmo(startrell));
+		testController.playBulletNoise(new MoonZeusAmmo(zeus));
+		testController.playBulletNoise(new TarsAmmo(tars));
+
+		// Remove Tower
+		testController.removeTower(startrell, 0, 0);
+		assertTrue(testModel.isAvailable(0, 0));
+
+		// Character testing
+		assertFalse(startrell.isDead());
+		assertNotNull(startrell.getImage());
+		startrell.setHealth(0);
+		assertTrue(startrell.isDead());
+		startrell.setDamage(0);
 		
-		//Game over tests
-		Gargantua gargantua = new Gargantua();
-		testController.placeCharacter(gargantua, 3, 0);
-		assertTrue(testController.isGameOver(gargantua));
-		
-		
+		//AlienTesting
 	}
-	
 
 }
