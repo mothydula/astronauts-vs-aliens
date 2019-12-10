@@ -2,10 +2,15 @@ package testing;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 import characters.Aliens.Enemy;
+import characters.Aliens.Gargantua;
 import characters.Astronauts.*;
 import game.*;
 import javafx.application.Application;
@@ -35,6 +40,7 @@ class Testing {
 		setUpClass();
 		Model testModel = new Model();
 		Controller testController = new Controller(testModel);
+
 		testController.initialize();
 
 		//Place a character when broke
@@ -159,12 +165,58 @@ class Testing {
 		
 		assertNotEquals(0, testModel.getAliens().size());
 		
-		//testController.firstWave.cancel();
-		//testController.secondWave.cancel();
 		
-		//testModel.setWaveNumber(2);
-		//testController.firstWave.run();
-		//testController.secondWave.run();
+		//Test the wave timer tasks
+		testModel.setWaveNumber(2);
+		testController.generateAliens();
+		assertNotNull(testController.firstWave);
+		assertNotNull(testController.secondWave);
+		
+		testController.firstWave = null;
+		testController.secondWave = null;
+		
+		testModel.setWaveNumber(1);
+		testController.generateAliens();
+		assertNotNull(testController.firstWave);
+		assertNotNull(testController.secondWave);
+		
+		testController.firstWave = null;
+		testController.secondWave = null;
+		
+		testModel.setWaveNumber(3);
+		testController.generateAliens();
+		assertNotNull(testController.firstWave);
+		assertNull(testController.secondWave);
+		
+		//Test speed multiplication
+		//assertEquals(testController.getSpeedMultiplier(), 1);
+		//testController.increaseSpeed();
+		//assertEquals(testController.getSpeedMultiplier(), 2);
+		
+		//Test the setup of assignMap
+		assertTrue(testController.getRestrictedTiles().isEmpty());
+		testController.assignMap(2);
+		assertFalse(testController.getRestrictedTiles().isEmpty());
+		
+		testModel.setRestrictionedTiles(new HashMap<Integer, Set<Integer>>());
+		
+		
+		testController.assignMap(3);
+		assertFalse(testController.getRestrictedTiles().isEmpty());
+		assertEquals(testController.getRestrictedTiles().get(0).size(), 3);
+		
+		//Game mode tests
+		testController.assignGameMode(1);
+		assertEquals(testController.costMultiplier, 1);
+		testController.assignGameMode(2);
+		assertEquals(testController.costMultiplier, 2);
+		
+		//Game over tests
+		Gargantua gargantua = new Gargantua();
+		testController.placeCharacter(gargantua, 3, 0);
+		assertTrue(testController.isGameOver(gargantua));
+		
+		
 	}
 	
 

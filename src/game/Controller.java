@@ -251,7 +251,7 @@ public class Controller {
 	 * Method that checks if the game is over, if so, pauses the timer
 	 * and initiated the game over updating presenting user with a Modal.
 	 */
-	private boolean isGameOver(Enemy alien) {
+	public boolean isGameOver(Enemy alien) {
 		if (alien.getCol() == 0) {
 			// Game over, pause timer, animate attacking aliens & end game
 			pause();
@@ -276,7 +276,7 @@ public class Controller {
 	 * Generates the alien waves with differing numbers of aliens
 	 * and differing types at each level.
 	 */
-	private void generateAliens() {
+	public void generateAliens() {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
 		
@@ -560,7 +560,7 @@ public class Controller {
 	 * a give speed.
 	 * @param speed Updated speed that the animation should run at 
 	 */
-	public void updateAlienAnimation(int speed) {
+	public void updateAlienAnimation(int speed) throws ConcurrentModificationException{
 		for (Enemy alien : model.getAliens()) {
 			alien.updateAnimationSpeed(speed);
 		}
@@ -570,7 +570,7 @@ public class Controller {
 	 * Pauses the gameplay timer and updates all animations 
 	 * to pause them.
 	 */
-	public void pause() {
+	public void pause() throws ConcurrentModificationException{
 		gamePlayTimer.cancel();
 		updateAlienAnimation(0);
 	}
