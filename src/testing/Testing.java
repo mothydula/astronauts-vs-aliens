@@ -39,7 +39,7 @@ class Testing {
 
 		//Place a character when broke
 		testController.placeCharacter(new MillenniumFalcon(), 0, 0);
-		
+		assertTrue(testModel.isAvailable(0, 0));
 		// Give the test bot enough money
 		testModel.depositSpacebucks(10000);
 
@@ -56,7 +56,8 @@ class Testing {
 
 		// Testing Defender detection
 		assertTrue(testModel.getDefenderAt(0, 0) instanceof StartrellCluggins);
-
+		assertFalse(testModel.isAvailable(0, 0));
+		assertTrue(testModel.containsTower(0, 0));
 		// StartrellCluggins coverage
 		StartrellCluggins startrell = (StartrellCluggins) testModel.getDefenderAt(0, 0);
 		startrell.shoot();

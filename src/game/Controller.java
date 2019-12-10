@@ -62,7 +62,7 @@ public class Controller {
 	public static final String MILLENIUM_FALCON_AMMO_NOISE = "assets/sounds/ammo_noises/milleniumFalconAmmoNoise.mp3";
 	private MediaPlayer astroJoeAmmoNoise = new MediaPlayer(new Media(new File(ASTROJOE_AMMO_NOISE).toURI().toString()));
 	//private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
-	private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
+	//private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer tarsAmmoNoise = new MediaPlayer(new Media(new File(TARS_AMMO_NOISE).toURI().toString()));
 	
@@ -709,8 +709,8 @@ public class Controller {
 			});
 		} else if (bullet instanceof MoonZeusAmmo) {
 			Platform.runLater( () -> {
-				moonZeusAmmoNoise.play();
-				moonZeusAmmoNoise.seek(Duration.seconds(0));
+				//moonZeusAmmoNoise.play();
+				//moonZeusAmmoNoise.seek(Duration.seconds(0));
 			});
 		}
 	}
