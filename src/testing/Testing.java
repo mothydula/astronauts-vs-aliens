@@ -242,7 +242,23 @@ class Testing {
 		assertTrue(startrell.isDead());
 		startrell.setDamage(0);
 		
-		//AlienTesting
+		//Alien Testing
+		assertTrue(greenMan.toString().startsWith("LittleGreenMen"));
+		
+		Gargantua gargan = new Gargantua();
+		assertTrue(gargan.toString().startsWith("Gargantua"));
+		
+		Grunt grunt = new Grunt();
+		assertTrue(grunt.toString().startsWith("Grunt"));
+		
+		ManHunter mh = new ManHunter();
+		assertTrue(mh.toString().startsWith("ManHunter"));
+		
+		Sprinter sprinter = new Sprinter();
+		assertTrue(greenMan.toString().startsWith("Sprinter"));
+		
+		Tank tank = new Tank();
+		assertTrue(tank.toString().startsWith("Tank"));
 	}
 
 }
