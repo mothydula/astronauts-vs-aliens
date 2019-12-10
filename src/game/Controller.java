@@ -177,7 +177,7 @@ public class Controller {
 	/**
 	 * Triggers animations for Aliens, Towers, and Bullets
 	 */
-	private void animate() {
+	public void animate() {
 		for (Enemy alien : model.getAliens()) {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
