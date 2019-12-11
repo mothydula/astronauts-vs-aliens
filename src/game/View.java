@@ -123,7 +123,9 @@ public class View extends Application implements Observer{
 	// fields for the music files
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
 	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
-	private final String LOSE_MUSIC				= "assets/sounds/houstonWeHaveProblem.mp3";
+	private MediaPlayer loseMusic = new MediaPlayer(new Media(new File("assets/sounds/houstonWeHaveProblem.mp3").toURI().toString()));
+	//private MediaPlayer winMusic = new MediaPlayer(new Media(new File(WIN_MUSIC).toURI().toString()));
+	
 	//private final String WIN_MUSIC
 
 	private final int ALIEN_RANDOM_OFFSET = 200;
@@ -266,6 +268,7 @@ public class View extends Application implements Observer{
 					mainGroup.getChildren().remove(message.getBullet().getStackPane());
 					break;
 				case MoveMessage.GAME_OVER:
+					// TODO: add appropriate music players as parameters here
 					triggerModal(GAMEOVER_TITLE_IMAGE, GAMEOVER_BACKGROUND_IMAGE, "Better luck next time!");
 					break;
 				case MoveMessage.GAME_WON:
@@ -346,8 +349,6 @@ public class View extends Application implements Observer{
 	 */
 	public void triggerModal(String titleImage, String backgroundImage, String message) {
 		musicPlayer.stop();
-		musicPlayer = new MediaPlayer(new Media(new File(LOSE_MUSIC).toURI().toString()));
-		musicPlayer.play();
 		
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
@@ -1091,7 +1092,7 @@ public class View extends Application implements Observer{
 		});
 		
 		pauseBtn.setOnAction( e -> {
-			if (paused) {				// TODO: create pause menu modal
+			if (paused) {
 				controller.resume();
 				pauseBtn.setText("Pause");
 				paused = false;
