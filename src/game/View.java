@@ -1024,6 +1024,7 @@ public class View extends Application implements Observer{
 					if (!removeToggled) {
 						// Place tower
 						db.clear();
+						if (col > 0) 
 						controller.placeCharacter(generateTowerFromSelected(), row, col);
 						
 					} else {

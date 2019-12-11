@@ -61,9 +61,9 @@ public class Controller {
 	public static final String TARS_AMMO_NOISE = "assets/sounds/ammo_noises/tarsAmmoNoise.m4a";
 	public static final String MILLENIUM_FALCON_AMMO_NOISE = "assets/sounds/ammo_noises/milleniumFalconAmmoNoise.mp3";
 	private MediaPlayer astroJoeAmmoNoise = new MediaPlayer(new Media(new File(ASTROJOE_AMMO_NOISE).toURI().toString()));
-	private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
-	private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
-	private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
+	//private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
+	//private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
+	//private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer tarsAmmoNoise = new MediaPlayer(new Media(new File(TARS_AMMO_NOISE).toURI().toString()));
 	
 	// Class fields
@@ -177,7 +177,7 @@ public class Controller {
 	/**
 	 * Triggers animations for Aliens, Towers, and Bullets
 	 */
-	private void animate() {
+	public void animate() {
 		for (Enemy alien : model.getAliens()) {
 			try {
 				DefenderTower tower = model.getDefenderAt(alien.getRow(), alien.getCol());
@@ -215,7 +215,7 @@ public class Controller {
 	 * tracks the current state of the game waves to trigger the 
 	 * game won functionality if player survives all waves.
 	 */
-	private void calculateHitsOrDeaths() {
+	private void calculateHitsOrDeaths() throws ConcurrentModificationException {
 		if (!model.hasAliens()) {
 			if (waveOneDone.get() && !waveTwoStarted.get()) {
 				model.setWaveNumber(2);
@@ -251,7 +251,7 @@ public class Controller {
 	 * Method that checks if the game is over, if so, pauses the timer
 	 * and initiated the game over updating presenting user with a Modal.
 	 */
-	private boolean isGameOver(Enemy alien) {
+	public boolean isGameOver(Enemy alien) {
 		if (alien.getCol() == 0) {
 			// Game over, pause timer, animate attacking aliens & end game
 			pause();
@@ -276,7 +276,7 @@ public class Controller {
 	 * Generates the alien waves with differing numbers of aliens
 	 * and differing types at each level.
 	 */
-	private void generateAliens() {
+	public void generateAliens() {
 		Timer timer = new Timer();
 		int waveNumber = model.getWaveNumber();
 		
@@ -287,11 +287,7 @@ public class Controller {
 				@Override
 				public void run() {					
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(4);
-					delaySpawn(6000);
-					generateGrunt(3);
-					delaySpawn(3000);
-					generateGrunt(2);
+					waveOneSpawn();
 				}
 				
 			};
@@ -300,13 +296,7 @@ public class Controller {
 
 				@Override
 				public void run() {
-					waveOneDone.set(true);
-					delaySpawn(10000);
-					generateLittleGreenMan(3);
-					delaySpawn(5000);
-					generateGrunt(3);
-					delaySpawn(4000);
-					generateSprinter(3);
+					waveOnePtFiveSpawn();
 					
 				}
 				
@@ -321,15 +311,7 @@ public class Controller {
 				public void run() {
 					waveTwoStarted.set(true);
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(4);
-					delaySpawn(7000);
-					generateGrunt(4);
-					generateSprinter(2);
-					delaySpawn(10000);
-					generateManHunter(3);
-					generateTank(2);
-					generateGrunt(5);
-					generateLittleGreenMan(2);
+					waveTwoSpawn();
 				}
 				
 			};
@@ -338,12 +320,7 @@ public class Controller {
 
 				@Override
 				public void run() {
-					waveTwoDone.set(true);
-					delaySpawn(15000);
-					generateTank(3);
-					delaySpawn(6000);
-					generateManHunter(3);
-					System.out.println("WAVE TWO");
+					waveTwoPtFiveSpawn();
 				}
 				
 			};
@@ -358,18 +335,7 @@ public class Controller {
 				public void run() {
 					waveThreeDone.set(true);
 					Platform.runLater(() -> model.displayWaveToast());
-					generateLittleGreenMan(4);
-					delaySpawn(5000);
-					generateGrunt(4);
-					generateTank(2);
-					generateLittleGreenMan(4);
-					delaySpawn(10000);
-					generateSprinter(4);
-					generateManHunter(4);
-					delaySpawn(7000);
-					generateGargantua(3);
-					generateLittleGreenMan(4);
-					System.out.println("WAVE THREE");
+					
 				}
 				
 			};
@@ -391,6 +357,81 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Handles the spawning for the first set in the first
+	 * wave of enemies
+	 * */
+	public void waveOneSpawn() {
+		generateLittleGreenMan(4);
+		delaySpawn(6000);
+		generateGrunt(3);
+		delaySpawn(3000);
+		generateGrunt(2);
+	}
+	
+	/**
+	 * Handles the spawning for the second set in the first
+	 * wave of enemies
+	 * */
+	public void waveOnePtFiveSpawn() {
+		waveOneDone.set(true);
+		delaySpawn(10000);
+		generateLittleGreenMan(3);
+		delaySpawn(5000);
+		generateGrunt(3);
+		delaySpawn(4000);
+		generateSprinter(3);
+	}
+	
+	/**
+	 * Handles the spawning for the first set in the second
+	 * wave of enemies
+	 * */
+	public void waveTwoSpawn() {
+		generateLittleGreenMan(4);
+		delaySpawn(7000);
+		generateGrunt(4);
+		generateSprinter(2);
+		delaySpawn(10000);
+		generateManHunter(3);
+		generateTank(2);
+		generateGrunt(5);
+		generateLittleGreenMan(2);
+	}
+	
+	/**
+	 * Handles the spawning for the second set in the second
+	 * wave of enemies
+	 * */
+	public void waveTwoPtFiveSpawn() {
+		waveTwoDone.set(true);
+		delaySpawn(15000);
+		generateTank(3);
+		delaySpawn(6000);
+		generateManHunter(3);
+		System.out.println("WAVE TWO");
+	}
+	
+	/**
+	 * Handles the spawning for the first set in the third
+	 * wave of enemies
+	 * */
+	public void waveThreeSpawn() {
+		generateLittleGreenMan(4);
+		delaySpawn(5000);
+		generateGrunt(4);
+		generateTank(2);
+		generateLittleGreenMan(4);
+		delaySpawn(10000);
+		generateSprinter(4);
+		generateManHunter(4);
+		delaySpawn(7000);
+		generateGargantua(3);
+		generateLittleGreenMan(4);
+		System.out.println("WAVE THREE");
+	}
+	
 	
 	/**
 	 * Generates a LittleGreenMen object of a specified Amount
@@ -519,7 +560,7 @@ public class Controller {
 	 * a give speed.
 	 * @param speed Updated speed that the animation should run at 
 	 */
-	public void updateAlienAnimation(int speed) {
+	public void updateAlienAnimation(int speed) throws ConcurrentModificationException{
 		for (Enemy alien : model.getAliens()) {
 			alien.updateAnimationSpeed(speed);
 		}
@@ -529,7 +570,7 @@ public class Controller {
 	 * Pauses the gameplay timer and updates all animations 
 	 * to pause them.
 	 */
-	public void pause() {
+	public void pause() throws ConcurrentModificationException{
 		gamePlayTimer.cancel();
 		updateAlienAnimation(0);
 	}
@@ -653,13 +694,13 @@ public class Controller {
 			});
 		} else if (bullet instanceof ExplosiveAstroJoeAmmo) {
 			Platform.runLater( () -> {
-				explosiveAstroJoeAmmoNoise.play();
-				explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
+				//explosiveAstroJoeAmmoNoise.play();
+				//explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
 			});
 		} else if (bullet instanceof StartrellClugginsAmmo) {
 			Platform.runLater( () -> {
-				startrellClugginsAmmoNoise.play();
-				startrellClugginsAmmoNoise.seek(Duration.seconds(0));	
+				//startrellClugginsAmmoNoise.play();
+				//startrellClugginsAmmoNoise.seek(Duration.seconds(0));	
 			});
 		} else if (bullet instanceof TarsAmmo) {
 			Platform.runLater( () -> {
@@ -668,8 +709,8 @@ public class Controller {
 			});
 		} else if (bullet instanceof MoonZeusAmmo) {
 			Platform.runLater( () -> {
-				moonZeusAmmoNoise.play();
-				moonZeusAmmoNoise.seek(Duration.seconds(0));
+				//moonZeusAmmoNoise.play();
+				//moonZeusAmmoNoise.seek(Duration.seconds(0));
 			});
 		}
 	}

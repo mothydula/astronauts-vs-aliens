@@ -1,3 +1,23 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: Enemy.java
+ * 
+ * Description: This class is the parent class of all aliens. It contains as constants the file paths for all the
+ * individual alien sprites as well as the specs for each individual alien; health, attack speed and 
+ * damage (damage that they are able to take from bullets before death). Also contained within this class
+ * are methods associated with the animation of aliens. They are moved with reference to pixels but must
+ * still have a semblance of what row and column they're in so it can be known if a bullet 'hits' them.
+ * All individual alien classes extend this one.
+ */
+
 package characters.Aliens;
 
 import characters.BoardCharacter;
@@ -11,14 +31,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-/*
- * This class is the parent class of all aliens. It contains as constants the file paths for all the
- * individual alien sprites as well as the specs for each individual alien; health, attack speed and 
- * damage (damage that they are able to take from bullets before death). Also contained within this class
- * are methods associated with the animation of aliens. They are moved with reference to pixels but must
- * still have a semblance of what row and column they're in so it can be known if a bullet 'hits' them.
- * All individual alien classes extend this one.
- */
 public class Enemy extends BoardCharacter {
 	// Default values for characters
 
@@ -88,9 +100,12 @@ public class Enemy extends BoardCharacter {
 		isAttacking = false;
 	}
 	
+	/**
+	 * Public mutator method used to setup a stack pane with the associated
+	 * animations and image views necessary for the aspects of the game.
+	 */
 	public void setStackPane() {
 		stackPane = new StackPane();
-//		stackPane.setStyle("-fx-border-color: black");
 		
 		// Add all views but only make walk animation visible
 		walkView.setVisible(true);
@@ -102,66 +117,114 @@ public class Enemy extends BoardCharacter {
 		stackPane.getChildren().addAll(walkView, attackView, dieView);
 	}
 	
+	/**
+	 * Public accessor method for the stackPane attribute
+	 * @return StackPane object attribute
+	 */
 	public StackPane getStackPane() {
 		return stackPane;
 	}
 	
-	public void playAlienMunchNoise() {
-		// TODO: for Trey, have a bullet noise for each defender's ammo,
-		// each time a piece of ammo is fired
-		/*MediaPlayer munchNoise;
-		String resource = new File(munchNoiseFile.mp3).toURI().toString();
-		munchNoise = new MediaPlayer(new Media(resource));
-		munchNoise.play();*/
-	}
+//	public void playAlienMunchNoise() {
+//		// TODO: Have a bullet noise for each defender's ammo,
+//		// each time a piece of ammo is fired
+//		/*MediaPlayer munchNoise;
+//		String resource = new File(munchNoiseFile.mp3).toURI().toString();
+//		munchNoise = new MediaPlayer(new Media(resource));
+//		munchNoise.play();*/
+//	}
 	
+	/**
+	 * Public accessor method for the isAttacking attribute
+	 * @return boolean value of isAttacking attribute
+	 */
 	public boolean isAttacking() {
 		return isAttacking;
 	}
 	
+	/**
+	 * Public mutator method for the isAttacking attribute
+	 * @param isAttacking boolean value to be set for isAttacking
+	 */
 	public void setAttacking(boolean isAttacking) {
 		this.isAttacking = isAttacking;
 	}
 	
+	/**
+	 * Moves the stackPane for this Enemy object a specified distance in
+	 * accordance to its attributes.
+	 */
 	public void move() {
 		double xPos = stackPane.getTranslateX();
-		
 		double movement = xPos - ((double)this.getAttackSpeed() / 100.0);
 		this.setCol(calculateCol(xPos));
-//		Platform.runLater(() -> stackPane.setTranslateX((movement))); // Negative value will be alien speed
 		stackPane.setTranslateX(movement); // Negative value will be alien speed
 	}
 	
+	/**
+	 * Calculates the column that the stackPane attribute should move to
+	 * @param xPos current xPos of the stackPane
+	 * @return integer represent the column the stackpane should move to
+	 */
 	private int calculateCol(double xPos) {
 		double x = xPos - View.COLUMN_OFFSET;
 		return (int) x / View.GP_CELL_SIZE;
-//		characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
 	}
 	
+	/**
+	 * Public mutator method for the walkView attribute
+	 * @param walkView ImageView object to be set
+	 */
 	public void setWalkView(ImageView walkView) {
 		this.walkView = walkView;
 	}
 	
+	/**
+	 * Public accessor method for the walkView attribute
+	 * @return ImageView object
+	 */
 	public ImageView getWalkView() {
 		return walkView;
 	}
 	
+	/**
+	 * Public mutator method for the attackView attribute
+	 * @param attackView ImageView object to be set
+	 */
 	public void setAttackView(ImageView attackView) {
 		this.attackView = attackView;
 	}
 	
+	/**
+	 * Public accessor method for the attackView atttribute
+	 * @return ImageView object
+	 */
 	public ImageView getAttackView() {
 		return attackView;
 	}
 	
+	/**
+	 * Public mutator method for the dieView attribute
+	 * @param dieView ImageView object to be set
+	 */
 	public void setDieView(ImageView dieView) {
 		this.dieView = dieView;	
 	}
 	
+	/**
+	 * Public accessor method for the dieView attribute
+	 * @return ImageView object
+	 */
 	public ImageView getDieView() {
 		return dieView;
 	} 
 	
+	/**
+	 * Triggers an animation of a specified view given an animationId.
+	 * This will decide which animation, either walk, attack, or die
+	 * is played in the imageView.
+	 * @param animationId String id to find the corresponding animation
+	 */
 	public void triggerAnimation(String animationId) {
 		for (Node node : stackPane.getChildren()) {
 			ImageView view = (ImageView) node;
@@ -173,6 +236,17 @@ public class Enemy extends BoardCharacter {
 		}
 	}
 	
+	/**
+	 * Generates an animation for the sprite stored in the stackPane.
+	 * @param spriteImage Image object of the spritesheet
+	 * @param count Number of images inside of the spritesheet
+	 * @param columns Number of columns included in the spritesheet
+	 * @param spriteWidth Width, in pixels, of an individual sprite
+	 * @param spriteHeight Height, in pixels, of an individual sprite
+	 * @param animationTime Total elapsed time of an animation
+	 * @param animationId Animation id used to set the corresponding ImageView
+	 * @return ImageView with the running animation
+	 */
 	public ImageView generateAnimation(Image spriteImage, int count, int columns, int spriteWidth, int spriteHeight, int animationTime, String animationId) {
 		ImageView view = new ImageView(spriteImage);
 		view.setViewport(new Rectangle2D(
@@ -204,6 +278,11 @@ public class Enemy extends BoardCharacter {
 		return view;
 	}
 
+	/**
+	 * Utility method used to update the animation speed for each of the animations
+	 * in order to support the functionality of fast forwarding
+	 * @param speed int rate that will be set as the animation speed
+	 */
 	public void updateAnimationSpeed(int speed) {
 		walkAnimation.setRate(speed);
 		attackAnimation.setRate(speed);
