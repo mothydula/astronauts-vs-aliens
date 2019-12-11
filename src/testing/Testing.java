@@ -43,6 +43,7 @@ import javafx.scene.image.ImageView;
  * This class runs the tests for AstronutsVsAliens
  * */
 class Testing {
+	
 	private static Thread t;
 
 	/**
