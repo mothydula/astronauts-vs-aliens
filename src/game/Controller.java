@@ -196,7 +196,7 @@ public class Controller {
 					alien.setAttacking(true);
 					alien.triggerAnimation(Enemy.ATTACK_ID);
 					tower.decreaseHealth(alien.getDamage());
-					if (tower.getHealth() <= 0) {
+					if (tower.isDead()) {
 						Platform.runLater(() -> model.removeTower(tower, tower.getRow(), tower.getCol()));
 					}
 				}
