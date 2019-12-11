@@ -143,29 +143,12 @@ class Testing {
 		testModel.removeTower(startrell, 0, 0);
 
 		// Run the pause and play testing
-
 		assertEquals(1, testController.getSpeedMultiplier());
-		// testController.increaseSpeed();
-		// assertEquals(2, testController.getSpeedMultiplier());
-
-		// assertEquals(0, testModel.getAliens().size());
+		
 
 		// First wave
 		testController.waveOneSpawn();
 		testController.waveOnePtFiveSpawn();
-
-		int alienCount = 0;
-
-		// Test for aliens on the board
-		for (int i = 0; i < testModel.getBoard().length; i++) {
-			for (int j = 0; j < testModel.getBoard()[0].length; j++) {
-				if (testModel.getBoard()[i][j].getCharacter() instanceof Enemy) {
-					alienCount++;
-				}
-			}
-		}
-
-		// assertTrue(alienCount > 0);
 
 		// Second wave
 		testController.waveTwoSpawn();
