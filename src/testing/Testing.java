@@ -21,6 +21,7 @@ import characters.Astronauts.*;
 import game.*;
 import javafx.application.Application;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 class Testing {
 	private static Thread t;
@@ -267,6 +268,26 @@ class Testing {
 		tank.setStackPane();
 		assertNotNull(tank.getStackPane());
 		tank.triggerAnimation(Enemy.ATTACK_ID);
+		
+		//Move message tests
+		MoveMessage mm = new MoveMessage(MoveMessage.VALID_MOVE, tank, 0, 0, false);
+		assertEquals(0, mm.getCol());
+		assertEquals(0, mm.getRow());
+		assertFalse(mm.isRemove());
+		assertEquals(mm.getType(), 2);
+		assertEquals(mm.getCharacter(), tank);
+		
+		//Tile testing
+		ImageView iv;
+		iv = testModel.getBoard()[0][0].getImageView();
+		testModel.getBoard()[1][0].setImageView(iv);
+		assertEquals(testModel.getBoard()[1][0].getImageView(), iv);
+		
+		Image i;
+		i = testModel.getBoard()[0][0].getImage();
+		testModel.getBoard()[1][0].setImage(i);
+		assertEquals(testModel.getBoard()[1][0].getImage(), i);
+		
 		
 	}
 
