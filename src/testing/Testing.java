@@ -226,7 +226,9 @@ class Testing {
 		// Remove Tower
 		testController.removeTower(startrell, 0, 0);
 		assertTrue(testModel.isAvailable(0, 0));
-
+		testController.removeTower(mF, 1, 0);
+		assertTrue(testModel.isAvailable(1, 0));
+		
 		// Character testing
 		assertFalse(startrell.isDead());
 		assertNotNull(startrell.getImage());
