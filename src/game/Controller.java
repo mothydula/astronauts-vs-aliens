@@ -413,7 +413,6 @@ public class Controller {
 		generateTank(3);
 		delaySpawn(6000);
 		generateManHunter(3);
-		System.out.println("WAVE TWO");
 	}
 	
 	/**
@@ -432,7 +431,6 @@ public class Controller {
 		delaySpawn(7000);
 		generateGargantua(3);
 		generateLittleGreenMan(4);
-		System.out.println("WAVE THREE");
 	}
 	
 	
