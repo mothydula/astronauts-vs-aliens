@@ -23,9 +23,15 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * This class runs the tests for AstronutsVsAliens
+ * */
 class Testing {
 	private static Thread t;
 
+	/**
+	 * Mocks the initiation of graphics for testsing purposes
+	 * */
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException {
 		// Initialise Java FX
@@ -41,7 +47,9 @@ class Testing {
 		System.out.printf("FX App thread started\n");
 		Thread.sleep(500);
 	}
-
+	/**
+	 * This method runs a suite of tests
+	 * */
 	@Test
 	void Tests() throws InterruptedException {
 		// Initialize the MVC
