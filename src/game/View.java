@@ -422,6 +422,7 @@ public class View extends Application implements Observer{
 		// Setup for new game
 		initializeNewView();
 		musicPlayer.stop();
+		endgameMusic.stop();
 		setupStartMenu();
 	}
 	
