@@ -63,9 +63,9 @@ public class Controller {
 	
 	// MediaPlayer object fields for each individual ammo noise
 	private MediaPlayer astroJoeAmmoNoise = new MediaPlayer(new Media(new File(ASTROJOE_AMMO_NOISE).toURI().toString()));
-	//private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
-	//private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
-	//private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer explosiveAstroJoeAmmoNoise = new MediaPlayer(new Media(new File(EXPLOSIVE_ASTROJOE_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer moonZeusAmmoNoise = new MediaPlayer(new Media(new File(MOON_ZEUS_AMMO_NOISE).toURI().toString()));
+	private MediaPlayer startrellClugginsAmmoNoise = new MediaPlayer(new Media(new File(STARTRELL_CLUGGINS_AMMO_NOISE).toURI().toString()));
 	private MediaPlayer tarsAmmoNoise = new MediaPlayer(new Media(new File(TARS_AMMO_NOISE).toURI().toString()));
 	
 	// Class fields
@@ -696,13 +696,13 @@ public class Controller {
 			});
 		} else if (bullet instanceof ExplosiveAstroJoeAmmo) {
 			Platform.runLater( () -> {
-				//explosiveAstroJoeAmmoNoise.play();
-				//explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
+				explosiveAstroJoeAmmoNoise.play();
+				explosiveAstroJoeAmmoNoise.seek(Duration.seconds(0));				
 			});
 		} else if (bullet instanceof StartrellClugginsAmmo) {
 			Platform.runLater( () -> {
-				//startrellClugginsAmmoNoise.play();
-				//startrellClugginsAmmoNoise.seek(Duration.seconds(0));	
+				startrellClugginsAmmoNoise.play();
+				startrellClugginsAmmoNoise.seek(Duration.seconds(0));	
 			});
 		} else if (bullet instanceof TarsAmmo) {
 			Platform.runLater( () -> {
@@ -711,8 +711,8 @@ public class Controller {
 			});
 		} else if (bullet instanceof MoonZeusAmmo) {
 			Platform.runLater( () -> {
-				//moonZeusAmmoNoise.play();
-				//moonZeusAmmoNoise.seek(Duration.seconds(0));
+				moonZeusAmmoNoise.play();
+				moonZeusAmmoNoise.seek(Duration.seconds(0));
 			});
 		}
 	}
