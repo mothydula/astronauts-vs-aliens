@@ -122,8 +122,8 @@ public class Controller {
 
 			@Override
 			public void run() {
-				calculateHitsOrDeaths();
 				try {
+					calculateHitsOrDeaths();
 					animate();
 				} catch(ConcurrentModificationException | NullPointerException e) {
 					
