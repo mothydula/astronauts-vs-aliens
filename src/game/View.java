@@ -122,10 +122,10 @@ public class View extends Application implements Observer{
 	private Image ACID_POOL = new Image(ACID_POOL_IMAGE, GP_CELL_SIZE, GP_CELL_SIZE, false, false);
 
 	// fields for the music files
-	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
-	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
-	private MediaPlayer loseMusic = new MediaPlayer(new Media(new File("assets/sounds/houstonWeHaveProblem.mp3").toURI().toString()));
-	private MediaPlayer winMusic = new MediaPlayer(new Media(new File("assets/sounds/winMusic").toURI().toString()));
+	private final String INTRO_MUSIC			= "assets/sounds/introMusic.wav";
+	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.wav";
+	private MediaPlayer loseMusic = new MediaPlayer(new Media(new File("assets/sounds/houstonWeHaveProblem.wav").toURI().toString()));
+	private MediaPlayer winMusic = new MediaPlayer(new Media(new File("assets/sounds/winMusic.wav").toURI().toString()));
 	
 	//private final String WIN_MUSIC
 
@@ -275,10 +275,10 @@ public class View extends Application implements Observer{
 					break;
 				case MoveMessage.GAME_OVER:
 					// TODO: add appropriate music players as parameters here
-					triggerModal(GAMEOVER_TITLE_IMAGE, GAMEOVER_BACKGROUND_IMAGE, "Better luck next time!");
+					triggerModal(GAMEOVER_TITLE_IMAGE, GAMEOVER_BACKGROUND_IMAGE, "Better luck next time!", loseMusic);
 					break;
 				case MoveMessage.GAME_WON:
-					triggerModal(WINNING_TITLE_IMAGE, WINNING_BACKGROUND_IMAGE, "Congratulations!");
+					triggerModal(WINNING_TITLE_IMAGE, WINNING_BACKGROUND_IMAGE, "Congratulations!", winMusic);
 					break;
 			}
 		} else if (arg instanceof String) {
@@ -352,9 +352,22 @@ public class View extends Application implements Observer{
 	 * 
 	 * User will be presented a Modal that will stop the progress of the
 	 * game and allow the user to return to the MainMenu.
+	 * @param endgameMusic 
 	 */
-	public void triggerModal(String titleImage, String backgroundImage, String message) {
+	public void triggerModal(String titleImage, String backgroundImage, String message, MediaPlayer endgameMusic) {
 		musicPlayer.stop();
+		
+		// plays the appropriate endgame music
+		if (message.startsWith("Congratulations!")) {
+			endgameMusic.setOnEndOfMedia(new Runnable() {
+		        @Override
+		        public void run() {
+		        	endgameMusic.seek(Duration.ZERO);
+		        	endgameMusic.play();
+		        }
+		    });
+		}
+		endgameMusic.play();
 		
 		Stage modal = new Stage();
 		modal.initModality(Modality.APPLICATION_MODAL);
