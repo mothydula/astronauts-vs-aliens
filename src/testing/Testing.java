@@ -30,7 +30,7 @@ class Testing {
 	}
 
 	@Test
-	void characterTests() throws InterruptedException {
+	void Tests() throws InterruptedException {
 		// Initialize the MVC
 		setUpClass();
 		
