@@ -110,13 +110,11 @@ public class Ammo {
 		double movement = xPos + ((double)this.speed / 100.0);
 		this.setCol(calculateCol(xPos));
 		stackPane.setTranslateX(movement);
-//		Platform.runLater(() -> stackPane.setTranslateX(movement)); 
 	}
 	
 	private int calculateCol(double xPos) {
 		double x = xPos - View.COLUMN_OFFSET;
 		return (int) x / View.GP_CELL_SIZE;
-//		characterPane.setTranslateX((GP_CELL_SIZE * message.getCol()) + COLUMN_OFFSET);
 	}
 	
 	
