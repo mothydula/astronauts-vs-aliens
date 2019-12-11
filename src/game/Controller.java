@@ -122,8 +122,8 @@ public class Controller {
 
 			@Override
 			public void run() {
+				calculateHitsOrDeaths();
 				try {
-					calculateHitsOrDeaths();
 					animate();
 				} catch(ConcurrentModificationException | NullPointerException e) {
 					
@@ -196,6 +196,9 @@ public class Controller {
 					alien.setAttacking(true);
 					alien.triggerAnimation(Enemy.ATTACK_ID);
 					tower.decreaseHealth(alien.getDamage());
+					if (tower.getHealth() <= 0) {
+						Platform.runLater(() -> model.removeTower(tower, tower.getRow(), tower.getCol()));
+					}
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
 				Platform.runLater(() -> alien.move());
@@ -283,7 +286,6 @@ public class Controller {
 		int waveNumber = model.getWaveNumber();
 		
 		if (waveNumber == 1) {						// WAVE ONE
-			System.out.println("WAVE ONE");
 			firstWave = new TimerTask() {
 
 				@Override
@@ -306,7 +308,6 @@ public class Controller {
 			timer.schedule(firstWave, 0);
 			timer.schedule(secondWave, WAVE_DELAY);
 		} else if (waveNumber == 2) {				// WAVE TWO
-			System.out.println("WAVE TWO");
 			firstWave = new TimerTask() {
 
 				@Override
