@@ -125,7 +125,7 @@ public class View extends Application implements Observer{
 	private final String INTRO_MUSIC			= "assets/sounds/introMusic.mp3";
 	private final String IN_GAME_MUSIC			= "assets/sounds/inGameMusic.mp3";
 	private MediaPlayer loseMusic = new MediaPlayer(new Media(new File("assets/sounds/houstonWeHaveProblem.mp3").toURI().toString()));
-	//private MediaPlayer winMusic = new MediaPlayer(new Media(new File(WIN_MUSIC).toURI().toString()));
+	private MediaPlayer winMusic = new MediaPlayer(new Media(new File("assets/sounds/winMusic").toURI().toString()));
 	
 	//private final String WIN_MUSIC
 
