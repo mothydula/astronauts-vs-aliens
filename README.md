@@ -22,6 +22,10 @@ Properties -> Java Compiler -> Enable Project Specific Settings -> Compiler Comp
 
 Once selected, run AstronautsVsAliens.java as a Java Application.
 
+### Examples
+
+![Alt text](https://media.giphy.com/media/iE3bj8XqAUzn7tGOLy/giphy.gif?raw=true "Main Menu") ![Alt text](https://media.giphy.com/media/kyv1JEUKs4Pldn3BKc/giphy.gif?raw=true "Gameplay")
+
 ## Running the tests
 
 Tests are performed using JUnit testing. 
