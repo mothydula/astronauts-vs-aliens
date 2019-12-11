@@ -1,3 +1,19 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: GreenLittleMen.java
+ * 
+ * Description: This class describes the specific characteristics
+ * of the alien GreenLittleMen.
+ */
+
 package characters.Aliens;
 
 import javafx.scene.image.Image;
@@ -76,6 +92,9 @@ public class LittleGreenMen extends Enemy {
 		super.setDieView(dieView);
 	}
 	
+	/**
+	 * Returns string representation of alien.
+	 */
 	public String toString() {
 		return "LittleGreenMen\n" + super.infoCard();
 	}

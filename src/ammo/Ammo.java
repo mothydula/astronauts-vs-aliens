@@ -1,3 +1,19 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: Ammo.java
+ * 
+ * Description: This class describes the bullets that the defender towers will
+ * shoot.
+ */
+
 package ammo;
 
 import java.io.File;
@@ -70,40 +86,76 @@ public class Ammo {
 		this.defender = dt;
 		setStackPane();
 	}
+	/**
+	 * This method initializes the stackpane that will contain the image of 
+	 * the ammo.
+	 */
 	public void setStackPane() {
 		stackPane = new StackPane();
 		ImageView imageView = new ImageView(this.getImage());
 		stackPane.getChildren().add(imageView);
 	}
 	
+	/**
+	 * Getter for damage attribute
+	 * @return integer representing damage
+	 */
 	public int getDamage() {
 		return damage;
 	}
 	
+	/**
+	 * This method is a getter for the stackPane attribute
+	 * @return instance's stackpane
+	 */
 	public StackPane getStackPane() {
 		return stackPane;
 	}
 	
+	/**
+	 * This method is a getter for the sprite attribute
+	 * @return Image object
+	 */
 	public Image getImage() {
 		return this.sprite;
 	}
 	
+	/**
+	 * This method is a setter for the column attribue
+	 * @param col new column to be assigned
+	 */
 	public void setCol(int col) {
 		this.col = col;
 	}
 	
+	/**
+	 * This method is a setter for the row attribute
+	 * @param row new row to be assigned
+	 */
 	public void setRow(int row) {
 		this.row = row;
 	}
 	
+	/**
+	 * This is a getter for the column attribute
+	 * @return column attribute
+	 */
 	public int getCol() {
 		return col;
 	}
 	
+	/**
+	 * This method is a getter for the row attribute
+	 * @return integer representing row
+	 */
 	public int getRow() {
 		return row;
 	}
 	
+	/**
+	 * This method increments the stackpane's translationX to move
+	 * it horizontally accross the view.
+	 */
 	public void move() {
 		double xPos = stackPane.getTranslateX();
 		
@@ -112,6 +164,11 @@ public class Ammo {
 		stackPane.setTranslateX(movement);
 	}
 	
+	/**
+	 * This method calculates the new column after a move.
+	 * @param xPos x position of the stackpane
+	 * @return integer representing column
+	 */
 	private int calculateCol(double xPos) {
 		double x = xPos - View.COLUMN_OFFSET;
 		return (int) x / View.GP_CELL_SIZE;

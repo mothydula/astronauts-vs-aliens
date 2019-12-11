@@ -1,3 +1,19 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: TarsAmmo.java
+ * 
+ * Description: This class describes the specific bullet Tars
+ * will shoot.
+ */
+
 package ammo;
 
 import characters.Astronauts.DefenderTower;

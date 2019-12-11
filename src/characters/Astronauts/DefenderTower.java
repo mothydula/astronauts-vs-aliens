@@ -1,3 +1,20 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: DefenderTower.java
+ * 
+ * Description: This class implements a defender tower which is
+ * the character that the user can place on the board to fight aliens.
+ * 
+ */
+
 package characters.Astronauts;
 
 import ammo.Ammo;
@@ -84,10 +101,21 @@ public abstract class DefenderTower extends BoardCharacter{
 	}
 	
 	// Methods
+	/**
+	 * This method is a getter for the cost attribute
+	 * @return integer representing cost of buying this tower
+	 */
 	public abstract int getCost();
 	
+	/**
+	 * Creates an instance of the bullet specific to the tower
+	 * @return Ammo instance specific to tower
+	 */
 	public abstract Ammo shoot();
 	
+	/**
+	 * Returns whether or not this tower is capable of shooting
+	 */
 	public abstract boolean canShoot();
 	
 }

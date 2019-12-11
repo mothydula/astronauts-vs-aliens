@@ -1,3 +1,19 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: SpriteAnimation.java
+ * 
+ * Description: class in charge of creating the animations of 
+ * characters based on sprite sheets.
+ */
+
 package game;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
@@ -34,6 +50,11 @@ public class SpriteAnimation extends Transition {
         setInterpolator(Interpolator.LINEAR);
     }
 
+    /**
+     * This method moves the view box in the image view every time it 
+     * is called, therefore creating the effect of animation if called
+     * rapidly.
+     */
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
         if (index != lastIndex) {

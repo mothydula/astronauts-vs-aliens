@@ -1,3 +1,20 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: IncomeTower.java
+ * 
+ * Description: This class implements an income tower which is
+ * the character that the user can place on the board to generate money.
+ * 
+ */
+
 package characters.IncomeTowers;
 
 import characters.Astronauts.DefenderTower;
@@ -37,8 +54,20 @@ public abstract class IncomeTower extends DefenderTower {
 	}
 	
 	// Methods
+	
+	/**
+	 * Getter for cost attribute
+	 */
 	public abstract int getCost();
+	
+	/**
+	 * Getter for the amount of seconds it takes to generate money
+	 */
 	public abstract int getTimeline();
+	
+	/**
+	 * Getter for the amount to be generated every certain amount of time.
+	 */
 	public abstract int getDepositAmount();
 	
 }

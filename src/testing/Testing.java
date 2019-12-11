@@ -1,3 +1,19 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: Testing.java
+ * 
+ * Description: test suite for AstronautsVsAliens game.
+ * 
+ */
+
 package testing;
 
 import static org.junit.jupiter.api.Assertions.*;

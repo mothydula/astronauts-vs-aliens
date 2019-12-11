@@ -1,3 +1,19 @@
+/**
+ * @author Adrian Bao
+ * @author Trey Bryant
+ * @author Mauricio Herrera
+ * @author Tim Lukau
+ * 
+ * CSC 335 - Object Oriented Programming and Design
+ * 
+ * Title: Astronauts vs Aliens
+ * 
+ * File: Gargantua.java
+ * 
+ * Description: This class describes the specific characteristics
+ * of the alien Gargantua.
+ */
+
 package characters.Aliens;
 
 import javafx.scene.image.Image;
@@ -77,6 +93,9 @@ public class Gargantua extends Enemy{
 		super.setDieView(dieView);
 	}
 	
+	/**
+	 * Returns string representation of alien.
+	 */
 	public String toString() {
 		return "Garganuta\n" + super.infoCard();
 	}
